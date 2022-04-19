@@ -1,0 +1,215 @@
+// Data source
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Generator
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Data Model
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  userType   UserType @default(Student)
+  email      String   @unique
+  password   String
+  permission Json?
+  info       Json?
+
+  followedBy UserRelation[] @relation("follower")
+  following  UserRelation[] @relation("following")
+
+  flowsFrom Flow[] @relation("flowFromUser")
+  flowsTo   Flow[] @relation("flowToUser")
+
+  requestsFrom Request[] @relation("requestFromUser")
+  requestsTo   Request[] @relation("requestToUser")
+
+  groups          Group[] @relation("owner")
+  groupsTeacher   Group[] @relation("teacher")
+  groupsCollector Group[] @relation("collector")
+  posts           Post[]
+
+  attendances Attendance[]
+  enrollments Enrollment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model UserRelation {
+  follower         User             @relation("follower", fields: [followerId], references: [id])
+  following        User             @relation("following", fields: [followingId], references: [id])
+  followingId      Int
+  followerId       Int
+  userRelationType UserRelationType @default(Student_Center)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@id([followerId, followingId])
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Group {
+  id        Int  @id @default(autoincrement())
+  owner     User @relation("owner", fields: [ownerUserId], references: [id])
+  teacher   User @relation("teacher", fields: [teacherId], references: [id])
+  collector User @relation("collector", fields: [collectorUserId], references: [id])
+
+  ownerUserId     Int
+  collectorUserId Int
+  teacherId       Int
+  paymentType     PaymentType @default(Lecture)
+
+  ownerFees Float   @default(0)
+  public    Boolean @default(true)
+
+  lectures Json?
+  dates    Json?
+  exams    Json?
+
+  attendance Attendance[]
+  enrollment Enrollment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Flow {
+  id         Int      @id @default(autoincrement())
+  fromUser   User     @relation("flowFromUser", fields: [fromUserId], references: [id])
+  toUser     User     @relation("flowToUser", fields: [toUserId], references: [id])
+  fromUserId Int
+  toUserId   Int
+  balance    Float
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
+
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Attendance {
+  id        Int      @id @default(autoincrement())
+  group     Group    @relation(fields: [groupId], references: [id])
+  student   User     @relation(fields: [studentId], references: [id])
+  groupId   Int
+  studentId Int
+  homework  Boolean  @default(false)
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Enrollment {
+  group       Group    @relation(fields: [groupId], references: [id])
+  student     User     @relation(fields: [studentId], references: [id])
+  groupId     Int
+  studentId   Int
+  lectureCost String?
+  centerCost  String?
+  balance     Float    @default(0)
+  exams       Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  @@id([groupId, studentId])
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Request {
+  id            Int           @id @default(autoincrement())
+  fromUser      User          @relation("requestFromUser", fields: [fromUserId], references: [id])
+  toUser        User          @relation("requestToUser", fields: [toUserId], references: [id])
+  fromUserId    Int
+  toUserId      Int
+  requestType   RequestType   @default(Student_Group)
+  requestStatus RequestStatus @default(Pending)
+  note          String?
+  info          Json?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Post {
+  id       Int    @id @default(autoincrement())
+  content  String
+  likes    Json?
+  comments Json?
+  user     User   @relation(fields: [userId], references: [id])
+  userId   Int
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum UserType {
+  Admin
+  Center
+  Teacher
+  Student
+  Employee
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum UserRelationType {
+  Teacher_Center
+  Student_Center
+  Employee_Center
+  Student_Teacher
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum PaymentType {
+  Lecture
+  Month
+  Installment
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum HomeworkStatus {
+  done
+  partial
+  none
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum RequestType {
+  Student_Group
+  Teacher_Center
+  Center_Teacher
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum RequestStatus {
+  Accpeted
+  Pending
+  Refused
+}
