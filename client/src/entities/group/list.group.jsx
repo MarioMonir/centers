@@ -1,13 +1,11 @@
 import {
-  List,
-  Datagrid,
-  TextField,
-  NumberField,
   BooleanField,
-  DateField,
-  ShowButton,
-  EditButton,
+  Datagrid,
   DeleteButton,
+  EditButton,
+  List,
+  NumberField,
+  ShowButton,
 } from "react-admin";
 import Actions from "../../reactAdmin/Actions";
 
@@ -28,10 +26,10 @@ export default function ListGroup(props) {
         <NumberField source="ownerFees" />
         <BooleanField source="public" />
 
-        <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+        <Actions>
+          <ShowButton />
+          <EditButton />
+          <DeleteButton />
         </Actions>
       </Datagrid>
     </List>

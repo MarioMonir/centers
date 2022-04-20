@@ -15,10 +15,10 @@ export default function ListPost(props) {
     <List {...props}>
       <Datagrid>
         <NumberField source="id" />
-        <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+        <Actions>
+          <ShowButton />
+          <EditButton />
+          <DeleteButton />
         </Actions>
       </Datagrid>
     </List>

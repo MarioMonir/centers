@@ -1,13 +1,10 @@
 import {
-  List,
   Datagrid,
-  TextField,
-  NumberField,
-  BooleanField,
-  DateField,
-  ShowButton,
-  EditButton,
   DeleteButton,
+  EditButton,
+  List,
+  NumberField,
+  ShowButton,
 } from "react-admin";
 import Actions from "../../reactAdmin/Actions";
 
@@ -21,10 +18,10 @@ export default function ListUserRelation(props) {
 
         <NumberField source="followingId" />
 
-        <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+        <Actions>
+          <ShowButton />
+          <EditButton />
+          <DeleteButton />
         </Actions>
       </Datagrid>
     </List>
