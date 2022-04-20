@@ -14,7 +14,6 @@ export default function CreateEnrollment(props) {
     <Create {...props}>
       <SimpleForm variant="outlined" redirect="list">
         <NumberInput source="groupId" />
-
         <NumberInput source="studentId" />
         <TextInput source="lectureCost" />
         <TextInput source="centerCost" />
