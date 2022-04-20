@@ -227,7 +227,7 @@ const arabicMessages = {
       password: "كلمة السر",
       sign_in: "تسجيل الدخول",
       sign_in_error: "أخفقت المصادقة، يرجى إعادة المحاولة",
-      logout: "الخروج",
+      logout: "تسجيل الخروج",
     },
     notification: {
       updated: "تم تحديث العنصر |||| تم تحديث%{smart_count} من العناصر",
