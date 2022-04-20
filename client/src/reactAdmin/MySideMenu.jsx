@@ -1,5 +1,5 @@
-import { Sidebar, MenuItemLink, getResources } from "react-admin";
-import GroupIcon from "@material-ui/icons/Group";
+import { Sidebar, MenuItemLink } from "react-admin";
+import GroupIcon from "@mui/icons-material/Group";
 import entities from "../entities/entities";
 
 // ------------------------------------------------
