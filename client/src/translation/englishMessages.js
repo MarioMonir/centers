@@ -2,6 +2,21 @@ import englishMessages from "ra-language-english";
 
 const allEnglishMessages = {
   ...englishMessages,
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  //for menu translation
+  User: "Users",
+  UserRelation: "User Relations",
+  Group: "Groups",
+  Flow: "Cash Flow",
+  Attendance: "Attendance",
+  Enrollment: "Enrolments",
+  Request: "Requests",
+  Post: "Posts",
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   /*resources: {
     user: {
       name: "Users |||| User",
