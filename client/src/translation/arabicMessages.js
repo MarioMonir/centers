@@ -52,7 +52,7 @@ const arabicMessages = {
         teacherId: "كود المدرس",
         collectorUserId: "كود المُحصِّل",
         paymentType: "نوع الدفع",
-        permission: "الصلاحيات",
+        ownerFees: "المبلغ",
         public: "علني",
         lectures: "الحصص",
         dates: "المواعيد",
