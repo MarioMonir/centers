@@ -5,15 +5,23 @@ const allEnglishMessages = {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  //for menu translation
-  User: "Users",
-  UserRelation: "User Relations",
-  Group: "Groups",
-  Flow: "Cash Flow",
-  Attendance: "Attendance",
-  Enrollment: "Enrolments",
-  Request: "Requests",
-  Post: "Posts",
+  menu: {
+    User: "Users",
+    UserRelation: "User Relations",
+    Group: "Groups",
+    Flow: "Cash Flow",
+    Attendance: "Attendance",
+    Enrollment: "Enrolments",
+    Request: "Requests",
+    Post: "Posts",
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  other: {
+    dark: "Dark Mode",
+    light: "Light Mode",
+  },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

@@ -17,7 +17,7 @@ export default function MySideMenu(props) {
               key={name + "-" + index}
               to={`/${name}`}
               resource={entity}
-              primaryText={translate(label)}
+              primaryText={translate("menu."+label)}
               leftIcon={<GroupIcon />}
             />
           );

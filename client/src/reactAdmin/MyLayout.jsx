@@ -6,11 +6,5 @@ import MyAppBar from "./MyAppBar";
 // -----------------------------------------------------------
 
 export default function MyLayout(props) {
-  return (
-    <Layout
-      {...props}
-      sidebar={MySideMenu}
-      appBar={MyAppBar}
-    />
-  );
+  return <Layout {...props} sidebar={MySideMenu} appBar={MyAppBar} />;
 }
