@@ -7,7 +7,7 @@ import i18nProvider from "../translation/i18nProvider";
 
 // ------------------------------------------------
 
-console.log("asd", import.meta);
+//console.log("asd", import.meta);
 
 const dataProvider = simpleRestProvider(config?.baseUrl);
 

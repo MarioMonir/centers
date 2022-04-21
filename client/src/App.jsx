@@ -2,8 +2,8 @@ import MyAdmin from "./reactAdmin/MyAdmin";
 
 // ------------------------------------------------
 
+//set initial direction
 const locale = JSON.parse(localStorage.getItem("RaStore.locale")) || "en";
-console.log(locale);
 document.dir = locale === "en" ? "ltr" : "rtl";
 
 // ------------------------------------------------
