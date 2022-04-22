@@ -7,20 +7,12 @@ import {
   ShowButton,
 } from "react-admin";
 import Actions from "../../reactAdmin/Actions";
+import PostCard from "./PostCard";
 
 // ------------------------------------------------
 
 export default function ListPost(props) {
   return (
-    <List {...props}>
-      <Datagrid>
-        <NumberField source="id" />
-        <Actions>
-          <ShowButton />
-          <EditButton />
-          <DeleteButton />
-        </Actions>
-      </Datagrid>
-    </List>
+      <PostCard/>
   );
 }
