@@ -21,6 +21,7 @@ const allEnglishMessages = {
   other: {
     dark: "Dark Mode",
     light: "Light Mode",
+    notifications: "Notifications",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

@@ -15,6 +15,7 @@ const arabicMessages = {
   other: {
     dark: "الوضع المعتم",
     light: "الوضع الفاتح",
+    notifications:"الاشعارات",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

@@ -17,7 +17,6 @@ document.dir = locale === "en" ? "ltr" : "rtl";
 //set initial backgroundColor for dark mode
 const initiallyDarkMode = JSON.parse(localStorage.getItem("RaStore.theme"))
   ?.palette?.mode;
-console.log(initiallyDarkMode);
 document.body.style.backgroundColor =
   initiallyDarkMode === "dark" ? "#121212" : "#fafafb";
 

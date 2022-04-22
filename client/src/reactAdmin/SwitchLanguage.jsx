@@ -15,7 +15,7 @@ const SwitchLanguage = React.forwardRef((props, ref) => {
       ref={ref}
       {...props}
       sx={{ color: "text.secondary" }}
-      onClick={(event) => {
+      onClick={() => {
         setLocale(locale === "en" ? "ar" : "en");
         document.dir = locale === "en" ? "rtl" : "ltr";
         onClose(); // Close the menu

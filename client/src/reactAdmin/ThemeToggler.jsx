@@ -27,7 +27,7 @@ const ThemeToggler = React.forwardRef((props, ref) => {
       ref={ref}
       {...props}
       sx={{ color: "text.secondary" }}
-      onClick={(event) => {
+      onClick={() => {
         setTheme(theme?.palette?.mode === "dark" ? lightTheme : darkTheme);
         document.body.style.backgroundColor =
           theme?.palette.mode === "dark" ? "#fafafb" : "#121212";
