@@ -156,9 +156,9 @@ model Request {
 
 model Post {
   id        Int      @id @default(autoincrement())
-  content   String
-  likes     Json?
-  comments  Json?
+  content   String //what is the max length ?!
+  likes     Json?    @default("{\"number\":0,\"userIds\":[]}")
+  comments  Json? //{{"autherId":123 ,"content":"comment content" , "likes":4 ,"likesUserIds":[5,2,4,6]},{},{}}
   user      User     @relation(fields: [userId], references: [id])
   userId    Int
   createdAt DateTime @default(now())
