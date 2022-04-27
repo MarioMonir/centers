@@ -18,7 +18,7 @@ document.dir = locale === "en" ? "ltr" : "rtl";
 const initiallyDarkMode = JSON.parse(localStorage.getItem("RaStore.theme"))
   ?.palette?.mode;
 document.body.style.backgroundColor =
-  initiallyDarkMode === "dark" ? "#121212" : "#fafafb";
+  initiallyDarkMode === "dark" ? "#000" : "#fafafb";
 
 // ------------------------------------------------
 

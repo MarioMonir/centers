@@ -1,12 +1,18 @@
 import Collapse from "@mui/material/Collapse";
+import CommentCard from "./CommentCard";
 
-const PostComments = (data) => {
-  //console.log(data.expanded);
+// ------------------------------------------------
+
+const PostComments = (post) => {
   return (
-    <Collapse in={data.expanded} timeout="auto" unmountOnExit>
-      comments
+    <Collapse in={post.expanded} timeout="auto" unmountOnExit>
+      {post?.comments?.list?.map((comment, commentId) => (
+        <CommentCard key={commentId} {...{ post, comment, commentId }} />
+      ))}
     </Collapse>
   );
 };
+
+// ------------------------------------------------
 
 export default PostComments;
