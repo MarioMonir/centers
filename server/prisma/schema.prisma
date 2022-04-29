@@ -157,8 +157,8 @@ model Request {
 model Post {
   id        Int      @id @default(autoincrement())
   content   String //what is the max length ?!
-  likes     Json?    @default("{\"number\":0,\"userIds\":[]}")
-  //comments.list [{"userId":123 ,"content":"comment content" ,"createdAt": date, "likes":{"number":4 ,"userIds":[5,2,4,6]}}]
+  likes     Json?    @default("{\"userIds\":[]}")
+  //comments.list [{"userId":123 ,"content":"comment content" ,"createdAt": date, "likes":{"userIds":[5,2,4,6]}}]
   comments  Json?    @default("{\"list\":[]}")
   user      User     @relation(fields: [userId], references: [id])
   userId    Int

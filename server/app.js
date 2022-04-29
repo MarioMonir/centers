@@ -64,43 +64,43 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // ------------------------------------------------------
-app.post("/login", async (req, res, next) => {
-  const { email, password } = req.body;
-  console.log("b", req.body);
-  // TODO: get user by email and password and generate acces token
+// app.post("/login", async (req, res, next) => {
+//   const { email, password } = req.body;
+//   console.log("b", req.body);
+//   // TODO: get user by email and password and generate acces token
 
-  let user = await prisma.user.findUnique({ where: { email } });
-  if (!user) return res.status(401).json({ message: "invalid user" });
+//   let user = await prisma.user.findUnique({ where: { email } });
+//   if (!user) return res.status(401).json({ message: "invalid user" });
 
-  console.log(user);
+//   console.log(user);
 
-  const secret = "Add_Your_Own_Secret_Key";
-  const token = jwt.sign({ id: user?.id }, secret, {
-    expiresIn: 24 * 60 * 60 * 1000,
-  });
+//   const secret = "Add_Your_Own_Secret_Key";
+//   const token = jwt.sign({ id: user?.id }, secret, {
+//     expiresIn: 24 * 60 * 60 * 1000,
+//   });
 
-  res.status(200).json({ token });
-});
+//   res.status(200).json({ token });
+// });
 
-// Entities contollers use
-// app.use("*", passport.authenticate("jwt", { session: false }));
+// // Entities contollers use
+// // app.use("*", passport.authenticate("jwt", { session: false }));
 
-app.use(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  (req, res, next) => {
-    console.log("Asd");
-    console.log("asdasdasd ", req?.user);
-    next();
-  }
-);
+// app.use(
+//   "/",
+//   passport.authenticate("jwt", { session: false }),
+//   (req, res, next) => {
+//     console.log("Asd");
+//     console.log("asdasdasd ", req?.user);
+//     next();
+//   }
+// );
 
-app.use("*", (req, res, next) => {
-  console.log("headers ", req.headers);
-  console.log("req.user is Auth", req.isAuthenticated());
-  console.log("req.user is Auth", req.user);
-  next();
-});
+// app.use("*", (req, res, next) => {
+//   console.log("headers ", req.headers);
+//   console.log("req.user is Auth", req.isAuthenticated());
+//   console.log("req.user is Auth", req.user);
+//   next();
+// });
 
 app.use(userController);
 app.use(userRelationController);
