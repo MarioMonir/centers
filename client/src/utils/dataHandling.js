@@ -2,11 +2,11 @@ export const dateHandling = (createdAt) => {
   createdAt = new Date(createdAt);
   const now = new Date();
   let difference = (now - new Date(createdAt)) / (1000 * 60);
-  if (difference > 60) {
+  if (difference > 59) {
     difference = difference / 60;
-    if (difference > 24) {
+    if (difference > 23) {
       difference = difference / 24;
-      if (difference > 7) {
+      if (difference > 6) {
         const day = createdAt.getDay();
         const month = createdAt.getMonth(); // month (in integer 0-11)
         const year = createdAt.getFullYear(); // year

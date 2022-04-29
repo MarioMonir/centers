@@ -1,28 +1,35 @@
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Avatar from "@mui/material/Avatar";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
-import { red } from "@mui/material/colors";
 import IconButton from "@mui/material/IconButton";
 import StepConnector from "@mui/material/StepConnector";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { FunctionField, ReferenceField } from "react-admin";
-import { dateHandling, numberHandling } from "./dataHandling";
+import { dateHandling, numberHandling } from "../../../utils/dataHandling";
 import PostComments from "./PostComments";
 import PostLikeButton from "./PostLikeButton";
+
+// ------------------------------------------------
+
+const loggedInUserId = 1;
 
 // ------------------------------------------------
 
 const PostCard = (record) => {
   const [expanded, setExpanded] = React.useState(false);
 
+  // ------------------------------------------------
+
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
+  // ------------------------------------------------
 
   return (
     <Card
@@ -30,21 +37,21 @@ const PostCard = (record) => {
         maxWidth: 800,
         paddingLeft: 1.5,
         paddingRight: 1.5,
-        margin: 2,
+        //margin: 2,
       }}
     >
       {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
 
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+        avatar={<AccountCircleIcon color="action" sx={{ fontSize: 45 }} />}
         action={
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
+          record.userId === loggedInUserId ? (
+            <IconButton aria-label="settings">
+              <MoreVertIcon />
+            </IconButton>
+          ) : (
+            <></>
+          )
         }
         title={
           <ReferenceField
@@ -94,7 +101,7 @@ const PostCard = (record) => {
             whiteSpace: "pre",
           }}
         >
-          {numberHandling(record.likes.number) +
+          {numberHandling(record?.likes?.userIds?.length) +
             " likes" +
             "     " +
             numberHandling(record?.comments?.list?.length) +
@@ -108,7 +115,7 @@ const PostCard = (record) => {
       <CardActions>
         <PostLikeButton {...record} />
 
-        <IconButton aria-label="comments" onClick={handleExpandClick}>
+        <IconButton onClick={handleExpandClick}>
           <ChatBubbleIcon />
         </IconButton>
       </CardActions>

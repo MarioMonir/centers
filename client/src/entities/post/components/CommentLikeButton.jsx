@@ -1,33 +1,41 @@
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ErrorIcon from "@mui/icons-material/Error";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import IconButton from "@mui/material/IconButton";
 import { useUpdate } from "react-admin";
 
 // ------------------------------------------------
 
-const PostLikeButton = ({ id, likes: { userIds, number } }) => {
-  // removes userId if exists and adds it if not
-
-  const [update, { isLoading, error }] = useUpdate("post");
+const CommentLikeButton = ({ post, comment, commentId }) => {
   const loggedInUserId = 1;
+  const {
+    likes: { userIds },
+  } = comment;
+
+  const [update, { isLoading, error }] = useUpdate();
 
   // ------------------------------------------------
 
   const handleClick = () => {
-    let newNumber = number;
+    // removes userId if exists and adds it if not
+
     let newUserIds = userIds;
+    let newCommentList = post.comments.list;
 
     if (userIds?.includes(loggedInUserId)) {
       newUserIds = userIds?.filter((id) => id !== loggedInUserId);
-      newNumber = number - 1;
     } else {
       newUserIds = userIds?.concat([loggedInUserId]);
-      newNumber = number + 1;
     }
 
+    newCommentList[commentId].likes = {
+      userIds: newUserIds,
+    };
+
     update("post", {
-      id,
-      data: { likes: { number: newNumber, userIds: newUserIds } },
+      id: post.id,
+      data: {
+        comments: { list: newCommentList },
+      },
     });
   };
 
@@ -38,17 +46,15 @@ const PostLikeButton = ({ id, likes: { userIds, number } }) => {
   // ------------------------------------------------
 
   return (
-    <IconButton
-      disabled={isLoading}
-      onClick={handleClick}
-      key={"like" + id}
-      aria-label="add to favorites"
-    >
-      <ThumbUpIcon color={userIds?.includes(loggedInUserId) ? "primary" : ""} />
+    <IconButton disabled={isLoading} onClick={handleClick} size="small">
+      <ThumbUpIcon
+        fontSize="inherit"
+        color={userIds?.includes(loggedInUserId) ? "primary" : ""}
+      />
     </IconButton>
   );
 };
 
 // ------------------------------------------------
 
-export default PostLikeButton;
+export default CommentLikeButton;
