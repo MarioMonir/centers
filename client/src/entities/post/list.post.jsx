@@ -1,26 +1,47 @@
-import {
-  Datagrid,
-  DeleteButton,
-  EditButton,
-  List,
-  NumberField,
-  ShowButton,
-} from "react-admin";
-import Actions from "../../reactAdmin/Actions";
+import { Box } from "@mui/material";
+import React, { useState } from "react";
+import { Button, useGetList } from "react-admin";
+import PostCard from "./components/PostCard";
+import CreatePost from "./create.post";
+import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 
 // ------------------------------------------------
 
-export default function ListPost(props) {
+const ListPost = () => {
+  const [perPage, setPerPage] = useState(10);
+
+  const { data, isLoading, refetch } = useGetList("post", {
+    pagination: { page: 1, perPage: perPage },
+    sort: { field: "createdAt", order: "DESC" },
+  });
+
+  // ------------------------------------------------
+
+  const handleClick = () => {
+    setPerPage(perPage + 5);
+  };
+
+  // ------------------------------------------------
+
   return (
-    <List {...props}>
-      <Datagrid>
-        <NumberField source="id" />
-        <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
-        </Actions>
-      </Datagrid>
-    </List>
+    <Box gap={2} display="grid" sx={{ maxWidth: 800 }}>
+      <CreatePost refetch={refetch} />
+
+      {data?.map((record) => (
+        <PostCard key={record?.id} {...record} />
+      ))}
+
+      <Button
+        disabled={isLoading}
+        label="See More"
+        onClick={handleClick}
+        //icon={<ExpandCircleDownIcon />}
+        sx={{ padding: 3 }}
+      />
+    </Box>
   );
-}
+};
+
+// ------------------------------------------------
+
+export default ListPost;

@@ -1,12 +1,4 @@
-import {
-  Create,
-  SimpleForm,
-  TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
-  useTranslate,
-} from "react-admin";
+import { Create, SimpleForm, TextInput, useTranslate } from "react-admin";
 
 // ------------------------------------------------
 

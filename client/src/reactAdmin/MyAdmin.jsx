@@ -5,10 +5,9 @@ import config from "../configs/config";
 import MyLayout from "./MyLayout";
 import polyglotI18nProvider from "ra-i18n-polyglot";
 import arabicMessages from "./ar";
+import i18nProvider from "../translation/i18nProvider";
 
 // ------------------------------------------------
-
-console.log("asd", import.meta);
 
 const dataProvider = simpleRestProvider(config?.baseUrl);
 
