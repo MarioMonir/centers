@@ -5,7 +5,7 @@ import { useGetListQuery } from "../../../API/api";
 import Card from "../../../Components/Card";
 import globalStyles from "../../../Theme/global.styles";
 import LoadingOrErrorScreeen from "../../../Components/LoadingOrError.screen";
-import ActionButton from "../../../Components/ActionButton";
+import Fab from "../../../Components/Fab";
 
 // ====================================================================
 
@@ -41,7 +41,7 @@ export default function ListFlowScreen() {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
-      <ActionButton onPress={goToCreateEntity} />
+      <Fab onPress={goToCreateEntity} />
     </SafeAreaView>
   );
 }

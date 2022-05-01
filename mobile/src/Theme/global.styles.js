@@ -10,7 +10,7 @@ import { colors } from "./colors.theme";
 const globalStyles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: colors.background,
   },
