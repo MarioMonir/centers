@@ -1,25 +1,27 @@
-import {
-  Show,
-  SimpleShowLayout,
-  TextField,
-  NumberField,
-  BooleanField,
-  DateField,
-} from "react-admin";
+import { LoadingIndicator, useGetOne, useRedirect } from "react-admin";
+import { useParams } from "react-router-dom";
+import PostCard from "./components/PostCard";
 
 // ------------------------------------------------
 
-export default function ShowPost(props) {
-  return (
-    <Show {...props}>
-      <SimpleShowLayout>
-        <NumberField source="id" />
-        <TextField source="name" />
-
-        <TextField source="email" />
-        <TextField source="password" />
-        <TextField source="permission" />
-      </SimpleShowLayout>
-    </Show>
+const ShowPost = () => {
+  const { id } = useParams();
+  const redirect = useRedirect();
+  const { data, isLoading } = useGetOne(
+    "post",
+    { id },
+    { onError: () => redirect("/post") }
   );
-}
+
+  // ------------------------------------------------
+
+  if (isLoading) return <LoadingIndicator />;
+
+  // ------------------------------------------------
+
+  return <PostCard {...data} />;
+};
+
+// ------------------------------------------------
+
+export default ShowPost;

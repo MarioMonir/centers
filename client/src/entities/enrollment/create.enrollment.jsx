@@ -1,11 +1,4 @@
-import {
-  Create,
-  SimpleForm,
-  TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
-} from "react-admin";
+import { Create, NumberInput, SimpleForm, TextInput } from "react-admin";
 
 // ------------------------------------------------
 
@@ -14,7 +7,6 @@ export default function CreateEnrollment(props) {
     <Create {...props}>
       <SimpleForm variant="outlined" redirect="list">
         <NumberInput source="groupId" />
-
         <NumberInput source="studentId" />
         <TextInput source="lectureCost" />
         <TextInput source="centerCost" />

@@ -1,13 +1,11 @@
 import {
-  List,
   Datagrid,
-  TextField,
-  NumberField,
-  BooleanField,
-  DateField,
-  ShowButton,
-  EditButton,
   DeleteButton,
+  EditButton,
+  List,
+  NumberField,
+  ShowButton,
+  TextField,
 } from "react-admin";
 import Actions from "../../reactAdmin/Actions";
 
@@ -25,10 +23,10 @@ export default function ListFlow(props) {
         <NumberField source="balance" />
         <TextField source="notes" />
 
-        <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+        <Actions>
+          <ShowButton />
+          <EditButton />
+          <DeleteButton />
         </Actions>
       </Datagrid>
     </List>

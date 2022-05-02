@@ -1,10 +1,11 @@
-import { Sidebar, MenuItemLink, getResources } from "react-admin";
-import GroupIcon from "@material-ui/icons/Group";
+import { Sidebar, MenuItemLink, useTranslate } from "react-admin";
+import GroupIcon from "@mui/icons-material/Group";
 import entities from "../entities/entities";
 
 // ------------------------------------------------
 
 export default function MySideMenu(props) {
+  const translate = useTranslate();
   return (
     <Sidebar {...props}>
       {entities
@@ -16,7 +17,7 @@ export default function MySideMenu(props) {
               key={name + "-" + index}
               to={`/${name}`}
               resource={entity}
-              primaryText={label}
+              primaryText={translate("menu."+label)}
               leftIcon={<GroupIcon />}
             />
           );

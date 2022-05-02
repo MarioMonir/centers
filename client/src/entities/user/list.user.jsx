@@ -3,8 +3,6 @@ import {
   Datagrid,
   TextField,
   NumberField,
-  BooleanField,
-  DateField,
   ShowButton,
   EditButton,
   DeleteButton,
@@ -24,10 +22,10 @@ export default function ListUser(props) {
         <TextField source="password" />
         <TextField source="permission" />
 
-        <Actions label="">
-          <ShowButton label="show" />
-          <EditButton label="edit" />
-          <DeleteButton label="delete" />
+        <Actions>
+          <ShowButton />
+          <EditButton />
+          <DeleteButton />
         </Actions>
       </Datagrid>
     </List>

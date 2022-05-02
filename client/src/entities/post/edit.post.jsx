@@ -1,21 +1,24 @@
-import {
-  Edit,
-  SimpleForm,
-  TextInput,
-  NumberInput,
-  BooleanInput,
-  DateInput,
-} from "react-admin";
+import { Edit, TextInput, SimpleForm, required } from "react-admin";
 
 // ------------------------------------------------
 
-export default function EditPost(props) {
+const EditPost = () => {
   return (
-    <Edit {...props}>
-      <SimpleForm variant="outlined" redirect="list">
-        <NumberInput source="id" />
-
+    <Edit mutationMode="pessimistic">
+      <SimpleForm redirect="list">
+        <TextInput
+          source="content"
+          fullWidth
+          multiline
+          label=""
+          placeholder="Write a post..."
+          validate={required()}
+        />
       </SimpleForm>
     </Edit>
   );
-}
+};
+
+// ------------------------------------------------
+
+export default EditPost;

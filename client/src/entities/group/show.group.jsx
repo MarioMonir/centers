@@ -1,11 +1,4 @@
-import {
-  Show,
-  SimpleShowLayout,
-  TextField,
-  NumberField,
-  BooleanField,
-  DateField,
-} from "react-admin";
+import { BooleanField, NumberField, Show, SimpleShowLayout } from "react-admin";
 
 // ------------------------------------------------
 
