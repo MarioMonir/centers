@@ -2,13 +2,15 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
 import * as React from "react";
-import { MenuItemLink } from "react-admin";
 
-const PostActionButton = ({ postId }) => {
+// ------------------------------------------------
+
+const CommentActionButton = ({ setIsEditing }) => {
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
 
@@ -38,6 +40,12 @@ const PostActionButton = ({ postId }) => {
     }
   }
 
+  // ------------------------------------------------
+
+  const editClick = (event) => {
+    setIsEditing(true);
+    handleClose(event);
+  };
   // ------------------------------------------------
 
   return (
@@ -76,11 +84,7 @@ const PostActionButton = ({ postId }) => {
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
-                  <MenuItemLink
-                    to={"/post/" + postId + "/show"}
-                    primaryText="Show"
-                  />
-                  <MenuItemLink to={"/post/" + postId} primaryText="Edit" />
+                  <MenuItem onClick={editClick}>Edit</MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>
@@ -93,4 +97,4 @@ const PostActionButton = ({ postId }) => {
 
 // ------------------------------------------------
 
-export default PostActionButton;
+export default CommentActionButton;

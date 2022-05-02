@@ -1,6 +1,5 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -11,9 +10,9 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { FunctionField, ReferenceField } from "react-admin";
 import { dateHandling, numberHandling } from "../../../utils/dataHandling";
+import PostActionButton from "./PostActionsButton";
 import PostComments from "./PostComments";
 import PostLikeButton from "./PostLikeButton";
-import PostActionButton from "./PostActionsButton";
 // ------------------------------------------------
 
 const loggedInUserId = 1;
@@ -61,13 +60,7 @@ const PostCard = (record) => {
             />
           </ReferenceField>
         }
-        subheader={
-          record?.createdAt === record?.updatedAt
-            ? dateHandling(record?.createdAt || new Date())
-            : dateHandling(record?.createdAt || new Date()) +
-              ", edited " +
-              dateHandling(record?.updatedAt || new Date())
-        }
+        subheader={dateHandling(record?.createdAt || new Date())}
       />
 
       {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
@@ -120,7 +113,7 @@ const PostCard = (record) => {
 
       {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
 
-      <PostComments expanded={expanded} {...record} />
+      <PostComments {...{ post: record, expanded }} />
 
       {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
     </Card>

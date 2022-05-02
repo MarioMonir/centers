@@ -1,12 +1,12 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import React, { useState } from "react";
 import { FunctionField, ReferenceField, useTheme } from "react-admin";
 import { dateHandling, numberHandling } from "../../../utils/dataHandling";
+import EditComment from "../edit.comment";
+import CommentActionButton from "./CommentActionsButton";
 import CommentLikeButton from "./CommentLikeButton";
 
 // ------------------------------------------------
@@ -17,6 +17,7 @@ const loggedInUserId = 1;
 
 const CommentCard = ({ post, comment, commentId }) => {
   const [theme] = useTheme();
+  const [isEditing, setIsEditing] = useState(false);
 
   // ------------------------------------------------
 
@@ -40,9 +41,7 @@ const CommentCard = ({ post, comment, commentId }) => {
           avatar={<AccountCircleIcon color="action" sx={{ fontSize: 45 }} />}
           action={
             comment.userId === loggedInUserId ? (
-              <IconButton aria-label="settings">
-                <MoreVertIcon />
-              </IconButton>
+              <CommentActionButton setIsEditing={setIsEditing} />
             ) : null
           }
           title={
@@ -58,9 +57,13 @@ const CommentCard = ({ post, comment, commentId }) => {
             </ReferenceField>
           }
           subheader={
-            <Typography variant="body1" sx={{ whiteSpace: "pre" }}>
-              {comment?.content}
-            </Typography>
+            isEditing ? (
+              <EditComment {...{ post, comment, commentId, setIsEditing }} />
+            ) : (
+              <Typography variant="body1" sx={{ whiteSpace: "pre" }}>
+                {comment?.content}
+              </Typography>
+            )
           }
         />
       </Card>

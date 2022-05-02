@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { Button, useGetList } from "react-admin";
 import PostCard from "./components/PostCard";
 import CreatePost from "./create.post";
-import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 
 // ------------------------------------------------
 

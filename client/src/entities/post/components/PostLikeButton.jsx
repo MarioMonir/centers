@@ -6,7 +6,6 @@ import { useUpdate } from "react-admin";
 // ------------------------------------------------
 
 const PostLikeButton = ({ id, likes }) => {
-  //console.log(id, likes);
   const [update, { isLoading, error }] = useUpdate();
   const loggedInUserId = 1;
   const { userIds } = likes;
