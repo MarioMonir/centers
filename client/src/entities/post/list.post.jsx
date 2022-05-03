@@ -1,6 +1,8 @@
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box } from "@mui/material";
+import Button from "@mui/material/Button";
 import React, { useEffect, useState } from "react";
-import { Button, useGetList } from "react-admin";
+import { useGetList } from "react-admin";
 import PostCard from "./components/PostCard";
 import CreatePost from "./create.post";
 
@@ -46,7 +48,10 @@ const ListPost = () => {
         label="See More"
         onClick={handleClick}
         sx={{ padding: 3 }}
-      />
+      >
+        <ExpandMoreIcon />
+        See More
+      </Button>
     </Box>
   );
 };

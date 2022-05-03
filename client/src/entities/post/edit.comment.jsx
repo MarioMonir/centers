@@ -32,7 +32,6 @@ const EditComment = ({ post, comment, commentId, setIsEditing }) => {
     const commentsList = post?.comments?.list;
 
     commentsList[commentId] = updatedComment;
-    post.comments.list[commentId] = updatedComment;
 
     update("post", {
       id: post.id,

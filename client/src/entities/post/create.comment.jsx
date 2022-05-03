@@ -50,8 +50,6 @@ const CreateComment = ({ post }) => {
       style={{
         display: "flex",
         marginBottom: 30,
-        marginLeft: 45,
-        marginRight: 45,
       }}
     >
       <AccountCircleIcon color="action" sx={{ marginTop: 0.5, fontSize: 45 }} />

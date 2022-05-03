@@ -23,11 +23,11 @@ const CommentCard = ({ post, comment, commentId }) => {
 
   return (
     <div
-      style={{
-        margin: 10,
-        marginLeft: 30,
-        marginRight: 30,
-      }}
+    // style={{
+    //   margin: 10,
+    //   marginLeft: 30,
+    //   marginRight: 30,
+    // }}
     >
       {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
 
@@ -41,7 +41,7 @@ const CommentCard = ({ post, comment, commentId }) => {
           avatar={<AccountCircleIcon color="action" sx={{ fontSize: 45 }} />}
           action={
             comment.userId === loggedInUserId ? (
-              <CommentActionButton setIsEditing={setIsEditing} />
+              <CommentActionButton {...{ setIsEditing, post, commentId }} />
             ) : null
           }
           title={

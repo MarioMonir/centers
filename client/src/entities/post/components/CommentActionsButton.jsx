@@ -1,18 +1,25 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import * as React from "react";
+import React, { useState, useRef } from "react";
+import { useUpdate, Confirm } from "react-admin";
 
 // ------------------------------------------------
 
-const CommentActionButton = ({ setIsEditing }) => {
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+const CommentActionButton = ({ post, commentId, setIsEditing }) => {
+  const [update, { isLoading }] = useUpdate();
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
 
   // ------------------------------------------------
 
@@ -46,6 +53,33 @@ const CommentActionButton = ({ setIsEditing }) => {
     setIsEditing(true);
     handleClose(event);
   };
+
+  // ------------------------------------------------
+
+  const deleteClick = () => {
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleDialogClose = (event) => {
+    setConfirmDeleteOpen(false);
+    handleClose(event);
+  };
+
+  const handleConfirm = (event) => {
+    const commentsList = post?.comments?.list;
+
+    commentsList.splice(commentId, 1);
+
+    update("post", {
+      id: post.id,
+      data: {
+        comments: { list: commentsList },
+      },
+    });
+    setConfirmDeleteOpen(false);
+    handleClose(event);
+  };
+
   // ------------------------------------------------
 
   return (
@@ -84,7 +118,28 @@ const CommentActionButton = ({ setIsEditing }) => {
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
-                  <MenuItem onClick={editClick}>Edit</MenuItem>
+                  <MenuItem divider={true} onClick={editClick}>
+                    <ListItemIcon>
+                      <EditIcon sx={{ color: "#1976d2" }} fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText sx={{ color: "#1976d2" }}>Edit</ListItemText>
+                  </MenuItem>
+                  <MenuItem onClick={deleteClick}>
+                    <ListItemIcon>
+                      <DeleteIcon sx={{ color: "#d32f2f" }} fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText sx={{ color: "#d32f2f" }}>
+                      Delete
+                    </ListItemText>
+                    <Confirm
+                      isOpen={confirmDeleteOpen}
+                      loading={isLoading}
+                      title="Delete Comment"
+                      content="Are you sure you want to delete this comment?"
+                      onConfirm={handleConfirm}
+                      onClose={handleDialogClose}
+                    />
+                  </MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>
