@@ -21,7 +21,7 @@ const EditComment = ({ post, comment, commentId, setIsEditing }) => {
 
   // ------------------------------------------------
 
-  const submitEditComment = () => {
+  const submitEditedComment = () => {
     //post.comments[{"userId":123 ,"content":"comment content" ,"createdAt": date, "likes":{"userIds":[5,2,4,6]}}]
 
     const updatedComment = {
@@ -59,7 +59,7 @@ const EditComment = ({ post, comment, commentId, setIsEditing }) => {
         <Button
           disabled={content === comment.content || !content || isLoading}
           label="Save"
-          onClick={submitEditComment}
+          onClick={submitEditedComment}
           sx={{ paddingLeft: 3, paddingRight: 3 }}
         />
       </div>

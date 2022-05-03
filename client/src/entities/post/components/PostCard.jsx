@@ -7,9 +7,10 @@ import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
 import StepConnector from "@mui/material/StepConnector";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
+import React, { useState } from "react";
 import { FunctionField, ReferenceField } from "react-admin";
 import { dateHandling, numberHandling } from "../../../utils/dataHandling";
+import EditPost from "../edit.post";
 import PostActionButton from "./PostActionsButton";
 import PostComments from "./PostComments";
 import PostLikeButton from "./PostLikeButton";
@@ -20,7 +21,8 @@ const loggedInUserId = 1;
 // ------------------------------------------------
 
 const PostCard = (record) => {
-  const [expanded, setExpanded] = React.useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   // ------------------------------------------------
 
@@ -45,7 +47,7 @@ const PostCard = (record) => {
         avatar={<AccountCircleIcon color="action" sx={{ fontSize: 45 }} />}
         action={
           record?.userId === loggedInUserId ? (
-            <PostActionButton postId={record.id} />
+            <PostActionButton {...{postId:record.id ,setIsEditing}} />
           ) : null
         }
         title={
@@ -66,9 +68,13 @@ const PostCard = (record) => {
       {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
 
       <CardContent>
-        <Typography variant="body1" sx={{ whiteSpace: "pre" }}>
-          {record?.content}
-        </Typography>
+        {isEditing ? (
+          <EditPost {...{ post: record, setIsEditing }} />
+        ) : (
+          <Typography variant="body1" sx={{ whiteSpace: "pre" }}>
+            {record?.content}
+          </Typography>
+        )}
       </CardContent>
 
       {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}

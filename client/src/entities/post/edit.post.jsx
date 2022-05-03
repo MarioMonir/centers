@@ -1,21 +1,62 @@
-import { Edit, TextInput, SimpleForm, required } from "react-admin";
+import ClickAwayListener from "@mui/material/ClickAwayListener";
+import Input from "@mui/material/Input";
+import React, { useState } from "react";
+import { Button, useUpdate } from "react-admin";
 
 // ------------------------------------------------
 
-const EditPost = () => {
+const EditPost = ({ post, setIsEditing }) => {
+  const [content, setContent] = useState(post.content);
+  const [update, { isLoading }] = useUpdate();
+
+  // ------------------------------------------------
+
+  const handlePostChange = (e) => setContent(e?.target?.value);
+
+  // ------------------------------------------------
+
+  const clickAway = () => {
+    if (content === post.content) setIsEditing(false);
+  };
+
+  // ------------------------------------------------
+
+  const submitEditedPost = () => {
+    const updatedPost = {
+      ...post,
+      content: content,
+    };
+
+    update("post", {
+      id: post.id,
+      data: updatedPost,
+    });
+
+    setIsEditing(false);
+  };
+
+  // ------------------------------------------------
+
   return (
-    <Edit mutationMode="pessimistic">
-      <SimpleForm redirect="list">
-        <TextInput
-          source="content"
-          fullWidth
-          multiline
-          label=""
+    <ClickAwayListener onClickAway={clickAway}>
+      <div style={{ display: "flex" }}>
+        <Input
+          sx={{ padding: 1 }}
           placeholder="Write a post..."
-          validate={required()}
+          fullWidth
+          value={content}
+          onChange={handlePostChange}
+          multiline
+          autoFocus={true}
         />
-      </SimpleForm>
-    </Edit>
+        <Button
+          disabled={content === post.content || !content || isLoading}
+          label="Save"
+          onClick={submitEditedPost}
+          sx={{ paddingLeft: 3, paddingRight: 3 }}
+        />
+      </div>
+    </ClickAwayListener>
   );
 };
 

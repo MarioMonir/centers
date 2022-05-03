@@ -1,16 +1,30 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import * as React from "react";
-import { MenuItemLink } from "react-admin";
+import React, { useRef, useState } from "react";
+import { Confirm, MenuItemLink, useDelete, useRedirect } from "react-admin";
+import { useLocation } from "react-router-dom";
 
-const PostActionButton = ({ postId }) => {
-  const [open, setOpen] = React.useState(false);
-  const anchorRef = React.useRef(null);
+// ------------------------------------------------
+
+const PostActionButton = ({ postId, setIsEditing }) => {
+  const location = useLocation();
+  const redirect = useRedirect();
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
+  const [deleteOne, { isLoading }] = useDelete();
+
+  const [open, setOpen] = useState(false);
+  const anchorRef = useRef(null);
 
   // ------------------------------------------------
 
@@ -37,6 +51,31 @@ const PostActionButton = ({ postId }) => {
       setOpen(false);
     }
   }
+
+  // ------------------------------------------------
+
+  const editClick = (event) => {
+    setIsEditing(true);
+    handleClose(event);
+  };
+
+  // ------------------------------------------------
+
+  const deleteClick = () => {
+    setConfirmDeleteOpen(true);
+  };
+
+  const handleDeleteDialogClose = (event) => {
+    setConfirmDeleteOpen(false);
+    handleClose(event);
+  };
+
+  const handleDeleteConfirm = (event) => {
+    deleteOne("post", { id: postId });
+    setConfirmDeleteOpen(false);
+    handleClose(event);
+    redirect("/post");
+  };
 
   // ------------------------------------------------
 
@@ -76,11 +115,41 @@ const PostActionButton = ({ postId }) => {
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
-                  <MenuItemLink
-                    to={"/post/" + postId + "/show"}
-                    primaryText="Show"
-                  />
-                  <MenuItemLink to={"/post/" + postId} primaryText="Edit" />
+                  {location.pathname === "/post/" + postId + "/show" ? null : (
+                    <MenuItemLink
+                      sx={{ color: "#1976d2" }}
+                      to={"/post/" + postId + "/show"}
+                      primaryText="Show"
+                      leftIcon={
+                        <VisibilityIcon
+                          fontSize="small"
+                          sx={{ color: "#1976d2" }}
+                        />
+                      }
+                    />
+                  )}
+                  <MenuItem onClick={editClick}>
+                    <ListItemIcon>
+                      <EditIcon sx={{ color: "#1976d2" }} fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText sx={{ color: "#1976d2" }}>Edit</ListItemText>
+                  </MenuItem>
+                  <MenuItem onClick={deleteClick}>
+                    <ListItemIcon>
+                      <DeleteIcon sx={{ color: "#d32f2f" }} fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText sx={{ color: "#d32f2f" }}>
+                      Delete
+                    </ListItemText>
+                    <Confirm
+                      isOpen={confirmDeleteOpen}
+                      loading={isLoading}
+                      title="Delete Post"
+                      content="Are you sure you want to delete this post?"
+                      onConfirm={handleDeleteConfirm}
+                      onClose={handleDeleteDialogClose}
+                    />
+                  </MenuItem>
                 </MenuList>
               </ClickAwayListener>
             </Paper>

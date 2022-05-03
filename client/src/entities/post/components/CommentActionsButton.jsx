@@ -10,8 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuList from "@mui/material/MenuList";
 import Paper from "@mui/material/Paper";
 import Popper from "@mui/material/Popper";
-import React, { useState, useRef } from "react";
-import { useUpdate, Confirm } from "react-admin";
+import React, { useRef, useState } from "react";
+import { Confirm, useUpdate } from "react-admin";
 
 // ------------------------------------------------
 
@@ -60,12 +60,12 @@ const CommentActionButton = ({ post, commentId, setIsEditing }) => {
     setConfirmDeleteOpen(true);
   };
 
-  const handleDialogClose = (event) => {
+  const handleDeleteDialogClose = (event) => {
     setConfirmDeleteOpen(false);
     handleClose(event);
   };
 
-  const handleConfirm = (event) => {
+  const handleDeleteConfirm = (event) => {
     const commentsList = post?.comments?.list;
 
     commentsList.splice(commentId, 1);
@@ -118,7 +118,7 @@ const CommentActionButton = ({ post, commentId, setIsEditing }) => {
                   aria-labelledby="composition-button"
                   onKeyDown={handleListKeyDown}
                 >
-                  <MenuItem divider={true} onClick={editClick}>
+                  <MenuItem onClick={editClick}>
                     <ListItemIcon>
                       <EditIcon sx={{ color: "#1976d2" }} fontSize="small" />
                     </ListItemIcon>
@@ -136,8 +136,8 @@ const CommentActionButton = ({ post, commentId, setIsEditing }) => {
                       loading={isLoading}
                       title="Delete Comment"
                       content="Are you sure you want to delete this comment?"
-                      onConfirm={handleConfirm}
-                      onClose={handleDialogClose}
+                      onConfirm={handleDeleteConfirm}
+                      onClose={handleDeleteDialogClose}
                     />
                   </MenuItem>
                 </MenuList>
