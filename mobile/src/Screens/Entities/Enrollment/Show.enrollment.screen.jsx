@@ -5,7 +5,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useGetOneQuery } from "../../../API/api";
 import MyText from "../../../Components/MyText";
 import globalStyles from "../../../Theme/global.styles";
-import ActionButton from "../../../Components/ActionButton";
+import Fab from "../../../Components/Fab";
 
 // ====================================================================
 
@@ -29,7 +29,7 @@ export default function ShowEnrollmentScreen() {
           </View>
         ))}
       </ScrollView>
-      <ActionButton onPress={goToEditEntity} name="edit" />
+      <Fab onPress={goToEditEntity} name="edit" />
     </SafeAreaView>
   );
 }
