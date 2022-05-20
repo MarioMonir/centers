@@ -3,8 +3,10 @@ import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import errors from "./src/utils/error/errorHandler.middlerware";
-import swagger from "./src/utils/swaggerDocs/swagger.middleware";
+import errors from "./src/Utils/Error/errorHandler.middlerware";
+import swagger from "./src/Utils/SwaggerDocs/swagger.middleware";
+import authRouter from "./src/Utils/Auth/Passport/passport.router.auth";
+import passportAuthenticate from "./src/Utils/Auth/Passport/passport.auth";
 
 // ------------------------------------------------------
 
@@ -45,6 +47,8 @@ app.use(enrolmentController);
 app.use(requestController);
 app.use(postController);
 app.use(_exampleController);
+
+// ------------------------------------------------------
 
 // Swagger Documentaion Middleware
 app.use("/api-docs", swagger.server, swagger.setup); // Docs

@@ -36,11 +36,11 @@ import EditUserScreen from "../Screens/Entities/User/Edit.user.screen";
 // import CreateAttendanceScreen from "../Screens/Entities/Attendance/Create.attendance.screen";
 // import EditAttendanceScreen from "../Screens/Entities/Attendance/Edit.attendance.screen";
 
-// // Enrolment Screens
-// import ListEnrolmentScreen from "../Screens/Entities/Enrolment/List.enrolment.screen";
-// import ShowEnrolmentScreen from "../Screens/Entities/Enrolment/Show.enrolment.screen";
-// import CreateEnrolmentScreen from "../Screens/Entities/Enrolment/Create.enrolment.screen";
-// import EditEnrolmentScreen from "../Screens/Entities/Enrolment/Edit.enrolment.screen";
+// // Enrollment Screens
+// import ListEnrollmentScreen from "../Screens/Entities/Enrollment/List.enrollment.screen";
+// import ShowEnrollmentScreen from "../Screens/Entities/Enrollment/Show.enrollment.screen";
+// import CreateEnrollmentScreen from "../Screens/Entities/Enrollment/Create.enrollment.screen";
+// import EditEnrollmentScreen from "../Screens/Entities/Enrollment/Edit.enrollment.screen";
 
 // // Request Screens
 // import ListRequestScreen from "../Screens/Entities/Request/List.request.screen";
@@ -118,12 +118,12 @@ const entitiesScreens = [
   // },
 
   // {
-  //   name: "enrolment",
+  //   name: "enrollment",
   //   screens: [
-  //     { type: "List", component: ListEnrolmentScreen },
-  //     { type: "Show", component: ShowEnrolmentScreen },
-  //     { type: "Create", component: CreateEnrolmentScreen },
-  //     { type: "Edit", component: EditEnrolmentScreen },
+  //     { type: "List", component: ListEnrollmentScreen },
+  //     { type: "Show", component: ShowEnrollmentScreen },
+  //     { type: "Create", component: CreateEnrollmentScreen },
+  //     { type: "Edit", component: EditEnrollmentScreen },
   //   ],
   // },
 

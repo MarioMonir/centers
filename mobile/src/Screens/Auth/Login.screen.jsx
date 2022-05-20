@@ -50,6 +50,10 @@ export default function Login() {
         errors={errors}
       />
       <Button onPress={() => {}} />
+<<<<<<< HEAD
     </SafeAreaView>
+=======
+    </SafeAreaView> 
+>>>>>>> c52a0f24eab7719730402293952eb1ab4917380c
   );
 }

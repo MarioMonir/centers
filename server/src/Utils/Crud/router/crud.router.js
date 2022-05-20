@@ -20,6 +20,8 @@ const crud = (path, orm, customRoutes = []) => {
   const router = Router();
   router.use(bodyParser.json());
 
+  path = "/api/" + path;
+  
   // ------------------------------------
 
   //  /resource
