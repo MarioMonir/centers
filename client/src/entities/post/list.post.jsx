@@ -8,15 +8,16 @@ import CreatePost from "./create.post";
 
 // ------------------------------------------------
 
-const ListPost = () => {
+const ListPost = ({ groupId }) => {
   const [perPage, setPerPage] = useState(10);
   const [posts, setPosts] = useState([]);
 
   // ------------------------------------------------
 
-  const { data, isLoading, refetch } = useGetList("post", {
+  const { data, isLoading, refetch, total } = useGetList("post", {
     pagination: { page: 1, perPage: perPage },
     sort: { field: "createdAt", order: "DESC" },
+    filter: { groupId }, //filter with followers and enrolments in home.
   });
 
   // ------------------------------------------------
@@ -29,15 +30,13 @@ const ListPost = () => {
 
   // ------------------------------------------------
 
-  const preAppendNewPost = (post) => setPosts([post, ...posts]);
-
   const handleClick = () => setPerPage(perPage + 5);
 
   // ------------------------------------------------
 
   return (
     <Box gap={2} display="grid" sx={{ maxWidth: 800 }}>
-      <CreatePost refetch={refetch} />
+      <CreatePost {...{ refetch, groupId }} />
 
       {posts?.map((record, index) => (
         <PostCard key={record?.id} {...record} />
@@ -47,7 +46,7 @@ const ListPost = () => {
         disabled={isLoading}
         label="See More"
         onClick={handleClick}
-        sx={{ padding: 3 }}
+        sx={{ padding: 3, display: perPage > total ? "none" : "" }}
       >
         <ExpandMoreIcon />
         See More

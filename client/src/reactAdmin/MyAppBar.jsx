@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import * as React from "react";
 import { AppBar, Logout, UserMenu } from "react-admin";
-import NotificationBell from "./NotificationBell";
+import NotificationBell from "../entities/request/components/NotificationBell";
 import SwitchLanguage from "./SwitchLanguage";
 import ThemeToggler from "./ThemeToggler";
 

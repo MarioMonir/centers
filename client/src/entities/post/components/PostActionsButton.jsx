@@ -54,6 +54,13 @@ const PostActionButton = ({ postId, setIsEditing }) => {
 
   // ------------------------------------------------
 
+  const showClick = (event) => {
+    redirect("/post/" + postId + "/show");
+    handleClose(event);
+  };
+
+  // ------------------------------------------------
+
   const editClick = (event) => {
     setIsEditing(true);
     handleClose(event);
@@ -74,7 +81,7 @@ const PostActionButton = ({ postId, setIsEditing }) => {
     deleteOne("post", { id: postId });
     setConfirmDeleteOpen(false);
     handleClose(event);
-    redirect("/post");
+    if (location.pathname === "/post/" + postId + "/show") redirect("/post");
   };
 
   // ------------------------------------------------
@@ -98,6 +105,7 @@ const PostActionButton = ({ postId, setIsEditing }) => {
         placement="bottom-start"
         transition
         disablePortal
+        sx={{zIndex:2}}
       >
         {({ TransitionProps, placement }) => (
           <Grow
@@ -116,17 +124,28 @@ const PostActionButton = ({ postId, setIsEditing }) => {
                   onKeyDown={handleListKeyDown}
                 >
                   {location.pathname === "/post/" + postId + "/show" ? null : (
-                    <MenuItemLink
-                      sx={{ color: "#1976d2" }}
-                      to={"/post/" + postId + "/show"}
-                      primaryText="Show"
-                      leftIcon={
+                    <MenuItem onClick={showClick}>
+                      <ListItemIcon>
                         <VisibilityIcon
                           fontSize="small"
                           sx={{ color: "#1976d2" }}
                         />
-                      }
-                    />
+                      </ListItemIcon>
+                      <ListItemText sx={{ color: "#1976d2" }}>
+                        Show
+                      </ListItemText>
+                    </MenuItem>
+                    // <MenuItemLink
+                    //   sx={{ color: "#1976d2" }}
+                    //   to={"/post/" + postId + "/show"}
+                    //   primaryText="Show"
+                    //   leftIcon={
+                    //     <VisibilityIcon
+                    //       fontSize="small"
+                    //       sx={{ color: "#1976d2" }}
+                    //     />
+                    //   }
+                    // />
                   )}
                   <MenuItem onClick={editClick}>
                     <ListItemIcon>

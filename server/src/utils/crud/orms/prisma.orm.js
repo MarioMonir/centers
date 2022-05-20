@@ -20,7 +20,9 @@ const prismaCrud = (model) => ({
   // --------------------------------------------
 
   getList: async ({ filter, limit, offset, order }) => {
-    const count = prisma[model].count();
+    const count = prisma[model].count({
+      where: filter,
+    });
     const rows = prisma[model].findMany({
       where: filter,
       skip: offset,

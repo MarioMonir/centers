@@ -1,5 +1,5 @@
 /**
- * Enrollment Controller
+ * Enrolment Controller
  * -------------------------------------------------------
  *
  * you can recap the architecture of entity controller and how
@@ -16,7 +16,7 @@
  *
  * components:
  *   schemas:
- *     enrollment:
+ *     enrolment:
  *       type: object
  *       properties:
  *         lectureCost:
@@ -25,36 +25,36 @@
  *           type: string
  *
  * tags:
- *   name: enrollment
+ *   name: enrolment
  *
- * /enrollment:
+ * /enrolment:
  *   get:
- *    summary: Get all enrollments
- *    tags: [enrollment]
+ *    summary: Get all enrolments
+ *    tags: [enrolment]
  *    responses:
  *      200:
  *       schema:
- *         $ref: '#/components/schemas/enrollment'
+ *         $ref: '#/components/schemas/enrolment'
  *
  *   post:
- *     summary: Create enrollment
- *     tags: [enrollment]
+ *     summary: Create enrolment
+ *     tags: [enrolment]
  *     requestBody:
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/enrollment'
+ *             $ref: '#/components/schemas/enrolment'
  *     responses:
  *       201:
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/enrollment'
+ *               $ref: '#/components/schemas/enrolment'
  *
- * /enrollment/{id}:
+ * /enrolment/{id}:
  *   get:
- *     summary: Get enrollment by id
- *     tags: [enrollment]
+ *     summary: Get enrolment by id
+ *     tags: [enrolment]
  *     parameters:
  *       - in: path
  *         name: id
@@ -63,11 +63,11 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/enrollment'
+ *               $ref: '#/components/schemas/enrolment'
  *
  *   put:
- *     summary: Edit enrollment
- *     tags: [enrollment]
+ *     summary: Edit enrolment
+ *     tags: [enrolment]
  *     parameters:
  *       - in: path
  *         name: id
@@ -76,16 +76,16 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/enrollment'
+ *               $ref: '#/components/schemas/enrolment'
  *     requestBody:
  *       content:
  *           application/json:
  *             schema:
- *              $ref: '#/components/schemas/enrollment'
+ *              $ref: '#/components/schemas/enrolment'
  *
  *   delete:
- *     summary: Delete enrollment
- *     tags: [enrollment]
+ *     summary: Delete enrolment
+ *     tags: [enrolment]
  *     parameters:
  *       - in: path
  *         name: id
@@ -94,7 +94,7 @@
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/enrollment'
+ *               $ref: '#/components/schemas/enrolment'
  *
  *
  */
@@ -105,4 +105,4 @@ import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
 
 // ------------------------------------------------------------------
 
-export default crud("/enrollment", prismaCrud("enrollment"));
+export default crud("/enrolment", prismaCrud("enrolment"));

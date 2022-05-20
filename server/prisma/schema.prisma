@@ -39,7 +39,7 @@ model User {
   posts           Post[]
 
   attendances Attendance[]
-  enrollments Enrollment[]
+  enrolments  Enrolment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -64,7 +64,12 @@ model UserRelation {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Group {
-  id        Int  @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
+  name      String
+  level     String
+  location  String?
+  groupType GroupType
+
   owner     User @relation("owner", fields: [ownerUserId], references: [id])
   teacher   User @relation("teacher", fields: [teacherId], references: [id])
   collector User @relation("collector", fields: [collectorUserId], references: [id])
@@ -78,15 +83,16 @@ model Group {
   public    Boolean @default(true)
 
   lectures Json?
-  dates    Json?
+  dates    Json? //{"list":[{"day":"", "from":"", "to":"", date:""(for non-weekly lectures)}]}
   exams    Json?
 
   attendance Attendance[]
-  enrollment Enrollment[]
+  enrolment  Enrolment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
+  Post Post[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -107,20 +113,22 @@ model Flow {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Attendance {
-  id        Int      @id @default(autoincrement())
-  group     Group    @relation(fields: [groupId], references: [id])
-  student   User     @relation(fields: [studentId], references: [id])
-  groupId   Int
-  studentId Int
-  homework  Boolean  @default(false)
-  notes     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
+  id            Int      @id @default(autoincrement())
+  group         Group    @relation(fields: [groupId], references: [id])
+  student       User     @relation(fields: [studentId], references: [id])
+  groupId       Int
+  studentId     Int
+  homework      Boolean  @default(false)
+  notes         String?
+  lectureNumber Int
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-model Enrollment {
+model Enrolment {
+  id          Int      @id @default(autoincrement())
   group       Group    @relation(fields: [groupId], references: [id])
   student     User     @relation(fields: [studentId], references: [id])
   groupId     Int
@@ -132,7 +140,7 @@ model Enrollment {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now()) @updatedAt
 
-  @@id([groupId, studentId])
+  @@unique([groupId, studentId])
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -156,21 +164,33 @@ model Request {
 
 model Post {
   id       Int    @id @default(autoincrement())
-  content  String
-  likes    Json?
-  comments Json?
-  user     User   @relation(fields: [userId], references: [id])
-  userId   Int
+  content  String //what is the max length ?!
+  likes    Json?  @default("{\"userIds\":[]}")
+  //comments.list [{"userId":123 ,"content":"comment content" ,"createdAt": date, "likes":{"userIds":[5,2,4,6]}}]
+  comments Json?  @default("{\"list\":[]}")
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  group   Group? @relation(fields: [groupId], references: [id])
+  groupId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 enum UserType {
-  Admin
-  Center
-  Teacher
+  Developer
+
   Student
-  Employee
+
+  Teacher
+  TeacherAssistant
+
+  Center
+  CenterEmployee
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -213,3 +233,13 @@ enum RequestStatus {
   Pending
   Refused
 }
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum GroupType {
+  InPerson
+  Online
+  Hybrid
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

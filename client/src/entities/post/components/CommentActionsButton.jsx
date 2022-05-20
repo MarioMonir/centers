@@ -101,6 +101,7 @@ const CommentActionButton = ({ post, commentId, setIsEditing }) => {
         placement="bottom-start"
         transition
         disablePortal
+        sx={{zIndex:2}}
       >
         {({ TransitionProps, placement }) => (
           <Grow

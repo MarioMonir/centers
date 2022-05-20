@@ -1,17 +1,18 @@
-import { Create, NumberInput, SimpleForm, TextInput } from "react-admin";
+import { Edit, NumberInput, SimpleForm, TextInput } from "react-admin";
 
 // ------------------------------------------------
 
-export default function CreateEnrollment(props) {
+export default function EditEnrolment(props) {
   return (
-    <Create {...props}>
+    <Edit {...props}>
       <SimpleForm variant="outlined" redirect="list">
         <NumberInput source="groupId" />
+
         <NumberInput source="studentId" />
         <TextInput source="lectureCost" />
         <TextInput source="centerCost" />
         <NumberInput source="balance" />
       </SimpleForm>
-    </Create>
+    </Edit>
   );
 }

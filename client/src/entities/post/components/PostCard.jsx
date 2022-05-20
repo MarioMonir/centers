@@ -14,6 +14,7 @@ import EditPost from "../edit.post";
 import PostActionButton from "./PostActionsButton";
 import PostComments from "./PostComments";
 import PostLikeButton from "./PostLikeButton";
+
 // ------------------------------------------------
 
 const loggedInUserId = 1;
@@ -35,7 +36,7 @@ const PostCard = (record) => {
   return (
     <Card
       sx={{
-        maxWidth: 800,
+        width: 800,
         paddingLeft: 1.5,
         paddingRight: 1.5,
         //margin: 2,
@@ -47,7 +48,7 @@ const PostCard = (record) => {
         avatar={<AccountCircleIcon color="action" sx={{ fontSize: 45 }} />}
         action={
           record?.userId === loggedInUserId ? (
-            <PostActionButton {...{postId:record.id ,setIsEditing}} />
+            <PostActionButton {...{ postId: record.id, setIsEditing }} />
           ) : null
         }
         title={

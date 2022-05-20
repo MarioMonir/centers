@@ -1,12 +1,13 @@
 import React from "react";
-import { SafeAreaView, FlatList } from "react-native";
+import { SafeAreaView, FlatList, StyleSheet } from "react-native";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useGetListQuery } from "../../../API/api";
 import Card from "../../../Components/Card";
 import globalStyles from "../../../Theme/global.styles";
 import LoadingOrErrorScreeen from "../../../Components/LoadingOrError.screen";
-import ActionButton from "../../../Components/ActionButton";
-
+import { DataTable } from "react-native-paper";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Fab from "../../../Components/Fab";
 // ====================================================================
 
 export default function ListUserScreen() {
@@ -34,6 +35,8 @@ export default function ListUserScreen() {
 
   // --------------------------------------
 
+  console.log({ data });
+
   return (
     <SafeAreaView style={globalStyles.screen}>
       <FlatList
@@ -41,7 +44,11 @@ export default function ListUserScreen() {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
-      <ActionButton onPress={goToCreateEntity} />
+      <Fab onPress={goToCreateEntity} />
     </SafeAreaView>
   );
 }
+
+// --------------------------------------
+
+const styles = StyleSheet.create({});

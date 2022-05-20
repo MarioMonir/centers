@@ -5,7 +5,7 @@ const arabicMessages = {
     Group: "المجموعات",
     Flow: "سجل الحسابات",
     Attendance: "سجل الحضور",
-    Enrollment: "تسجيلات المادة",
+    Enrolment: "تسجيلات المادة",
     Request: "الطلبات المقدمة",
     Post: "المنشورات",
   },
@@ -86,7 +86,7 @@ const arabicMessages = {
         updatedAt: "تاريخ التعديل",
       },
     },
-    enrollment: {
+    enrolment: {
       name: "تسجلات مواد |||| تسجيل مادة",
       fields: {
         groupId: "كود المجموعة",

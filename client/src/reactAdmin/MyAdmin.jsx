@@ -1,11 +1,9 @@
-import { Admin, Resource } from "react-admin";
 import simpleRestProvider from "ra-data-simple-rest";
-import entities from "../entities/entities";
+import { Admin, Resource } from "react-admin";
 import config from "../configs/config";
+import entities from "../entities/entities";
+import i18nProvider from "../utils/translation/i18nProvider";
 import MyLayout from "./MyLayout";
-import polyglotI18nProvider from "ra-i18n-polyglot";
-import arabicMessages from "./ar";
-import i18nProvider from "../translation/i18nProvider";
 
 // ------------------------------------------------
 

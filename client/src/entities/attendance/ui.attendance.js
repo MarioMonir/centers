@@ -6,7 +6,7 @@ import list from "./list.attendance";
 export default {
   name: "attendance",
   label: "Attendance",
-  hide: false,
+  hide: true,
   create,
   edit,
   list,

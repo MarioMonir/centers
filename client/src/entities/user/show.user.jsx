@@ -1,18 +1,60 @@
-import { NumberField, Show, SimpleShowLayout, TextField } from "react-admin";
+import {
+  Loading,
+  NotFound,
+  NumberField,
+  RecordContextProvider,
+  Show,
+  SimpleShowLayout,
+  TextField,
+  useGetOne,
+  Title,
+  useGetMany,
+} from "react-admin";
+import Typography from "@mui/material/Typography";
+import Card from "@mui/material/Card";
 
 // ------------------------------------------------
 
-export default function ShowUser(props) {
-  return (
-    <Show {...props}>
-      <SimpleShowLayout>
-        <NumberField source="id" />
-        <TextField source="name" />
+export default function ShowUser({ id }) {
+  const { data, isLoading, error } = useGetOne(
+    "user",
+    { id },
+    { enabled: id ? true : false }
+  );
 
-        <TextField source="email" />
-        <TextField source="password" />
-        <TextField source="permission" />
-      </SimpleShowLayout>
-    </Show>
+  if (error) console.error({ error });
+
+  if (isLoading) return <Loading />;
+
+  if (!data || error) return null;
+
+  return (
+    <RecordContextProvider value={data}>
+      {/* <Show hasEdit={false}> */}
+      <div>
+       
+        <Card>
+          <SimpleShowLayout>
+            <NumberField source="id" />
+            <TextField source="name" />
+
+            <TextField source="email" />
+            <TextField source="password" />
+            <TextField source="permission" />
+          </SimpleShowLayout>
+        </Card>
+      </div>
+      {/* <SimpleShowLayout>
+            <Typography variant="h5">Student Info</Typography>
+
+            <NumberField source="id" />
+            <TextField source="name" />
+
+            <TextField source="email" />
+            <TextField source="password" />
+            <TextField source="permission" />
+          </SimpleShowLayout> */}
+      {/* </Show> */}
+    </RecordContextProvider>
   );
 }

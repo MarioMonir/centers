@@ -6,7 +6,7 @@ import list from "./list.request";
 export default {
   name: "request",
   label: "Request",
-  hide: false,
+  hide: true,
   create,
   edit,
   list,

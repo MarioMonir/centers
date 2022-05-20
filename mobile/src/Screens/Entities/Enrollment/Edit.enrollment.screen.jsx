@@ -87,7 +87,7 @@ const Footer = () => {
 
 // =======================================================
 
-export default function EditEnrollmentScreen() {
+export default function EditEnrolmentScreen() {
   const { navigate } = useNavigation();
   const { params } = useRoute();
   const { id, entity, data } = params;

@@ -2,7 +2,7 @@ import { NumberField, Show, SimpleShowLayout, TextField } from "react-admin";
 
 // ------------------------------------------------
 
-export default function ShowEnrollment(props) {
+export default function ShowEnrolment(props) {
   return (
     <Show {...props}>
       <SimpleShowLayout>

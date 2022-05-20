@@ -1,18 +1,28 @@
-import { Create, NumberInput, SimpleForm, TextInput } from "react-admin";
+import {
+  BooleanInput,
+  Create,
+  NumberInput,
+  SimpleForm,
+  TextInput,
+  ResourceContextProvider,
+} from "react-admin";
 
 // ------------------------------------------------
 
-export default function CreateAttendance(props) {
+export default function CreateAttendance({ groupId }) {
   return (
-    <Create {...props}>
-      <SimpleForm variant="outlined" redirect="list">
-        <NumberInput source="id" />
-
-        <NumberInput source="groupId" />
-
-        <NumberInput source="studentId" />
-        <TextInput source="notes" />
-      </SimpleForm>
-    </Create>
+    <ResourceContextProvider value="attendance">
+      <Create transform={(data) => ({ ...data, groupId })}>
+        <SimpleForm redirect="list">
+          <NumberInput
+            source="studentId"
+            label="Student Code"
+            variant="outlined"
+          />
+          <BooleanInput source="homework" />
+          <TextInput source="notes" variant="outlined" />
+        </SimpleForm>
+      </Create>
+    </ResourceContextProvider>
   );
 }

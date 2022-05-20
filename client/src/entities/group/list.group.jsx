@@ -1,37 +1,57 @@
+import { Grid } from "@mui/material";
 import {
-  BooleanField,
-  Datagrid,
-  DeleteButton,
-  EditButton,
-  List,
-  NumberField,
-  ShowButton,
+  CreateButton,
+  ExportButton,
+  FilterButton,
+  FilterForm,
+  ListContextProvider,
+  // ListToolbar,
+  Pagination,
+  SortButton,
+  TextInput,
+  TopToolbar,
+  useListController,
 } from "react-admin";
-import Actions from "../../reactAdmin/Actions";
+import GroupCard from "./components/GroupCard";
+import { Stack } from "@mui/material";
+
+// ------------------------------------------------
+const postFilters = [
+  <TextInput label="Search" source="q" size="small" alwaysOn />,
+  <TextInput source="name" size="small" />,
+  <TextInput source="level" size="small" />,
+];
+
+const ListToolbar = () => (
+  <Stack direction="row" justifyContent="space-between">
+    <FilterForm filters={postFilters} />
+    <div style={{ paddingTop: 20 }}>
+      <FilterButton filters={postFilters} />
+      <SortButton fields={["id", "name", "level", "createdAt"]} />
+      <CreateButton />
+      <ExportButton />
+    </div>
+  </Stack>
+);
+
+const ListGroup = (props) => {
+  const listContext = useListController();
+  return (
+    <ListContextProvider value={listContext}>
+      <ListToolbar />
+
+      <Grid container spacing={3}>
+        {listContext?.data?.map((record) => (
+          <Grid key={record?.id} item>
+            <GroupCard {...record} />
+          </Grid>
+        ))}
+      </Grid>
+      <Pagination />
+    </ListContextProvider>
+  );
+};
 
 // ------------------------------------------------
 
-export default function ListGroup(props) {
-  return (
-    <List {...props}>
-      <Datagrid>
-        <NumberField source="id" />
-
-        <NumberField source="ownerUserId" />
-
-        <NumberField source="teacherId" />
-
-        <NumberField source="collectorUserId" />
-
-        <NumberField source="ownerFees" />
-        <BooleanField source="public" />
-
-        <Actions>
-          <ShowButton />
-          <EditButton />
-          <DeleteButton />
-        </Actions>
-      </Datagrid>
-    </List>
-  );
-}
+export default ListGroup;

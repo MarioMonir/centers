@@ -5,6 +5,8 @@ import globalStyles from "../../Theme/global.styles";
 import MyButton from "../../Components/MyButton";
 import MyText from "../../Components/MyText";
 
+// ------------------------------------------------------
+
 export default function HomeScreen() {
   const { navigate } = useNavigation();
   const entities = [
@@ -13,17 +15,16 @@ export default function HomeScreen() {
     "Group",
     "Flow",
     "Attendance",
-    "Enrollment",
+    "Enrolment",
     "Request",
   ];
+
+  // ------------------------------
 
   return (
     <SafeAreaView style={globalStyles.screen}>
       {entities?.map((entity, idx) => (
-        <MyButton
-          key={idx}
-          onPress={() => navigate("List" + entity + "Screen")}
-        >
+        <MyButton key={idx} onPress={() => navigate(entity + "s")}>
           <MyText text={entity} />
         </MyButton>
       ))}

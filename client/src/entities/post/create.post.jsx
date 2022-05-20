@@ -1,9 +1,9 @@
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import ErrorIcon from "@mui/icons-material/Error";
 import Card from "@mui/material/Card";
 import Input from "@mui/material/Input";
 import React, { useEffect, useState } from "react";
 import { Button, useCreate } from "react-admin";
+import { useParams } from "react-router-dom";
 
 // ------------------------------------------------
 
@@ -11,7 +11,7 @@ const loggedInUserId = 1;
 
 // ------------------------------------------------
 
-const CreatePost = ({ refetch }) => {
+const CreatePost = ({ refetch, groupId }) => {
   const [content, setContent] = useState("");
   const [create, { data: createdPost, isLoading, error }] = useCreate();
 
@@ -23,7 +23,7 @@ const CreatePost = ({ refetch }) => {
 
   const submitCreatePost = () => {
     setContent("");
-    create("post", { data: { userId: loggedInUserId, content } });
+    create("post", { data: { userId: loggedInUserId, groupId, content } });
   };
 
   // ------------------------------------------------
@@ -33,7 +33,7 @@ const CreatePost = ({ refetch }) => {
   }, [createdPost]);
 
   // ------------------------------------------------
-
+  const params = useParams();
   return (
     <Card sx={{ padding: 1.5 }}>
       <div style={{ display: "flex" }}>
@@ -43,7 +43,9 @@ const CreatePost = ({ refetch }) => {
         />
         <Input
           sx={{ margin: 1 }}
-          placeholder="Write a post..."
+          placeholder={
+            groupId ? "Share with your group..." : "Share with your followers..."
+          }
           fullWidth
           value={content}
           onChange={handlePostChange}

@@ -2,10 +2,10 @@
 CREATE TABLE `User` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
-    `userType` ENUM('Admin', 'Center', 'Teacher', 'Student', 'Employee') NOT NULL DEFAULT 'Student',
+    `userType` ENUM('Developer', 'Student', 'Teacher', 'TeacherAssistant', 'Center', 'CenterEmployee') NOT NULL DEFAULT 'Student',
     `email` VARCHAR(191) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `permission` VARCHAR(191) NULL,
+    `permission` JSON NULL,
     `info` JSON NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -28,6 +28,10 @@ CREATE TABLE `UserRelation` (
 -- CreateTable
 CREATE TABLE `Group` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `level` VARCHAR(191) NOT NULL,
+    `location` VARCHAR(191) NULL,
+    `groupType` ENUM('InPerson', 'Online', 'Hybrid') NOT NULL,
     `ownerUserId` INTEGER NOT NULL,
     `collectorUserId` INTEGER NOT NULL,
     `teacherId` INTEGER NOT NULL,
@@ -70,7 +74,8 @@ CREATE TABLE `Attendance` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Enrollment` (
+CREATE TABLE `Enrolment` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `groupId` INTEGER NOT NULL,
     `studentId` INTEGER NOT NULL,
     `lectureCost` VARCHAR(191) NULL,
@@ -80,7 +85,8 @@ CREATE TABLE `Enrollment` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    PRIMARY KEY (`groupId`, `studentId`)
+    UNIQUE INDEX `Enrolment_groupId_studentId_key`(`groupId`, `studentId`),
+    PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
@@ -105,6 +111,9 @@ CREATE TABLE `Post` (
     `likes` JSON NULL,
     `comments` JSON NULL,
     `userId` INTEGER NOT NULL,
+    `groupId` INTEGER NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -137,10 +146,10 @@ ALTER TABLE `Attendance` ADD CONSTRAINT `Attendance_studentId_fkey` FOREIGN KEY 
 ALTER TABLE `Attendance` ADD CONSTRAINT `Attendance_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Enrollment` ADD CONSTRAINT `Enrollment_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Enrolment` ADD CONSTRAINT `Enrolment_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Enrollment` ADD CONSTRAINT `Enrollment_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Enrolment` ADD CONSTRAINT `Enrolment_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Request` ADD CONSTRAINT `Request_fromUserId_fkey` FOREIGN KEY (`fromUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -150,3 +159,6 @@ ALTER TABLE `Request` ADD CONSTRAINT `Request_toUserId_fkey` FOREIGN KEY (`toUse
 
 -- AddForeignKey
 ALTER TABLE `Post` ADD CONSTRAINT `Post_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Post` ADD CONSTRAINT `Post_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

@@ -11,7 +11,7 @@ const allEnglishMessages = {
     Group: "Groups",
     Flow: "Cash Flow",
     Attendance: "Attendance",
-    Enrollment: "Enrolments",
+    Enrolment: "Enrolments",
     Request: "Requests",
     Post: "Posts",
   },
@@ -92,7 +92,7 @@ const allEnglishMessages = {
         updatedAt: "تاريخ التعديل",
       },
     },
-    enrollment: {
+    enrolment: {
       name: "تسجلات مواد |||| تسجيل مادة",
       fields: {
         groupId: "كود المجموعة",

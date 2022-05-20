@@ -86,7 +86,7 @@ const Footer = () => {
 
 // =======================================================
 
-export default function CreateEnrollmentScreen() {
+export default function CreateEnrolmentScreen() {
   return (
     <SafeAreaView style={globalStyles.screen}>
       <Wizard startIndex={0} header={<Header />} footer={<Footer />}>

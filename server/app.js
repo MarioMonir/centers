@@ -14,7 +14,7 @@ import userRelationController from "./src/entities/userRelation/userRelation.con
 import groupController from "./src/entities/group/group.controller.js";
 import flowController from "./src/entities/flow/flow.controller.js";
 import attendanceController from "./src/entities/attendance/attendance.controller.js";
-import enrollmentController from "./src/entities/enrollment/enrollment.controller.js";
+import enrolmentController from "./src/entities/enrolment/enrolment.controller.js";
 import requestController from "./src/entities/request/request.controller.js";
 import postController from "./src/entities/post/post.controller.js";
 import _exampleController from "./src/entities/_example/_example.controller.js";
@@ -41,7 +41,7 @@ app.use(userRelationController);
 app.use(groupController);
 app.use(flowController);
 app.use(attendanceController);
-app.use(enrollmentController);
+app.use(enrolmentController);
 app.use(requestController);
 app.use(postController);
 app.use(_exampleController);
