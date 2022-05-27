@@ -28,19 +28,20 @@ CREATE TABLE `UserRelation` (
 -- CreateTable
 CREATE TABLE `Group` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(191) NOT NULL,
+    `courseName` VARCHAR(191) NOT NULL,
     `level` VARCHAR(191) NOT NULL,
-    `location` VARCHAR(191) NULL,
     `groupType` ENUM('InPerson', 'Online', 'Hybrid') NOT NULL,
-    `ownerUserId` INTEGER NOT NULL,
-    `collectorUserId` INTEGER NOT NULL,
-    `teacherId` INTEGER NOT NULL,
     `paymentType` ENUM('Lecture', 'Month', 'Installment') NOT NULL DEFAULT 'Lecture',
-    `ownerFees` DOUBLE NOT NULL DEFAULT 0,
+    `paymentCost` DOUBLE NOT NULL DEFAULT 0,
     `public` BOOLEAN NOT NULL DEFAULT true,
+    `ownerUserId` INTEGER NOT NULL,
+    `teacherUserId` INTEGER NOT NULL,
     `lectures` JSON NULL,
     `dates` JSON NULL,
     `exams` JSON NULL,
+    `location` VARCHAR(191) NULL,
+    `centerCollectsFees` BOOLEAN NOT NULL DEFAULT false,
+    `centerCostPerLecture` DOUBLE NOT NULL DEFAULT 0,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -67,6 +68,7 @@ CREATE TABLE `Attendance` (
     `studentId` INTEGER NOT NULL,
     `homework` BOOLEAN NOT NULL DEFAULT false,
     `notes` VARCHAR(191) NULL,
+    `lectureNumber` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -128,10 +130,7 @@ ALTER TABLE `UserRelation` ADD CONSTRAINT `UserRelation_followingId_fkey` FOREIG
 ALTER TABLE `Group` ADD CONSTRAINT `Group_ownerUserId_fkey` FOREIGN KEY (`ownerUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Group` ADD CONSTRAINT `Group_teacherId_fkey` FOREIGN KEY (`teacherId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE `Group` ADD CONSTRAINT `Group_collectorUserId_fkey` FOREIGN KEY (`collectorUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Group` ADD CONSTRAINT `Group_teacherUserId_fkey` FOREIGN KEY (`teacherUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Flow` ADD CONSTRAINT `Flow_fromUserId_fkey` FOREIGN KEY (`fromUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

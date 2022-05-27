@@ -20,6 +20,7 @@ import ListEnrolment from "../enrolment/list.enrolment";
 import ListFlow from "../flow/list.flow";
 import ListPost from "../post/list.post";
 import ShowUser from "../user/show.user";
+import GroupCard from "./components/GroupCard";
 
 // ====================================================================
 
@@ -56,9 +57,9 @@ export default function ShowGroup() {
   // ------------------------------------------------
 
   return (
-    <Show title={record.name}>
+    <Show /*title={record.courseName}*/ hasEdit={false}>
       <div style={{ display: "flex" }}>
-        <div style={{ width: "80%" }}>
+        <div style={{ width: "100%" }}>
           <TabbedShowLayout>
             <Tab label="Timeline" icon={<TimelineIcon />}>
               <ListPost groupId={parseInt(id)} />

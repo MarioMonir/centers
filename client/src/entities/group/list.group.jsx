@@ -18,7 +18,7 @@ import { Stack } from "@mui/material";
 // ------------------------------------------------
 const postFilters = [
   <TextInput label="Search" source="q" size="small" alwaysOn />,
-  <TextInput source="name" size="small" />,
+  <TextInput source="courseName" size="small" />,
   <TextInput source="level" size="small" />,
 ];
 
@@ -27,7 +27,7 @@ const ListToolbar = () => (
     <FilterForm filters={postFilters} />
     <div style={{ paddingTop: 20 }}>
       <FilterButton filters={postFilters} />
-      <SortButton fields={["id", "name", "level", "createdAt"]} />
+      <SortButton fields={["id", "courseName", "level", "createdAt"]} />
       <CreateButton />
       <ExportButton />
     </div>

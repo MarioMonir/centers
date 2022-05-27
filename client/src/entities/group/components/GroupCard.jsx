@@ -4,7 +4,7 @@ import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
 import Typography from "@mui/material/Typography";
 import React from "react";
-import { ReferenceField, TextField, useTheme } from "react-admin";
+import { ReferenceField, TextField, useTheme, useTranslate } from "react-admin";
 
 // ------------------------------------------------
 
@@ -13,6 +13,7 @@ const loggedInUserId = 1;
 // ------------------------------------------------
 
 const GroupCard = (record) => {
+  const translate = useTranslate();
   const [theme] = useTheme();
   return (
     <Card sx={{ width: 345, minHeight: 300 }}>
@@ -27,30 +28,35 @@ const GroupCard = (record) => {
               <PostActionButton {...{ postId: record.id, setIsEditing }} />
             ) : null
           }
-          title={record.name + " - " + record.level}
-          subheader={`Group # ${record.id}`}
+          title={record.courseName + " - " + record.level}
+          subheader={`# ${record.id}`}
         />
 
         <CardContent>
-          <Typography color="text.secondary">Teacher</Typography>
+          <Typography color="text.secondary">
+            {translate("resources.group.labels.teacher")}
+          </Typography>
           <ReferenceField
             record={record}
             reference="user"
-            source="teacherId"
+            source="teacherUserId"
             link={false} //"show"
           >
             <TextField source="name" />
           </ReferenceField>
 
           <Typography color="text.secondary" sx={{ paddingTop: 1 }}>
-            Via
+            {translate("resources.group.fields.groupType")}
           </Typography>
-          <Typography variant="body2">{record.groupType}</Typography>
+          <Typography variant="body2">
+            {translate("resources.group.groupType." + record.groupType)}
+          </Typography>
           <Typography color="text.secondary" sx={{ paddingTop: 1 }}>
-            Weekly Dates
+            {translate("resources.group.labels.weeklyDates")}
           </Typography>
-          {record?.dates?.list?.map((date, index) => (
+          {record?.dates?.map((date, index) => (
             <Typography key={index} variant="body2">
+              {/* {translate("weekDays." + date.day)} {date.from} - {date.to} */}
               {date.day} {date.from} - {date.to}
             </Typography>
           ))}

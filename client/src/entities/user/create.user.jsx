@@ -7,7 +7,7 @@ export default function CreateUser(props) {
   return (
     <Create {...props}>
       <SimpleForm variant="outlined" redirect="list">
-        <TextInput source="name" label={translate("ra.action.name")} />
+        <TextInput source="name" />
         <TextInput source="email" />
         <TextInput source="password" />
         <TextInput source="permission" />

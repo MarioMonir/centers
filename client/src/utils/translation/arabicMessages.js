@@ -15,7 +15,20 @@ const arabicMessages = {
   other: {
     dark: "الوضع المعتم",
     light: "الوضع الفاتح",
-    notifications:"الاشعارات",
+    notifications: "الاشعارات",
+    invalid: "غير مقبول",
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  weekDays: {
+    sat: "السبت",
+    sun: "الأحد",
+    mon: "الأثنين",
+    tue: "الثلاثاء",
+    wed: "الأربعاء",
+    thu: "الخميس",
+    fri: "الجمعة",
   },
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -49,17 +62,44 @@ const arabicMessages = {
       name: "مجموعات |||| مجموعة",
       fields: {
         id: "الكود",
+        courseName: "المادة الدراسية",
+        level: "الصف الدراسي",
+        groupType: "نظام التدريس",
         ownerUserId: "كود مُنشئ المجموعة",
         teacherId: "كود المدرس",
         collectorUserId: "كود المُحصِّل",
-        paymentType: "نوع الدفع",
-        ownerFees: "المبلغ",
-        public: "علني",
+        paymentType: "طريقة الدفع",
+        paymentCost: "التكلفة",
+        centerCostPerLecture: "تكلفة السنتر في الحصة",
+        location: "المكان",
+        public: "عام",
         lectures: "الحصص",
         dates: "المواعيد",
         exams: "الامتحانات",
         createdAt: "تاريخ الإنشاء",
         updatedAt: "تاريخ التعديل",
+      },
+      groupType: {
+        InPerson: "حضور",
+        Online: "اونلاين",
+        Hypred: "هجين",
+      },
+      paymentType: {
+        Lecture: "حصة",
+        Month: "شهر",
+        Installment: "دفعات",
+      },
+      paymentCostlabel: {
+        Lecture: "تكلفة الحصة",
+        Month: "تكلفة الشهر",
+        Installment: "تكلفة اجمالي الدفعات",
+      },
+      labels: {
+        teacher: "المدرس",
+        weeklyDates: "المواعيد الاسبوعية",
+        day: "اليوم",
+        from: "من",
+        to: "الى",
       },
     },
     flow: {
@@ -140,6 +180,7 @@ const arabicMessages = {
       clone: "استنساخ",
       confirm: "تأكيد",
       create: "إنشاء",
+      create_item: "إنشاء %{item}",
       delete: "حذف",
       edit: "تعديل",
       export: "تصدير",

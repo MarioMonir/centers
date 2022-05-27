@@ -33,17 +33,15 @@ model User {
   requestsFrom Request[] @relation("requestFromUser")
   requestsTo   Request[] @relation("requestToUser")
 
-  groups          Group[] @relation("owner")
-  groupsTeacher   Group[] @relation("teacher")
-  groupsCollector Group[] @relation("collector")
-  posts           Post[]
+  groups        Group[] @relation("owner")
+  groupsTeacher Group[] @relation("teacher")
+  posts         Post[]
 
   attendances Attendance[]
   enrolments  Enrolment[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
-
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -64,35 +62,38 @@ model UserRelation {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Group {
-  id        Int       @id @default(autoincrement())
-  name      String
-  level     String
-  location  String?
-  groupType GroupType
+  //common
+  id          Int         @id @default(autoincrement())
+  courseName  String
+  level       String
+  groupType   GroupType
+  paymentType PaymentType @default(Lecture)
+  paymentCost Float       @default(0)
+  public      Boolean     @default(true)
 
-  owner     User @relation("owner", fields: [ownerUserId], references: [id])
-  teacher   User @relation("teacher", fields: [teacherId], references: [id])
-  collector User @relation("collector", fields: [collectorUserId], references: [id])
-
-  ownerUserId     Int
-  collectorUserId Int
-  teacherId       Int
-  paymentType     PaymentType @default(Lecture)
-
-  ownerFees Float   @default(0)
-  public    Boolean @default(true)
+  owner         User @relation("owner", fields: [ownerUserId], references: [id])
+  ownerUserId   Int
+  teacher       User @relation("teacher", fields: [teacherUserId], references: [id])
+  teacherUserId Int
 
   lectures Json?
   dates    Json? //{"list":[{"day":"", "from":"", "to":"", date:""(for non-weekly lectures)}]}
   exams    Json?
 
-  attendance Attendance[]
-  enrolment  Enrolment[]
+  //if groupOwner is teacher
+  location String?
+
+  //if groupOwner is center
+  centerCollectsFees   Boolean @default(false)
+  centerCostPerLecture Float   @default(0)
+
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  Post Post[]
+  attendance Attendance[]
+  enrolment  Enrolment[]
+  Post       Post[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
