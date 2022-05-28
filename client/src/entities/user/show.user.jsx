@@ -16,6 +16,7 @@ import Card from "@mui/material/Card";
 // ------------------------------------------------
 
 export default function ShowUser({ id }) {
+  // console.log({ id });
   const { data, isLoading, error } = useGetOne(
     "user",
     { id },
@@ -32,7 +33,6 @@ export default function ShowUser({ id }) {
     <RecordContextProvider value={data}>
       {/* <Show hasEdit={false}> */}
       <div>
-       
         <Card>
           <SimpleShowLayout>
             <NumberField source="id" />

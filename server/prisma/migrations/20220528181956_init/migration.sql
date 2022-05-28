@@ -53,8 +53,8 @@ CREATE TABLE `Flow` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fromUserId` INTEGER NOT NULL,
     `toUserId` INTEGER NOT NULL,
-    `balance` DOUBLE NOT NULL,
-    `notes` VARCHAR(191) NULL,
+    `amount` DOUBLE NOT NULL,
+    `description` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -66,12 +66,13 @@ CREATE TABLE `Attendance` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `groupId` INTEGER NOT NULL,
     `studentId` INTEGER NOT NULL,
-    `homework` BOOLEAN NOT NULL DEFAULT false,
+    `homework` ENUM('done', 'partial', 'none') NULL,
     `notes` VARCHAR(191) NULL,
     `lectureNumber` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `Attendance_groupId_studentId_lectureNumber_key`(`groupId`, `studentId`, `lectureNumber`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 

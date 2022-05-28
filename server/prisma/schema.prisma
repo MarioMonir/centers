@@ -99,31 +99,33 @@ model Group {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Flow {
-  id         Int      @id @default(autoincrement())
-  fromUser   User     @relation("flowFromUser", fields: [fromUserId], references: [id])
-  toUser     User     @relation("flowToUser", fields: [toUserId], references: [id])
-  fromUserId Int
-  toUserId   Int
-  balance    Float
-  notes      String?
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @default(now()) @updatedAt
+  id          Int      @id @default(autoincrement())
+  fromUser    User     @relation("flowFromUser", fields: [fromUserId], references: [id])
+  toUser      User     @relation("flowToUser", fields: [toUserId], references: [id])
+  fromUserId  Int
+  toUserId    Int
+  amount      Float
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Attendance {
-  id            Int      @id @default(autoincrement())
-  group         Group    @relation(fields: [groupId], references: [id])
-  student       User     @relation(fields: [studentId], references: [id])
+  id            Int             @id @default(autoincrement())
+  group         Group           @relation(fields: [groupId], references: [id])
+  student       User            @relation(fields: [studentId], references: [id])
   groupId       Int
   studentId     Int
-  homework      Boolean  @default(false)
+  homework      HomeworkStatus?
   notes         String?
   lectureNumber Int
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @default(now()) @updatedAt
+
+  @@unique([groupId, studentId, lectureNumber])
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
