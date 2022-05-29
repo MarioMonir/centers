@@ -111,6 +111,18 @@ export default function CreateGroup() {
 
         <FormDataConsumer>
           {({ formData, ...rest }) =>
+            formData.paymentType === "Month" && (
+              <NumberInput
+                variant="outlined"
+                source="numberOfLectures"
+                label={translate("resources.group.labels.numberOfLectures")}
+              />
+            )
+          }
+        </FormDataConsumer>
+
+        <FormDataConsumer>
+          {({ formData, ...rest }) =>
             formData.paymentType && (
               <NumberInput
                 variant="outlined"
@@ -122,6 +134,7 @@ export default function CreateGroup() {
             )
           }
         </FormDataConsumer>
+
         <FormDataConsumer>
           {({ formData, ...rest }) =>
             formData.paymentType &&

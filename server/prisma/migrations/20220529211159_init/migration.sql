@@ -32,12 +32,14 @@ CREATE TABLE `Group` (
     `level` VARCHAR(191) NOT NULL,
     `groupType` ENUM('InPerson', 'Online', 'Hybrid') NOT NULL,
     `paymentType` ENUM('Lecture', 'Month', 'Installment') NOT NULL DEFAULT 'Lecture',
+    `numberOfLectures` INTEGER NULL,
     `paymentCost` DOUBLE NOT NULL DEFAULT 0,
     `public` BOOLEAN NOT NULL DEFAULT true,
     `ownerUserId` INTEGER NOT NULL,
     `teacherUserId` INTEGER NOT NULL,
-    `lectures` JSON NULL,
     `dates` JSON NULL,
+    `actualLectureDates` JSON NOT NULL,
+    `lectures` JSON NULL,
     `exams` JSON NULL,
     `location` VARCHAR(191) NULL,
     `centerCollectsFees` BOOLEAN NOT NULL DEFAULT false,
@@ -51,10 +53,14 @@ CREATE TABLE `Group` (
 -- CreateTable
 CREATE TABLE `Flow` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `credit` DOUBLE NULL,
+    `debit` DOUBLE NULL,
+    `balance` DOUBLE NOT NULL,
+    `description` VARCHAR(191) NULL,
+    `notes` VARCHAR(191) NULL,
     `fromUserId` INTEGER NOT NULL,
     `toUserId` INTEGER NOT NULL,
-    `amount` DOUBLE NOT NULL,
-    `description` VARCHAR(191) NULL,
+    `groupId` INTEGER NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -67,7 +73,7 @@ CREATE TABLE `Attendance` (
     `groupId` INTEGER NOT NULL,
     `studentId` INTEGER NOT NULL,
     `homework` ENUM('done', 'partial', 'none') NULL,
-    `notes` VARCHAR(191) NULL,
+    `homeworkNotes` VARCHAR(191) NULL,
     `lectureNumber` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -81,8 +87,8 @@ CREATE TABLE `Enrolment` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `groupId` INTEGER NOT NULL,
     `studentId` INTEGER NOT NULL,
-    `lectureCost` VARCHAR(191) NULL,
-    `centerCost` VARCHAR(191) NULL,
+    `paymentCost` DOUBLE NULL,
+    `centerCostPerLecture` DOUBLE NULL,
     `balance` DOUBLE NOT NULL DEFAULT 0,
     `exams` JSON NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -138,6 +144,9 @@ ALTER TABLE `Flow` ADD CONSTRAINT `Flow_fromUserId_fkey` FOREIGN KEY (`fromUserI
 
 -- AddForeignKey
 ALTER TABLE `Flow` ADD CONSTRAINT `Flow_toUserId_fkey` FOREIGN KEY (`toUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Flow` ADD CONSTRAINT `Flow_groupId_fkey` FOREIGN KEY (`groupId`) REFERENCES `Group`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Attendance` ADD CONSTRAINT `Attendance_studentId_fkey` FOREIGN KEY (`studentId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

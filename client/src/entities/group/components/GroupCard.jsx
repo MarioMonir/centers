@@ -50,7 +50,9 @@ const GroupCard = (record) => {
             {translate("resources.group.fields.groupType")}
           </Typography>
           <Typography variant="body2">
-            {translate("resources.group.groupType." + record?.groupType)}
+            {translate("resources.group.groupType." + record?.groupType, {
+              _: "Translating...",
+            })}
           </Typography>
           <Typography color="text.secondary" sx={{ paddingTop: 1 }}>
             {translate("resources.group.labels.weeklyDates")}

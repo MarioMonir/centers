@@ -8,7 +8,8 @@ datasource db {
 // Generator
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 // Data Model
@@ -63,22 +64,24 @@ model UserRelation {
 
 model Group {
   //common
-  id          Int         @id @default(autoincrement())
-  courseName  String
-  level       String
-  groupType   GroupType
-  paymentType PaymentType @default(Lecture)
-  paymentCost Float       @default(0)
-  public      Boolean     @default(true)
+  id               Int         @id @default(autoincrement())
+  courseName       String
+  level            String
+  groupType        GroupType
+  paymentType      PaymentType @default(Lecture)
+  numberOfLectures Int? // if paymentType is Month
+  paymentCost      Float       @default(0)
+  public           Boolean     @default(true)
 
   owner         User @relation("owner", fields: [ownerUserId], references: [id])
   ownerUserId   Int
   teacher       User @relation("teacher", fields: [teacherUserId], references: [id])
   teacherUserId Int
 
-  lectures Json?
-  dates    Json? //{"list":[{"day":"", "from":"", "to":"", date:""(for non-weekly lectures)}]}
-  exams    Json?
+  dates              Json? // [ {"day":"", "from":"", "to":"", date:""(for non-weekly lectures)} ]
+  actualLectureDates Json  @default("[]") // list of lecture dates 
+  lectures           Json?
+  exams              Json?
 
   //if groupOwner is teacher
   location String?
@@ -94,20 +97,30 @@ model Group {
   attendance Attendance[]
   enrolment  Enrolment[]
   Post       Post[]
+  Flow       Flow[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Flow {
-  id          Int      @id @default(autoincrement())
-  fromUser    User     @relation("flowFromUser", fields: [fromUserId], references: [id])
-  toUser      User     @relation("flowToUser", fields: [toUserId], references: [id])
-  fromUserId  Int
-  toUserId    Int
-  amount      Float
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  id          Int     @id @default(autoincrement())
+  credit      Float?
+  debit       Float?
+  balance     Float
+  description String? // payOnEntry, lectureCost, centerCost, balanceRecharge, refund
+  notes       String?
+
+  fromUser   User @relation("flowFromUser", fields: [fromUserId], references: [id])
+  fromUserId Int
+
+  toUser   User @relation("flowToUser", fields: [toUserId], references: [id])
+  toUserId Int
+
+  group   Group? @relation(fields: [groupId], references: [id])
+  groupId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
 }
 
@@ -120,7 +133,7 @@ model Attendance {
   groupId       Int
   studentId     Int
   homework      HomeworkStatus?
-  notes         String?
+  homeworkNotes String?
   lectureNumber Int
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @default(now()) @updatedAt
@@ -131,17 +144,17 @@ model Attendance {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Enrolment {
-  id          Int      @id @default(autoincrement())
-  group       Group    @relation(fields: [groupId], references: [id])
-  student     User     @relation(fields: [studentId], references: [id])
-  groupId     Int
-  studentId   Int
-  lectureCost String?
-  centerCost  String?
-  balance     Float    @default(0)
-  exams       Json?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now()) @updatedAt
+  id                   Int      @id @default(autoincrement())
+  group                Group    @relation(fields: [groupId], references: [id])
+  student              User     @relation(fields: [studentId], references: [id])
+  groupId              Int
+  studentId            Int
+  paymentCost          Float? // for special students
+  centerCostPerLecture Float? // for special students
+  balance              Float    @default(0)
+  exams                Json?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @default(now()) @updatedAt
 
   @@unique([groupId, studentId])
 }

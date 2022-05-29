@@ -95,6 +95,7 @@ const arabicMessages = {
         Installment: "تكلفة اجمالي الدفعات",
       },
       labels: {
+        numberOfLectures: "عدد الحصص في الشهر",
         teacher: "المدرس",
         weeklyDates: "المواعيد الاسبوعية",
         day: "اليوم",

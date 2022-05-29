@@ -12,7 +12,8 @@ import FormLabel from "@mui/material/FormLabel";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
+import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   ShowBase,
@@ -28,64 +29,126 @@ import ListFlow from "../flow/list.flow";
 import ListPost from "../post/list.post";
 import ShowUser from "../user/show.user";
 import GroupCard from "./components/GroupCard";
-// ====================================================================
+
+// =======================================================
+
+const loggedInUserId = 1;
+
+// =======================================================
 
 export default function ShowGroup() {
-  // ------------------------------------------------
-
-  const { record } = useShowController();
-  console.log({ record });
+  const { record: group } = useShowController();
+  console.log({ group });
 
   // ------------------------------------------------
 
   const [create, { data: createdAttendance, isLoading, error }] = useCreate();
+
+  const { data: EnrolledStudents } = useGetList("enrolment", {
+    filter: { groupId: group?.id },
+  });
+
+  // ------------------------------------------------
+
   const [formData, setFormData] = useState({
     studentId: null,
     homework: null,
-    notes: "",
+    homeworkNotes: "",
     lectureNumber: 1,
   });
+
+  const [amount, setAmount] = useState("");
+
   console.log({ formData });
 
-  const { data: EnrolledStudents } = useGetList("enrolment", {
-    filter: { groupId: record?.id },
-  });
+  // ------------------------------------------------
 
-  // console.log("==>", { EnrolledStudents });
+  const lectureDatesSize = group?.actualLectureDates?.length;
+  console.log({ lectureDatesSize });
+  useEffect(() => {
+    if (
+      !formData.lectureNumber &&
+      (lectureDatesSize || lectureDatesSize === 0)
+    ) {
+      setFormData({
+        ...formData,
+        lectureNumber:
+          lectureDatesSize > 0
+            ? new Date() -
+                new Date(group?.actualLectureDates[lectureDatesSize - 1]) <
+              24 * 60 * 60 * 1000
+              ? lectureDatesSize
+              : lectureDatesSize + 1
+            : 1,
+      });
+    }
+  }, [lectureDatesSize]);
+
   // ------------------------------------------------
 
   const handleFormChange = (e) => {
-    // if (!e?.target?.value) return;
     setFormData({ ...formData, [e?.target?.name]: e?.target?.value });
   };
   // ------------------------------------------------
 
   const handleAutocompleteChange = (e, value) => {
-    // if (!e?.target?.value) return;
-    // console.log({ value });
     setFormData({ ...formData, studentId: value });
   };
   // ------------------------------------------------
 
+  const handleAmountChange = (e) => {
+    setAmount(parseInt(e?.target?.value));
+  };
+  // ------------------------------------------------
+
   const submitCreateAttendance = () => {
-    create("attendance", { data: { ...formData, groupId: record?.id } });
+    create("attendance", {
+      data:
+        amount > 0
+          ? {
+              toUserId: loggedInUserId,
+              attendance: {
+                ...formData,
+                groupId: group?.id,
+                studentId: parseInt(formData.studentId),
+                lectureNumber: parseInt(formData.lectureNumber),
+              },
+              flow: {
+                fromUserId: parseInt(formData.studentId),
+                toUserId: loggedInUserId,
+                groupId: group?.id,
+                description: "payOnEntry",
+                credit: amount,
+              },
+            }
+          : {
+              toUserId: loggedInUserId,
+              attendance: {
+                ...formData,
+                groupId: group?.id,
+                studentId: parseInt(formData.studentId),
+                lectureNumber: parseInt(formData.lectureNumber),
+              },
+            },
+    });
     setFormData({
+      ...formData,
       studentId: null,
       homework: null,
-      notes: "",
-      lectureNumber: 1,
+      homeworkNotes: "",
     });
+    setAmount("");
   };
 
   // ------------------------------------------------
 
   return (
-    <ShowBase /*title={record.courseName}*/ hasEdit={false}>
+    <ShowBase /*title={group.courseName}*/ hasEdit={false}>
       <div style={{ display: "flex" }}>
         <div style={{ width: "75%", minWidth: 850 }}>
           <TabbedShowLayout>
             <Tab label="Timeline" icon={<TimelineIcon />}>
-              <ListPost groupId={record?.id} />
+              <ListPost groupId={group?.id} />
             </Tab>
 
             <Tab
@@ -104,14 +167,27 @@ export default function ShowGroup() {
                       alignItems: "flex-start",
                     }}
                   >
+                    <TextField
+                      sx={{ marginBottom: 2 }}
+                      size="small"
+                      label="Lecture Auto-Numbering"
+                      type="number"
+                      variant="outlined"
+                      name="lectureNumber"
+                      value={formData.lectureNumber}
+                      onChange={handleFormChange}
+                    />
                     <Autocomplete
                       sx={{ width: 235, marginBottom: 2 }}
+                      size="small"
                       value={formData.studentId}
                       onChange={handleAutocompleteChange}
                       variant="outlined"
                       options={
                         EnrolledStudents
-                          ? EnrolledStudents.map((option) => option.studentId)
+                          ? EnrolledStudents.map(
+                              (option) => "" + option.studentId
+                            )
                           : []
                       }
                       renderInput={(params) => (
@@ -119,76 +195,97 @@ export default function ShowGroup() {
                       )}
                     />
 
-                    {/* <TextField
-                      sx={{ marginBottom: 3 }}
+                    <TextField
+                      InputProps={{ inputProps: { min: 0 } }}
+                      sx={{ marginBottom: 2 }}
+                      size="small"
                       label="Payment"
                       type="number"
                       variant="outlined"
                       name="amount"
-                      value={formData.amount}
-                      onChange={handleFormChange}
-                    /> */}
-
-                    <FormControl sx={{ marginBottom: 1 }}>
-                      <FormLabel id="demo-row-radio-buttons-group-label">
-                        Homework
-                      </FormLabel>
-                      <RadioGroup
-                        row
-                        value={formData.homework}
-                        onChange={handleFormChange}
-                        // aria-labelledby="demo-row-radio-buttons-group-label"
-                        name="homework"
-                      >
-                        <FormControlLabel
-                          value="done"
-                          control={<Radio />}
-                          label="done"
-                        />
-                        <FormControlLabel
-                          value="partial"
-                          control={<Radio />}
-                          label="partial"
-                        />
-                        <FormControlLabel
-                          value="none"
-                          control={<Radio />}
-                          label="none"
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                    <TextField
-                      sx={{ marginBottom: 2 }}
-                      label="Homework Notes"
-                      variant="outlined"
-                      name="notes"
-                      value={formData.notes}
-                      onChange={handleFormChange}
+                      value={amount}
+                      onChange={handleAmountChange}
                     />
+                    <div style={{ display: "flex" }}>
+                      <FormControl sx={{ marginBottom: 2 }}>
+                        <FormLabel id="demo-row-radio-buttons-group-label">
+                          Homework
+                        </FormLabel>
+                        <RadioGroup
+                          row
+                          value={formData.homework}
+                          onChange={handleFormChange}
+                          // aria-labelledby="demo-row-radio-buttons-group-label"
+                          name="homework"
+                        >
+                          <FormControlLabel
+                            value="done"
+                            control={<Radio />}
+                            label="done"
+                          />
+                          <FormControlLabel
+                            value="partial"
+                            control={<Radio />}
+                            label="partial"
+                          />
+                          <FormControlLabel
+                            value="none"
+                            control={<Radio />}
+                            label="none"
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                      <TextField
+                        sx={{ margin: "auto" }}
+                        size="small"
+                        label="Homework Notes"
+                        variant="outlined"
+                        name="homeworkNotes"
+                        value={formData.notes}
+                        onChange={handleFormChange}
+                      />
+                    </div>
                     <Button
-                      sx={{  padding: 1 }}
-                       variant="outlined"
+                      size="medium"
+                      fullWidth
+                      variant="outlined"
                       disabled={!formData.studentId}
                       label="Save"
                       onClick={submitCreateAttendance}
                     />
                   </Card>
                 </div>
-
-                <div style={{ width: "50%", padding: 10 }}>
-                  <ShowUser id={formData.studentId} />
-                </div>
+                {formData?.studentId ? (
+                  <div style={{ width: "50%", padding: 10 }}>
+                    <Typography variant="h6" /*sx={{ padding: 2 }}*/>
+                      Student Info
+                    </Typography>
+                    <ShowUser id={formData.studentId} />
+                  </div>
+                ) : null}
               </div>
+              {formData?.studentId ? (
+                <div style={{ display: "flex" }}>
+                  <div style={{ width: "50%", padding: 10 }}>
+                    <Typography variant="h6" /*sx={{ padding: 2 }}*/>
+                      Attendance Record
+                    </Typography>
+                    <ListAttendance
+                      {...{
+                        studentId: parseInt(formData?.studentId),
+                        groupId: group?.id,
+                      }}
+                    />
+                  </div>
 
-              <div style={{ display: "flex" }}>
-                <div style={{ width: "50%", padding: 10 }}>
-                  {/* <ListAttendance /> */}
+                  <div style={{ width: "50%", padding: 10 }}>
+                    <Typography variant="h6" /*sx={{ padding: 2 }}*/>
+                      Payment Record
+                    </Typography>
+                    <ListFlow studentId={parseInt(formData?.studentId)} />
+                  </div>
                 </div>
-
-                <div style={{ width: "50%", padding: 10 }}>
-                  {/* <ListFlow /> */}
-                </div>
-              </div>
+              ) : null}
             </Tab>
 
             <Tab
@@ -200,7 +297,7 @@ export default function ShowGroup() {
             </Tab>
 
             <Tab label="Enrolments" icon={<PeopleIcon />} path="enrolment">
-              <ListEnrolment groupId={record?.id} />
+              <ListEnrolment groupId={group?.id} />
             </Tab>
 
             <Tab label="Materials" icon={<ClassIcon />} path="material"></Tab>
@@ -216,7 +313,7 @@ export default function ShowGroup() {
             height: 300,
           }}
         >
-          <GroupCard {...record} />
+          <GroupCard {...group} />
         </div>
         {/* <div
           style={{
@@ -227,7 +324,7 @@ export default function ShowGroup() {
             // direction: "column",
           }}
         >
-          <GroupCard {...record} />
+          <GroupCard {...group} />
 
           <Button
             variant="outlined"

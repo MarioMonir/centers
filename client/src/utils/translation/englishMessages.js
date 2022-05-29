@@ -96,6 +96,7 @@ const allEnglishMessages = {
         Installment: "Total installments cost",
       },
       labels: {
+        numberOfLectures:"Lectures per Month",
         teacher: "Teacher",
         weeklyDates: "Weekly Dates",
         day: "Day",

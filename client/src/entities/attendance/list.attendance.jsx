@@ -16,13 +16,15 @@ import Typography from "@mui/material/Typography";
 
 // ------------------------------------------------
 
-export default function ListAttendance(props) {
+const ListAttendance = ({ studentId, groupId }) => {
   return (
     <ResourceContextProvider value="attendance">
-      <List hasCreate={false} exporter={false}>
-        <Typography variant="h5" sx={{ padding: 2 }}>
-          Attendance Record
-        </Typography>
+      <List
+        // hasCreate={studentId ? false : true}
+        // exporter={studentId ? false : true}
+        actions={studentId ? false : true}
+        filter={{ studentId: studentId, groupId: groupId }}
+      >
         <Datagrid bulkActionButtons={false}>
           {/* <NumberField source="studentId" label="Student code" />
           <ReferenceField
@@ -33,10 +35,13 @@ export default function ListAttendance(props) {
           >
             <TextField source="name" />
           </ReferenceField> */}
-          <DateField source="createdAt" showTime />
 
-          <BooleanField source="homework" />
-          <TextField source="notes" />
+          <NumberField source="id" />
+          <DateField source="createdAt" showTime />
+          <NumberField source="lectureNumber" />
+
+          <TextField source="homework" />
+          <TextField source="homeworkNotes" />
 
           {/* <Actions>
             <ShowButton />
@@ -47,4 +52,8 @@ export default function ListAttendance(props) {
       </List>
     </ResourceContextProvider>
   );
-}
+};
+
+// ------------------------------------------------
+
+export default ListAttendance;
