@@ -24,10 +24,8 @@ export default function DatesGroupScreen({}) {
   };
 
   const saveDates = async () => {
-    console.log({ dates });
     let newGroup = JSON.parse(JSON.stringify(group));
     newGroup.dates = dates;
-    console.log({ newGroup });
   };
 
   // ----------------------------------------------------------------

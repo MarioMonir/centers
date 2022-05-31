@@ -13,7 +13,6 @@ const loggedInUserId = 1;
 // ------------------------------------------------
 
 const GroupCard = (record) => {
-  // console.log(record);
   const translate = useTranslate();
   const [theme] = useTheme();
   return (

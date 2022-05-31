@@ -48,7 +48,7 @@
 
 // ------------------------------------------------------------------
 
-import { crud, prismaCrud } from "../../Utils/Crud/express-crud-router";
+import { crud, prismaCrud } from "../../utils/Crud/express-crud-router";
 import exampleService from "./_example.service";
 
 // ------------------------------------------------------------------

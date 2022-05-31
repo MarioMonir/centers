@@ -38,7 +38,6 @@ const loggedInUserId = 1;
 
 export default function ShowGroup() {
   const { record: group } = useShowController();
-  console.log({ group });
 
   // ------------------------------------------------
 
@@ -59,12 +58,10 @@ export default function ShowGroup() {
 
   const [amount, setAmount] = useState("");
 
-  console.log({ formData });
-
   // ------------------------------------------------
 
   const lectureDatesSize = group?.actualLectureDates?.length;
-  console.log({ lectureDatesSize });
+
   useEffect(() => {
     if (
       !formData.lectureNumber &&

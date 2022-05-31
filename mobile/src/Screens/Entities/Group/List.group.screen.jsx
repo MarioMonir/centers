@@ -20,8 +20,6 @@ export default function ListGroupScreen() {
 
   // --------------------------------------
 
-  console.log({ data });
-
   const renderItem = ({ item: row }) => {
     let keys = Object.keys(row); // has to be manually set
     keys.length = 3; // just as example (memory leak)

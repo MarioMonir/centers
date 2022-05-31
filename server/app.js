@@ -3,10 +3,11 @@ import cors from "cors";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import errors from "./src/Utils/Error/errorHandler.middlerware";
-import swagger from "./src/Utils/SwaggerDocs/swagger.middleware";
-import authRouter from "./src/Utils/Auth/Passport/passport.router.auth";
-import passportAuthenticate from "./src/Utils/Auth/Passport/passport.auth";
+import errors from "./src/utils/error/errorHandler.middlerware";
+import swagger from "./src/utils/swagger-docs/swagger.middleware";
+import authRouter from "./src/utils/auth/passport/passport.router.auth";
+import passportAuthenticate from "./src/utils/auth/passport/passport.auth";
+import passport from "passport";
 
 // ------------------------------------------------------
 
@@ -37,6 +38,19 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // ------------------------------------------------------
 
+// Swagger Documentaion Middleware
+app.use("/api-docs", swagger.server, swagger.setup); // Docs
+
+// ------------------------------------------------------
+
+// Auth Router ( login / register )
+app.use(authRouter);
+
+// Auth Passport Protect Middleware
+app.use(passportAuthenticate(passport));
+
+// ------------------------------------------------------
+
 // Entities contollers use
 app.use(userController);
 app.use(userRelationController);
@@ -47,11 +61,6 @@ app.use(enrolmentController);
 app.use(requestController);
 app.use(postController);
 app.use(_exampleController);
-
-// ------------------------------------------------------
-
-// Swagger Documentaion Middleware
-app.use("/api-docs", swagger.server, swagger.setup); // Docs
 
 // ------------------------------------------------------
 

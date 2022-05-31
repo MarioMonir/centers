@@ -16,7 +16,6 @@ import Card from "@mui/material/Card";
 // ------------------------------------------------
 
 export default function ShowUser({ id }) {
-  // console.log({ id });
   const { data, isLoading, error } = useGetOne(
     "user",
     { id },

@@ -4,9 +4,7 @@
  * Module dependencies.
  */
 
-import dotenv from "dotenv";
-dotenv.config();
-
+import "dotenv/config";
 import app from "../app";
 import http from "http";
 import debug from "debug";

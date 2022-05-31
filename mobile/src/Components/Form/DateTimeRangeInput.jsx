@@ -60,8 +60,6 @@ export default function DateTimeInput({
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  console.log({ fromDate });
-
   return (
     <View style={styles.container}>
       <View style={styles.textBody}>
