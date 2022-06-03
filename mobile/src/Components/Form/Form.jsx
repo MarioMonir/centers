@@ -32,6 +32,7 @@ export default function Form({
   isLoading = false,
   error = null,
   children: childrens,
+  useValues = null,
   btnsColumn,
   ...reset
 }) {
@@ -47,6 +48,8 @@ export default function Form({
   } = useForm({
     defaultValues,
   });
+
+  useValues = getValues;
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

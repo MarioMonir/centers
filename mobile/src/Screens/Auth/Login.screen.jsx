@@ -20,8 +20,8 @@ export default function LoginScreen() {
   // -------------------------------------
 
   const defaultValues = {
-    email: "mario1@mario.com",
-    password: "123456",
+    email: "mario3@mario.com",
+    password: "123",
   };
 
   // -------------------------------------

@@ -14,7 +14,7 @@ import toastConfig from "./src/Config/toast.config";
 
 i18n.translations = translations;
 i18n.locale = "ar";
-//Localization.locale;
+// Localization.locale;
 i18n.fallbacks = true;
 
 // ==============================================================

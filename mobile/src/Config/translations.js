@@ -62,6 +62,8 @@ export default {
     to: "إلى",
     from: "from",
     to: "to",
+    phone: "phone",
+    parentPhone: "Parent Phone",
   },
   // =================================================================
   ar: {
@@ -123,8 +125,9 @@ export default {
     add: "Add",
     remove: "Remove",
     save: "Save",
-
     from: "من",
     to: "إلى",
+    phone: "phone",
+    parentPhone: "Parent Phone",
   },
 };

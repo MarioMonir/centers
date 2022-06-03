@@ -17,7 +17,7 @@ export const useAuthMe = () => {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  const [getMe, { data, error, isFetching }] = useLazyMeQuery();
+  const [getMe] = useLazyMeQuery();
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -33,7 +33,7 @@ export const useAuthMe = () => {
       return false;
     }
 
-    const res = await getMe().unwrap();
+    const res = getMe().unwrap();
 
     if (res?.user && res?.accessToken) {
       const { user, accessToken } = res;
