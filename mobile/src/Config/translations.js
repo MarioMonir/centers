@@ -64,6 +64,9 @@ export default {
     to: "to",
     phone: "phone",
     parentPhone: "Parent Phone",
+    centers: "centers",
+    courses: "courses",
+    teachers: "teachers",
   },
   // =================================================================
   ar: {
@@ -129,5 +132,8 @@ export default {
     to: "إلى",
     phone: "phone",
     parentPhone: "Parent Phone",
+    centers: "centers",
+    courses: "courses",
+    teachers: "teachers",
   },
 };

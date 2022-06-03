@@ -33,7 +33,7 @@ export const useAuthMe = () => {
       return false;
     }
 
-    const res = getMe().unwrap();
+    const res = await getMe().unwrap();
 
     if (res?.user && res?.accessToken) {
       const { user, accessToken } = res;

@@ -37,4 +37,5 @@ export const {
   useRegisterMutation,
   useFredyQuery,
   useLazyMeQuery,
+  useSearchQuery,
 } = apiSlice;

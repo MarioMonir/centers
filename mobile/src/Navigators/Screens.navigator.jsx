@@ -18,21 +18,24 @@ const stackrops = {
 };
 
 const screenOptions = {
-  headerShown: true,
+  headerShown: false,
   header: (props) => <MyStatusBar {...props} />,
 };
 
 // ==============================================================
 
+import StudentDrawerNavigator from "./Student.navigator";
+
 export default function ScreensNavigator() {
+  // return <StudentDrawerNavigator />;
   return (
     <Stack.Navigator {...stackrops}>
       <Stack.Screen
-        name="Tabs"
-        component={TabNavigator}
+        name="exploreGroups"
+        component={StudentDrawerNavigator}
         options={screenOptions}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="CreateGroupScreen"
         component={CreateGroupScreen}
         options={screenOptions}
@@ -51,7 +54,7 @@ export default function ScreensNavigator() {
         name="DatesGroupScreen"
         component={DatesGroupScreen}
         options={screenOptions}
-      />
+      /> */}
     </Stack.Navigator>
   );
 }

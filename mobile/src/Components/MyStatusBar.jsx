@@ -25,10 +25,11 @@ const MenuBar = () => {
 // ========================================================
 
 export default function MyStatusBar({
-  navigation: { goBack },
+  navigation: { goBack, openDrawer },
   route: { name, params },
 }) {
   let back = true;
+  let drawer = false;
   let menu = false;
   let title = name;
 
@@ -43,18 +44,31 @@ export default function MyStatusBar({
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  if (["Tabs", "login", i18n.t("home")].includes(name)) back = false;
+  if (
+    [
+      i18n.t("courses"),
+      i18n.t("teachers"),
+      i18n.t("centers"),
+      i18n.t("home"),
+    ].includes(name)
+  ) {
+    back = false;
+    drawer = true;
+  }
+
+  if (["Tabs", "login"].includes(name)) back = false;
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  // {menu ? <MenuBar /> : false}
 
   return (
     <Appbar.Header>
-      {back ? <Appbar.BackAction onPress={goBack} /> : null}
+      {back && <Appbar.BackAction onPress={goBack} />}
+      {drawer && <Appbar.Action size={30} icon="menu" onPress={openDrawer} />}
       <Appbar.Content
         title={title}
         titleStyle={{ fontSize: 22, fontWeight: "bold" }}
       />
-      {menu ? <MenuBar /> : false}
     </Appbar.Header>
   );
 }

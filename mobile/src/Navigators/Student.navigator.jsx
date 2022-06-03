@@ -1,18 +1,26 @@
 import React from "react";
+import { View, Text } from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { widthPercentageToDP as wp } from "react-native-responsive-screen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyStatusBar from "../Components/MyStatusBar";
 import TabNavigator from "./Tab.navigator";
-import CreateGroupScreen from "../Screens/Entities/Group/Create.group.screen";
 import ShowGroupScreen from "../Screens/Entities/Group/Show.group.screen";
-import EditGroupScreen from "../Screens/Entities/Group/Edit.group.screen";
-import DatesGroupScreen from "../Screens/Entities/Group/Dates.group.screen";
 import StudentDrawer from "../Screens/Entities/Student/Student.drawer";
+import i18n from "i18n-js";
+import theme from "../Theme/paper.theme";
+import ExploreScreen from "../Screens/Entities/Student/Explore.screen";
+
 // ==============================================================
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
+const Tab = createBottomTabNavigator();
 
 // ==============================================================
 
@@ -21,7 +29,7 @@ const stackrops = {
 };
 
 const screenOptions = {
-  headerShown: true,
+  headerShown: false,
   header: (props) => <MyStatusBar {...props} />,
 };
 
@@ -52,17 +60,63 @@ function StudentScreens() {
 
 // ==============================================================
 
+const screenTabsOptions = ({ route: { name } }) => ({
+  headerShown: true,
+  swipeEnabled: true,
+  header: (props) => <MyStatusBar {...props} />,
+  tabBarIcon: ({ focused, color, size }) => {
+    let iconName = "home";
+
+    if (name === i18n.t("centers")) {
+      iconName = "office-building";
+    } else if (name === "teachers") {
+      iconName = "account-tie-outline";
+    } else if (name === "courses") {
+      iconName = "bookshelf";
+    }
+
+    return <MaterialCommunityIcons name={iconName} size={26} color={color} />;
+  },
+  tabBarActiveTintColor: theme.colors.primary,
+  tabBarInactiveTintColor: "gray",
+  tabBarStyle: { height: hp(9) },
+  tabBarItemStyle: { paddingTop: hp(0.5), paddingBottom: hp(1.5) },
+  swipeEnabled: true,
+  tabBarHideOnKeyboard: true,
+});
+
+// ==============================================================
+
+const ExploreTabs = () => (
+  <Tab.Navigator screenOptions={screenTabsOptions}>
+    <Tab.Screen
+      name={i18n.t("centers")}
+      children={() => <ExploreScreen type="Center" />}
+    />
+    <Tab.Screen
+      name={i18n.t("teachers")}
+      children={() => <ExploreScreen type="Teacher" />}
+    />
+    {/* <Tab.Screen
+      name={i18n.t("courses")}
+      children={() => <ExploreScreen type="course" />}
+    /> */}
+  </Tab.Navigator>
+);
+
+// ==============================================================
+
 export default function StudentDrawerNavigator() {
   return (
     <Drawer.Navigator
-      initialRouteName="HomeScreen"
+      initialRouteName="exploreGroups"
       drawerStyle={{ width: wp(70) }}
       edgeWidth={15}
-      screenOptions={{ swipeEnabled: true }}
+      screenOptions={{ swipeEnabled: true, headerShown: false }}
       drawerPosition="right"
       drawerContent={(props) => <StudentDrawer {...props} />}
     >
-      <Drawer.Screen name="HomeScreen" component={ScreensNavigator} />
+      <Drawer.Screen name={i18n.t("exploreGroups")} component={ExploreTabs} />
     </Drawer.Navigator>
   );
 }

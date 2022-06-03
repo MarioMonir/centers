@@ -1,3 +1,7 @@
+import { stringify } from "query-string";
+
+// =================================================================
+
 const endpoints = (builder) => ({
   // ------------------------------------------------
 
@@ -73,6 +77,20 @@ const endpoints = (builder) => ({
       url: `/${entity}/${id}`,
       method: "DELETE",
     }),
+  }),
+
+  // ------------------------------------------------
+
+  search: builder.query({
+    query: ({ entity, filter }) => {
+      const query = {
+        // sort: JSON.stringify(["id", sortBy || "ASC"]),
+        // range: JSON.stringify([rangeStart, rangeEnd]),
+        filter: JSON.stringify(filter),
+      };
+      const url = `/${entity}/?${stringify(query)}`;
+      return { url, method: "GET" };
+    },
   }),
 
   // ------------------------------------------------
