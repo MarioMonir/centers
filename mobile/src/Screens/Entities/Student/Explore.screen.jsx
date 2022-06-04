@@ -10,27 +10,47 @@ import globalStyles from "../../../Theme/global.styles";
 import i18n from "i18n-js";
 import theme from "../../../Theme/paper.theme";
 import { useSearchQuery } from "../../../API/api";
+import List from "../../../Components/List";
+import LoadingOrErrorScreeen from "../../../Components/LoadingOrError.screen";
+
+// =================================================================
+
+const ExploreList = ({ userType, q }) => {
+  const { navigate } = useNavigation();
+  const filter = { q, userType };
+  const { data, isFetching } = useSearchQuery({ entity: "user", filter });
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  useEffect(() => {}, [data]);
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  if (isFetching) return <LoadingOrErrorScreeen {...{ isFetching }} />;
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  return (
+    <View>
+      <List
+        data={data}
+        itemPress={(props) => navigate("profile", { title: props.item.name })}
+        itemTitleField="name"
+        icon={userType === "Center" ? "office-building" : "account-tie-outline"}
+      />
+    </View>
+  );
+};
 
 // =================================================================
 
 export default function ExploreScreen({ type }) {
-  const { navigate } = useNavigation();
-  const [searchQuery, setSearchQuery] = useState("");
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
+  const [searchQuery, setSearchQuery] = useState("");
   const onChangeSearch = (query) => setSearchQuery(query);
 
-  const { data, isFetching, error } = useSearchQuery({
-    entity: "user",
-    filter: { q: searchQuery, userType: type },
-  });
-
-  // ------------------------------
-
-  useEffect(() => {}, [data]);
-
-  if (data) console.log(data);
-  if (isFetching) console.log(isFetching);
-  if (error) console.log(error);
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   return (
     <SafeAreaView style={globalStyles.screen}>
@@ -42,13 +62,7 @@ export default function ExploreScreen({ type }) {
           value={searchQuery}
         />
       ) : null}
-      <View>
-        {data?.map(({ name }, key) => (
-          <View key={key}>
-            <Text>{name}</Text>
-          </View>
-        ))}
-      </View>
+      <ExploreList {...{ userType: type, q: searchQuery }} />
     </SafeAreaView>
   );
 }

@@ -1,5 +1,4 @@
 import React from "react";
-import { View, Text } from "react-native";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -9,12 +8,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MyStatusBar from "../Components/MyStatusBar";
-import TabNavigator from "./Tab.navigator";
 import ShowGroupScreen from "../Screens/Entities/Group/Show.group.screen";
 import StudentDrawer from "../Screens/Entities/Student/Student.drawer";
 import i18n from "i18n-js";
 import theme from "../Theme/paper.theme";
 import ExploreScreen from "../Screens/Entities/Student/Explore.screen";
+import ProfileScreen from "../Screens/Generics/Profile.screen";
 
 // ==============================================================
 
@@ -29,39 +28,14 @@ const stackrops = {
 };
 
 const screenOptions = {
-  headerShown: false,
+  headerShown: true,
   header: (props) => <MyStatusBar {...props} />,
 };
 
 // ==============================================================
 
-function StudentScreens() {
-  return (
-    <Stack.Navigator {...stackrops}>
-      <Stack.Screen
-        name="Tabs"
-        component={TabNavigator}
-        options={screenOptions}
-      />
-      <Stack.Screen
-        name="ShowGroupScreen"
-        component={ShowGroupScreen}
-        options={screenOptions}
-      />
-    </Stack.Navigator>
-  );
-}
-
-// ==============================================================
-
-// ==============================================================
-
-// ==============================================================
-
-// ==============================================================
-
 const screenTabsOptions = ({ route: { name } }) => ({
-  headerShown: true,
+  headerShown: false,
   swipeEnabled: true,
   header: (props) => <MyStatusBar {...props} />,
   tabBarIcon: ({ focused, color, size }) => {
@@ -106,6 +80,25 @@ const ExploreTabs = () => (
 
 // ==============================================================
 
+const StudentScreensNavigators = () => {
+  return (
+    <Stack.Navigator {...stackrops}>
+      <Stack.Screen
+        name="exploreGroups"
+        component={ExploreTabs}
+        options={screenOptions}
+      />
+      <Stack.Screen
+        name="profile"
+        component={ProfileScreen}
+        options={screenOptions}
+      />
+    </Stack.Navigator>
+  );
+};
+
+// ==============================================================
+
 export default function StudentDrawerNavigator() {
   return (
     <Drawer.Navigator
@@ -116,7 +109,10 @@ export default function StudentDrawerNavigator() {
       drawerPosition="right"
       drawerContent={(props) => <StudentDrawer {...props} />}
     >
-      <Drawer.Screen name={i18n.t("exploreGroups")} component={ExploreTabs} />
+      <Drawer.Screen
+        name={i18n.t("exploreGroups")}
+        component={StudentScreensNavigators}
+      />
     </Drawer.Navigator>
   );
 }

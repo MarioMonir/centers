@@ -31,7 +31,7 @@ export default function MyStatusBar({
   let back = true;
   let drawer = false;
   let menu = false;
-  let title = name;
+  let title = params?.title ? params.title : name;
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -40,7 +40,9 @@ export default function MyStatusBar({
     title = title.split("Show")[1].split("Screen")[0].toLowerCase();
   }
 
-  title = `${i18n.t(title)} ${params?.id ? " - " + params?.id : ""}`;
+  if (!params?.title) {
+    title = `${i18n.t(title)} ${params?.id ? " - " + params?.id : ""}`;
+  }
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -49,6 +51,7 @@ export default function MyStatusBar({
       i18n.t("courses"),
       i18n.t("teachers"),
       i18n.t("centers"),
+      "exploreGroups",
       i18n.t("home"),
     ].includes(name)
   ) {

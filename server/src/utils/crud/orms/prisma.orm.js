@@ -43,7 +43,7 @@ const prismaCrud = (model) => ({
 
   // --------------------------------------------
 
-  search: async ({ q, limit }) => {
+  search: async ({ q, limit , filter }) => {
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     let entityFields = prisma._dmmf.datamodel.models?.find(
@@ -58,12 +58,14 @@ const prismaCrud = (model) => ({
 
     // console.dir({ filteredFields }, { depth: Infinity });
 
-    let where = { OR: [...filteredFields] };
+    let where = { ...filter, OR: [...filteredFields] };
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     return Promise.all([
-      prisma[model]?.count(),
+      prisma[model]?.count({
+        where
+      }),
       prisma[model].findMany({
         where,
         take: limit,

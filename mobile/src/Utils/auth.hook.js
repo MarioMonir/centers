@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAppDispatch, useAppSelector } from "../Store/redux.hooks";
 import {
@@ -28,20 +28,23 @@ export const useAuthMe = () => {
     const savedAccessToken = await AsyncStorage?.getItem("accessToken");
     dispatch(setAccesToken(savedAccessToken));
 
+    // if my access token is not saved then go to login page
     if (!savedAccessToken) {
       setLoading(false);
       return false;
     }
 
-    const res = await getMe().unwrap();
-
-    if (res?.user && res?.accessToken) {
-      const { user, accessToken } = res;
-      await AsyncStorage.setItem("accessToken", accessToken);
-      dispatch(setAuthUser({ accessToken, user }));
-    }
-
-    setLoading(false);
+    // Get Me and put my new access token in async storage
+    getMe()
+      .unwrap()
+      .then(async (data) => {
+        if (data?.user && data?.accessToken) {
+          const { user, accessToken } = data;
+          await AsyncStorage.setItem("accessToken", accessToken);
+          dispatch(setAuthUser({ accessToken, user }));
+          setLoading(false);
+        }
+      });
   };
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
