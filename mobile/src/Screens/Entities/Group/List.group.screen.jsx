@@ -3,16 +3,18 @@ import { SafeAreaView, FlatList, StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import { useGetListQuery } from "../../../API/api";
-import LoadingOrErrorScreeen from "../../../Components/LoadingOrError.screen";
+import LoadingErrorEmpty from "../../../Components/LoadingErrorEmpty.screen";
 import CardGroup from "./Card.group";
 import Fab from "../../../Components/Fab";
-
+import { useAppSelector } from "../../../Store/redux.hooks";
+import MyText from "../../../Components/MyText";
 // ====================================================================
 
-export default function ListGroupScreen() {
+export default function ListGroupScreen({}) {
   const entity = "group";
   const { navigate } = useNavigation();
-  const goToCreateEntity = () => navigate("CreateGroupScreen");
+  // const goToCreateEntity = () => navigate("CreateGroupScreen");
+  const userType = useAppSelector((s) => s?.auth?.user?.userType);
 
   // --------------------------------------
 
@@ -28,8 +30,8 @@ export default function ListGroupScreen() {
 
   // --------------------------------------
 
-  if (isLoading || error) {
-    return <LoadingOrErrorScreeen {...{ error, isLoading }} />;
+  if (isLoading || error || (data && !data.length)) {
+    return <LoadingErrorEmpty {...{ error, isLoading, data }} />;
   }
 
   // --------------------------------------
@@ -41,7 +43,12 @@ export default function ListGroupScreen() {
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
       />
-      <Fab label="createGroup" onPress={() => navigate("CreateGroupScreen")} />
+      {userType !== "Student" && (
+        <Fab
+          label="createGroup"
+          onPress={() => navigate("CreateGroupScreen")}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -50,5 +57,7 @@ export default function ListGroupScreen() {
 const styles = StyleSheet.create({
   container: {
     marginTop: hp(1),
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

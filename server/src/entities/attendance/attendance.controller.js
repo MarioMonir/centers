@@ -112,7 +112,6 @@ const crudController = {
   ...prismaCrud("attendance"),
 
   create: async (body) => {
-    console.log("body=>", body);
     await prisma.$transaction(async (prisma) => {
       // ===============================================================
       // get the group info

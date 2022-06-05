@@ -14,6 +14,7 @@ import i18n from "i18n-js";
 import theme from "../Theme/paper.theme";
 import ExploreScreen from "../Screens/Entities/Student/Explore.screen";
 import ProfileScreen from "../Screens/Generics/Profile.screen";
+import ListGroupScreen from "../Screens/Entities/Group/List.group.screen";
 
 // ==============================================================
 
@@ -43,7 +44,7 @@ const screenTabsOptions = ({ route: { name } }) => ({
 
     if (name === i18n.t("centers")) {
       iconName = "office-building";
-    } else if (name === "teachers") {
+    } else if (name === i18n.t("teachers")) {
       iconName = "account-tie-outline";
     } else if (name === "courses") {
       iconName = "bookshelf";
@@ -91,6 +92,16 @@ const StudentScreensNavigators = () => {
       <Stack.Screen
         name="profile"
         component={ProfileScreen}
+        options={screenOptions}
+      />
+      <Stack.Screen
+        name="groups"
+        component={ListGroupScreen}
+        options={screenOptions}
+      />
+      <Stack.Screen
+        name="ShowGroupScreen"
+        component={ShowGroupScreen}
         options={screenOptions}
       />
     </Stack.Navigator>

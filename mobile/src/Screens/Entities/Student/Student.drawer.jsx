@@ -16,13 +16,13 @@ export default function StudentDrawer({
 
   const btns = [
     {
-      name: "enrollments",
+      name: "search",
+      icon: "",
       onPress: () => {
         closeDrawer();
         navigate("exploreGroups");
       },
     },
-    { name: "explore", onPress: () => console.log("as") },
     { name: "logout", onPress: () => logout() },
   ];
 
@@ -30,10 +30,11 @@ export default function StudentDrawer({
 
   return (
     <View style={styles.container}>
-      {btns?.map(({ name, onPress }, key) => (
+      {btns?.map(({ name, onPress, icon = "" }, key) => (
         <Button
           key={key}
           text={name}
+          icon={icon}
           onPress={onPress}
           width={wp(50)}
           maxWidth={wp(50)}

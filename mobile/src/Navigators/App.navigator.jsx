@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import ScreensNavigator from "./Screens.navigator";
 import UnAuthorizedNavigator from "./UnAuthorized.navigator";
 import { useAuthMe } from "../Utils/auth.hook";
-import LoadingOrErrorScreen from "../Components/LoadingOrError.screen";
+import LoadingErrorEmpty from "../Components/LoadingErrorEmpty.screen";
 
 // ==============================================================
 
@@ -17,7 +17,7 @@ export default function AppNavigator() {
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-  if (loading) return <LoadingOrErrorScreen />;
+  if (loading) return <LoadingErrorEmpty isLoading={loading} />;
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

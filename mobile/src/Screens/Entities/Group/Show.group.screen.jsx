@@ -10,8 +10,9 @@ import globalStyles from "../../../Theme/global.styles";
 import FabGroup from "../../../Components/FabGroup";
 import { Card, DataTable } from "react-native-paper";
 import i18n from "i18n-js";
-import LoadingOrErrorScreen from "../../../Components/LoadingOrError.screen";
+import LoadingOrErrorScreen from "../../../Components/LoadingErrorEmpty.screen";
 import theme from "../../../Theme/paper.theme";
+import { useAppSelector } from "../../../Store/redux.hooks";
 
 // ====================================================================
 
@@ -20,6 +21,9 @@ export default function ShowGroupScreen() {
   const { id, entity } = params;
   const { navigate } = useNavigation();
   const { data, isLoading, error } = useGetOneQuery({ entity: "group", id });
+  const userType = useAppSelector((s) => s?.auth?.user?.userType);
+
+  // --------------------------------------
 
   const addDateToGroup = () => {};
   const goToEditGroup = () => navigate("EditGroupScreen", { id, data });
@@ -79,15 +83,17 @@ export default function ShowGroupScreen() {
         </Card>
       </View>
       <ScrollView style={styles.container}></ScrollView>
-      <FabGroup
-        actions={[
-          {
-            icon: "calendar-clock",
-            label: "times",
-            onPress: goToDatesGroup,
-          },
-        ]}
-      />
+      {userType !== "Student" && (
+        <FabGroup
+          actions={[
+            {
+              icon: "calendar-clock",
+              label: "times",
+              onPress: goToDatesGroup,
+            },
+          ]}
+        />
+      )}
     </SafeAreaView>
   );
 }
