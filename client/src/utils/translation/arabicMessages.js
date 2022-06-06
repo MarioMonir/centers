@@ -305,6 +305,9 @@ const arabicMessages = {
       regex: "يجب أن يتطابق مع تنسيق محدد (regex):%{pattern}",
     },
   },
+
+  no: "لا يوجد",
+  records: "بيانات",
 };
 
 export default arabicMessages;

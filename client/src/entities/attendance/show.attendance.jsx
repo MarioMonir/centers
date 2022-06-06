@@ -7,9 +7,7 @@ export default function ShowAttendance(props) {
     <Show {...props}>
       <SimpleShowLayout>
         <NumberField source="id" />
-
         <NumberField source="groupId" />
-
         <NumberField source="studentId" />
         <TextField source="notes" />
       </SimpleShowLayout>

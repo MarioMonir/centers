@@ -22,6 +22,8 @@ const postFilters = [
   <TextInput source="level" size="small" />,
 ];
 
+// ------------------------------------------------
+
 const ListToolbar = () => (
   <Stack direction="row" justifyContent="space-between">
     <FilterForm filters={postFilters} />
@@ -34,12 +36,15 @@ const ListToolbar = () => (
   </Stack>
 );
 
-const ListGroup = (props) => {
+// ------------------------------------------------
+
+export default function ListGroup(props) {
   const listContext = useListController();
+  console.log({ listContext });
+
   return (
     <ListContextProvider value={listContext}>
       <ListToolbar />
-
       <Grid container spacing={3}>
         {listContext?.data?.map((record) => (
           <Grid key={record?.id} item>
@@ -50,8 +55,6 @@ const ListGroup = (props) => {
       <Pagination />
     </ListContextProvider>
   );
-};
+}
 
 // ------------------------------------------------
-
-export default ListGroup;

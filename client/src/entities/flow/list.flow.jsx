@@ -9,7 +9,7 @@ import {
   ResourceContextProvider,
   DateField,
 } from "react-admin";
-import Actions from "../../reactAdmin/Actions";
+import Actions from "../../reactAdmin/components/Actions";
 import Typography from "@mui/material/Typography";
 
 // ------------------------------------------------
@@ -22,12 +22,12 @@ const ListFlow = ({ studentId }) => {
         // exporter={studentId ? false : true}
         actions={studentId ? false : true}
         filter={{ fromUserId: studentId, toUserId: studentId }}
-        sort={{ field: 'createdAt', order: 'DESC' }}
+        sort={{ field: "createdAt", order: "DESC" }}
       >
         {/* <Typography variant="h5" sx={{ padding: 2 }}>
           Payment Record
         </Typography> */}
-        <Datagrid bulkActionButtons={studentId ? false : true}>
+        {/* <Datagrid bulkActionButtons={studentId ? false : true}>
           <NumberField source="id" />
           <DateField source="createdAt" showTime />
 
@@ -40,13 +40,7 @@ const ListFlow = ({ studentId }) => {
           <NumberField source="credit" />
           <NumberField source="debit" />
           <NumberField source="balance" />
-
-          {/* <Actions>
-            <ShowButton />
-            <EditButton />
-            <DeleteButton />
-          </Actions> */}
-        </Datagrid>
+        </Datagrid> */}
       </List>
     </ResourceContextProvider>
   );

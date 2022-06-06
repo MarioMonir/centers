@@ -10,7 +10,7 @@ import {
   TextField,
   SimpleList,
 } from "react-admin";
-import Actions from "../../reactAdmin/Actions";
+import Actions from "../../reactAdmin/components/Actions";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 // ------------------------------------------------
@@ -18,7 +18,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 export default function ListEnrolment(groupId) {
   return (
     <ResourceContextProvider value="enrolment">
-      <List filter={groupId} >
+      <List filter={groupId}>
         {/* <SimpleList
           // leftIcon={<AccountCircleIcon />}
           primaryText={

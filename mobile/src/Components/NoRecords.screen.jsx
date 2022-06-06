@@ -6,7 +6,7 @@ import i18n from "i18n-js";
 
 // =====================================================
 
-export default function NoRec() {
+export default function NoRecords() {
   return (
     <View style={styles.container}>
       <MyText text={i18n.t("noRecords")} style={styles.text} />

@@ -148,6 +148,8 @@ export default function ShowGroup() {
               <ListPost groupId={group?.id} />
             </Tab>
 
+            {/* ----------------------------------------------------- */}
+
             <Tab
               label="Take Attendance"
               icon={<AddTaskIcon />}
@@ -285,6 +287,8 @@ export default function ShowGroup() {
               ) : null}
             </Tab>
 
+            {/* ----------------------------------------------------- */}
+
             <Tab
               label="Attendance Record"
               icon={<CheckBoxIcon />}
@@ -293,11 +297,18 @@ export default function ShowGroup() {
               <ListAttendance />
             </Tab>
 
+            {/* ----------------------------------------------------- */}
+
             <Tab label="Enrolments" icon={<PeopleIcon />} path="enrolment">
               <ListEnrolment groupId={group?.id} />
             </Tab>
 
+            {/* ----------------------------------------------------- */}
+
             <Tab label="Materials" icon={<ClassIcon />} path="material"></Tab>
+
+            {/* ----------------------------------------------------- */}
+
             <Tab label="Settings" icon={<SettingsIcon />} path="settings"></Tab>
           </TabbedShowLayout>
         </div>

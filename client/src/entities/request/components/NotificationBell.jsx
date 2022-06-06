@@ -1,9 +1,8 @@
+import { useGetList, useRedirect, useTranslate } from "react-admin";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { IconButton } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import Tooltip from "@mui/material/Tooltip";
-import * as React from "react";
-import { useGetList, useRedirect, useTranslate } from "react-admin";
+import { IconButton } from "@mui/material";
 
 // ------------------------------------------------
 
