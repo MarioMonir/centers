@@ -42,7 +42,7 @@ export default function UseAuthProvider() {
     login: async ({ username: email, password }) => {
       const data = await queryAuth(authUrls.login, { email, password });
       if (data?.accessToken && data?.user?.id) {
-        localStorage.setItem("user", data?.user);
+        localStorage.setItem("user", JSON.stringify(data?.user));
         localStorage.setItem("accessToken", data?.accessToken);
         console.log({ data });
         return Promise.resolve();
