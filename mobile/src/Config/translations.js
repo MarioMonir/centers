@@ -72,6 +72,8 @@ export default {
     teacherGroups: "Teachers Groups",
     centerGroups: "Center Groups",
     groups: "Groups",
+    no: "No",
+    records: "Records",
   },
   // =================================================================
   ar: {
@@ -145,5 +147,7 @@ export default {
     teacherGroups: "مجموعات المدرس",
     centerGroups: "مجموعات السنتر",
     groups: "المجموعات",
+    no: "لا يوجد",
+    records: "بيانات",
   },
 };

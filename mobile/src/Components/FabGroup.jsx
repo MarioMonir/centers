@@ -16,7 +16,7 @@ export default function FabGroup({
     label: action.label ? i18.t(action.label) : i18.t("welcome"),
     icon: action.icon || "plus",
     small: false,
-    onPress: action?.onPress ? action.onPress : () => console.log("asd"),
+    onPress: action?.onPress ? action.onPress : null,
   }));
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

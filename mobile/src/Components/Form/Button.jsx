@@ -7,7 +7,7 @@ import i18n from "i18n-js";
 
 export default function Button({
   text = "Submit",
-  onPress = () => console.log("pressed"),
+  onPress = null,
   icon = "check",
   loading = false,
   mode = "contained",

@@ -6,11 +6,7 @@ import i18 from "i18n-js";
 
 // =======================================================
 
-export default function Fab({
-  onPress = () => console.log("pressed"),
-  icon = "plus",
-  label = "",
-}) {
+export default function Fab({ onPress = null, icon = "plus", label = "" }) {
   return (
     <FAB
       style={styles.fab}

@@ -16,8 +16,8 @@ export default function SubmitOrCancel({
   cancelButton = false,
   submitText = "Submit",
   cancelText = "Cancel",
-  onSubmit = (values) => console.log("submit", { values }),
-  onCancel = () => console.log("cancel"),
+  onSubmit = (values) => null,
+  onCancel = null,
   btnsColumn = true,
 }) {
   return (

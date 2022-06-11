@@ -50,7 +50,7 @@ export default function CreateGroup() {
           <ReferenceInput
             source="teacherUserId"
             reference="user"
-            // filter={{ userType: "Teacher" }}
+            filter={{ userType: "Teacher" }}
           >
             <AutocompleteInput
               label={translate("resources.group.labels.teacher")}

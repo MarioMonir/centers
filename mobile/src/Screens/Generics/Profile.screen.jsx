@@ -33,7 +33,7 @@ export default function ProfileScreen({
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   const { navigate } = useNavigation();
-  const goToGroups = () => navigate("groups");
+  const goToGroups = () => navigate("groups", { profile });
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

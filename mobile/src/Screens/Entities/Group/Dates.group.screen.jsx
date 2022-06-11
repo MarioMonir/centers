@@ -10,7 +10,7 @@ import DateTimeRangeInput from "../../../Components/Form/DateTimeRangeInput";
 
 export default function DatesGroupScreen({}) {
   const { params } = useRoute();
-  const { id, data: group } = params;
+  const { id, group } = params;
   const { navigate } = useNavigation();
   const [dates, setDates] = useState(group?.dates || []);
 

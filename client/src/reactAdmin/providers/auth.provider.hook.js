@@ -44,7 +44,6 @@ export default function UseAuthProvider() {
       if (data?.accessToken && data?.user?.id) {
         localStorage.setItem("user", JSON.stringify(data?.user));
         localStorage.setItem("accessToken", data?.accessToken);
-        console.log({ data });
         return Promise.resolve();
       }
       return Promise.reject();

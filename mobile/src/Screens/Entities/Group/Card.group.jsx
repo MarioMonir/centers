@@ -17,13 +17,13 @@ import { useNavigation } from "@react-navigation/native";
 // =================================================================
 
 export default function CardGroup({
-  row: { id, course, level, groupType, cost },
+  row: { id, course, level, groupType, cost, courseName },
   row,
 }) {
   const { navigate } = useNavigation();
 
   const goToGroupPage = () =>
-    navigate("ShowGroupScreen", { id, entity: "group", data: row });
+    navigate("ShowGroupScreen", { id, entity: "group", group: row });
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -31,7 +31,7 @@ export default function CardGroup({
     <TouchableOpacity style={styles.container} onPress={goToGroupPage}>
       <Surface style={styles.surface}>
         <Card>
-          <Card.Title title={`${id} - ${i18n.t(course)}`} subtitle={cost} />
+          <Card.Title title={`${id} - ${courseName}`} subtitle={cost} />
           <Card.Content>
             <Title>{level}</Title>
             <Paragraph>{i18n.t(groupType)}</Paragraph>

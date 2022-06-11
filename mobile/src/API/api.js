@@ -11,9 +11,10 @@ export const apiSlice = createApi({
 
   baseQuery: fetchBaseQuery({
     baseUrl: config.API_URL,
-    prepareHeaders: async (headers, { getState }) => {
+    prepareHeaders: async (headers, { getState, endpoint }) => {
       headers.set("Content-Type", "application/json");
       headers.set("Accept", "application/json");
+      console.log("query ", endpoint);
 
       const accessToken = getState()?.auth?.accessToken;
       if (accessToken) {

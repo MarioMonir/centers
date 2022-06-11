@@ -45,10 +45,17 @@ const endpoints = (builder) => ({
   // ------------------------------------------------
 
   getList: builder.query({
-    query: ({ entity }) => ({
-      url: `/${entity}`,
-      method: "GET",
-    }),
+    query: ({ entity, filter }) => {
+      const query = {
+        // sort: JSON.stringify(["id", sortBy || "ASC"]),
+        // range: JSON.stringify([rangeStart, rangeEnd]),
+        filter: JSON.stringify(filter),
+      };
+      const queryParams = stringify(query);
+      const urlQuery = queryParams ? `?${queryParams}` : "";
+      const url = `/${entity}/${urlQuery}`;
+      return { url, method: "GET" };
+    },
   }),
 
   // ------------------------------------------------

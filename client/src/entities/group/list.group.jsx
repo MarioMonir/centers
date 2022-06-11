@@ -40,7 +40,6 @@ const ListToolbar = () => (
 
 export default function ListGroup(props) {
   const listContext = useListController();
-  console.log({ listContext });
 
   return (
     <ListContextProvider value={listContext}>

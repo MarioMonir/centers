@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView, FlatList, StyleSheet } from "react-native";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useGetListQuery } from "../../../API/api";
 import LoadingErrorEmpty from "../../../Components/LoadingErrorEmpty.screen";
 import CardGroup from "./Card.group";
@@ -13,12 +13,20 @@ import MyText from "../../../Components/MyText";
 export default function ListGroupScreen({}) {
   const entity = "group";
   const { navigate } = useNavigation();
-  // const goToCreateEntity = () => navigate("CreateGroupScreen");
+  const { params } = useRoute();
   const userType = useAppSelector((s) => s?.auth?.user?.userType);
+  // const goToCreateEntity = () => navigate("CreateGroupScreen");
 
   // --------------------------------------
 
-  const { data, isLoading, error } = useGetListQuery({ entity });
+  let filter = {};
+  if (params?.profile?.userType === "Center" && params?.profile?.id) {
+    filter.ownerUserId = params.profile?.id;
+  } else if (params?.profile?.userType === "Teacher" && params?.profile?.id) {
+    filter.teacherUserId = params.profile.id;
+  }
+
+  const { data, isLoading, error } = useGetListQuery({ entity, filter });
 
   // --------------------------------------
 
