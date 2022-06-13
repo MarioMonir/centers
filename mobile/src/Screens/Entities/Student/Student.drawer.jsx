@@ -2,6 +2,7 @@ import { View, StyleSheet } from "react-native";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
 import { useAuthMe } from "../../../Utils/auth.hook";
 import Button from "../../../Components/Form/Button";
+import { useAppSelector } from "../../../Store/redux.hooks";
 
 // =================================================================
 
@@ -11,19 +12,29 @@ export default function StudentDrawer({
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   const { logout } = useAuthMe();
+  const profile = useAppSelector((s) => s?.auth?.user);
+  console.log({ profile });
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
   const btns = [
     {
       name: "search",
-      icon: "",
+      icon: "book-search-outline",
       onPress: () => {
         closeDrawer();
         navigate("exploreGroups");
       },
     },
-    { name: "logout", onPress: () => logout() },
+    {
+      name: "profile",
+      icon: "account",
+      onPress: () => {
+        closeDrawer();
+        navigate("profile", { item: profile });
+      },
+    },
+    { name: "logout", onPress: () => logout(), icon: "logout" },
   ];
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

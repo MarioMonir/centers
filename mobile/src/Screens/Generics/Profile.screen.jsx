@@ -1,27 +1,11 @@
 import React from "react";
 import { SafeAreaView, View, StyleSheet } from "react-native";
-import {
-  heightPercentageToDP as hp,
-  widthPercentageToDP as wp,
-} from "react-native-responsive-screen";
+import { heightPercentageToDP as hp } from "react-native-responsive-screen";
 import { useNavigation } from "@react-navigation/native";
 import globalStyles from "../../Theme/global.styles";
 import MyText from "../../Components/MyText";
-import i18n from "i18n-js";
-import theme from "../../Theme/paper.theme";
+import { Avatar } from "react-native-paper";
 import Button from "../../Components/Form/Button";
-
-// =================================================================
-
-const Row = ({ data, att }) => {
-  if (!att) return false;
-  return (
-    <View style={styles.row}>
-      <MyText text={i18n.t(att)} style={styles.text} />
-      <MyText text={data[att] ? data[att] : ""} style={styles.text} />
-    </View>
-  );
-};
 
 // =================================================================
 
@@ -44,15 +28,24 @@ export default function ProfileScreen({
 
   return (
     <SafeAreaView style={{ ...globalStyles, ...styles.container }}>
-      <View>
-        <Row data={profile} att="name" />
-        <Row data={profile} att="email" />
+      <View style={styles.body}>
+        <Avatar.Text
+          style={styles.icon}
+          size={70}
+          label={profile.name[0].toUpperCase()}
+        />
+
+        <View style={styles.metaData}>
+          <MyText text={profile?.name} style={styles.name} />
+          <MyText text={profile?.email} style={styles.email} />
+        </View>
       </View>
 
-      {profile?.userType === "Center" ? <></> : <></>}
-      <View>
-        <Button icon="bookshelf" text={btnTitle} onPress={goToGroups} />
-      </View>
+      {profile?.userType !== "Student" ? (
+        <View>
+          <Button icon="bookshelf" text={btnTitle} onPress={goToGroups} />
+        </View>
+      ) : null}
     </SafeAreaView>
   );
 }
@@ -65,16 +58,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginBottom: hp(1),
   },
-  row: {
-    flexDirection: "row",
+  body: {
     paddingVertical: hp(2),
-    paddingHorizontal: wp(4),
-    justifyContent: "space-between",
-    borderBottomWidth: 1,
-    borderColor: theme.colors.lightgrey,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  text: {
+  metaData: {
+    paddingVertical: hp(2),
+    alignItems: "center",
+  },
+  name: {
+    fontSize: 30,
+    paddingVertical: hp(2),
+    fontWeight: "500",
+  },
+  email: {
     fontSize: 16,
-    fontWeight: "300",
   },
 });

@@ -6,13 +6,10 @@ import i18n from "i18n-js";
 
 // =====================================================
 
-export default function NoRecords() {
+export default function NoRecords({ text = "records" }) {
   return (
     <View style={styles.container}>
-      <MyText
-        text={`${i18n.t("no")} ${i18n.t("records")}`}
-        style={styles.text}
-      />
+      <MyText text={`${i18n.t("no")} ${i18n.t(text)}`} style={styles.text} />
     </View>
   );
 }

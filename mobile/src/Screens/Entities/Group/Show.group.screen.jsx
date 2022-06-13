@@ -15,14 +15,14 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useGetOneQuery } from "../../../API/api";
 import globalStyles from "../../../Theme/global.styles";
 import FabGroup from "../../../Components/FabGroup";
-import { Card, DataTable } from "react-native-paper";
+import { Card, List } from "react-native-paper";
 import i18n from "i18n-js";
 import LoadingOrErrorScreen from "../../../Components/LoadingErrorEmpty.screen";
 import theme from "../../../Theme/paper.theme";
 import { useAppSelector } from "../../../Store/redux.hooks";
 import MyText from "../../../Components/MyText";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import ShowDatesGroupScreen from "./ShowDates.group.tab";
+import NoRecords from "../../../Components/NoRecords.screen";
 
 // ====================================================================
 
@@ -31,8 +31,6 @@ function ShowGroupScreen() {
   const { params } = useRoute();
   const { id, group } = params;
   const { navigate } = useNavigation();
-
-  console.log({ params });
 
   // --------------------------------------
 
@@ -47,8 +45,6 @@ function ShowGroupScreen() {
 
   // --------------------------------------
 
-  const addDateToGroup = () => {};
-  const goToEditGroup = () => navigate("EditGroupScreen", { id, group });
   const goToDatesGroup = () => navigate("DatesGroupScreen", { id, group });
 
   // --------------------------------------
@@ -83,19 +79,6 @@ function ShowGroupScreen() {
 
   // --------------------------------------
 
-  const DateRow = ({ from, to, day }) => {
-    if (!from || !to || !day) return null;
-    return (
-      <View style={styles.dateRow}>
-        <MyText text={from} style={styles.text2} />
-        <MyText text={to} style={styles.text2} />
-        <MyText text={day} style={styles.text2} />
-      </View>
-    );
-  };
-
-  // --------------------------------------
-
   const dataToRender = [
     { text1: i18n.t("groupType"), text2: i18n.t(groupType) },
     { text1: i18n.t("paymentType"), text2: i18n.t(paymentType) },
@@ -110,39 +93,81 @@ function ShowGroupScreen() {
 
   return (
     <SafeAreaView style={{ ...globalStyles.screen }}>
-      <View style={styles.body}>
-        <Card style={styles.card}>
-          <Card.Title title={`${id} - ${course}`} />
-          <Card.Content>
-            {dataToRender?.map((props, key) => (
-              <GroupRow key={key} {...props} />
-            ))}
-          </Card.Content>
-        </Card>
-      </View>
+      <ScrollView>
+        <View style={styles.body}>
+          <Card style={styles.card}>
+            <Card.Title title={`${id} - ${course}`} />
+            <Card.Content>
+              {dataToRender?.map((props, key) => (
+                <GroupRow key={key} {...props} />
+              ))}
+            </Card.Content>
+          </Card>
+        </View>
 
-      {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
+        {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
 
-      {userType !== "Student" && (
-        <FabGroup
-          actions={[
-            {
-              icon: "calendar-clock",
-              label: "times",
-              onPress: goToDatesGroup,
-            },
-          ]}
-        />
-      )}
+        <List.Section title="" style={styles.list}>
+          <List.Accordion
+            title={i18n.t("exams")}
+            left={(props) => <List.Icon {...props} icon="ab-testing" />}
+          >
+            <List.Item title={i18n.t("no") + " " + i18n.t("exams")} />
+            {/* <List.Item title="exam 2" /> */}
+          </List.Accordion>
+        </List.Section>
+
+        {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
+
+        {userType !== "Student" && (
+          <FabGroup
+            actions={[
+              {
+                icon: "calendar-clock",
+                label: "times",
+                onPress: goToDatesGroup,
+              },
+            ]}
+          />
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
 // ====================================================================
 
+const Attendance = () => {
+  const { params } = useRoute();
+  const { group } = params;
+  const { dates = [] } = group;
+  return (
+    <SafeAreaView style={{ ...globalStyles.screen }}>
+      <NoRecords text="attendance" />
+    </SafeAreaView>
+  );
+};
+
+// ====================================================================
+
+const Material = () => {
+  const { params } = useRoute();
+  const { group } = params;
+  const { dates = [] } = group;
+  return (
+    <SafeAreaView style={{ ...globalStyles.screen }}>
+      <NoRecords text="material" />
+    </SafeAreaView>
+  );
+};
+
+// ====================================================================
+
 const renderScene = SceneMap({
   show: ShowGroupScreen,
   dates: ShowDatesGroupScreen,
+  material: Material,
+  attendance: Attendance,
 });
 
 // ====================================================================
@@ -152,14 +177,11 @@ export default function TabViewExample() {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "show", title: i18n.t("name") },
-    { key: "dates", title: i18n.t("DatesGroupScreen") },
-    // { key: "posts", title: i18n.t("posts") },
+    { key: "show", title: i18n.t("details") },
+    { key: "dates", title: i18n.t("dates") },
+    { key: "material", title: i18n.t("material") },
+    { key: "attendance", title: i18n.t("attendance") },
   ]);
-
-  // const onTabPress = (props) => {
-  //   console.log("hello", props);
-  // };
 
   return (
     <TabView
@@ -186,6 +208,9 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: wp(4),
     paddingVertical: wp(4),
+  },
+  body: {
+    alignItems: "center",
   },
   key: { fontWeight: "500" },
   row: { flexDirection: "row" },
@@ -223,5 +248,8 @@ const styles = StyleSheet.create({
   indicatorStyle: {
     height: hp(1),
     backgroundColor: theme.colors.lightgrey,
+  },
+  list: {
+    width: wp(95),
   },
 });

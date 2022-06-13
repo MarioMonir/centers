@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { SafeAreaView, View, ScrollView, StyleSheet } from "react-native";
-import { useRoute, useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import globalStyles from "../../../Theme/global.styles";
 import Button from "../../../Components/Form/Button";
 import { widthPercentageToDP as wp } from "react-native-responsive-screen";
@@ -10,11 +10,10 @@ import DateTimeRangeInput from "../../../Components/Form/DateTimeRangeInput";
 
 export default function DatesGroupScreen({}) {
   const { params } = useRoute();
-  const { id, group } = params;
-  const { navigate } = useNavigation();
+  const { group } = params;
   const [dates, setDates] = useState(group?.dates || []);
 
-  // ----------------------------------------------------------------
+  // --------------------------------------------------------
 
   const addDate = () => setDates([...dates, new Date()]);
 
@@ -28,7 +27,7 @@ export default function DatesGroupScreen({}) {
     newGroup.dates = dates;
   };
 
-  // ----------------------------------------------------------------
+  // --------------------------------------------------------
 
   return (
     <SafeAreaView style={{ ...globalStyles.screen, ...styles.container }}>
