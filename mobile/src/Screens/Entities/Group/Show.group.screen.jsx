@@ -23,15 +23,20 @@ import theme from "../../../Theme/paper.theme";
 import MyText from "../../../Components/MyText";
 import NoRecords from "../../../Components/NoRecords.screen";
 import Button from "../../../Components/Form/Button";
+import { useCreateMutation } from "../../../API/api";
+import Toast from "react-native-toast-message";
 
 // ====================================================================
 
 function ShowGroupScreen() {
-  const userType = useAppSelector((s) => s?.auth?.user?.userType);
+  // --------------------------------------
+
+  const { id: fromUserId, userType } = useAppSelector((s) => s?.auth?.user);
   const { params } = useRoute();
   const { id, group } = params;
   const { navigate } = useNavigation();
-  console.log({ group });
+
+  const [request] = useCreateMutation();
 
   // --------------------------------------
 
@@ -48,8 +53,6 @@ function ShowGroupScreen() {
 
   const goToDatesGroup = () => navigate("DatesGroupScreen", { id, group });
 
-  // --------------------------------------
-
   if (isLoading || error) {
     return <LoadingOrErrorScreen {...{ isLoading, error }} />;
   }
@@ -63,8 +66,29 @@ function ShowGroupScreen() {
     groupType,
     courseName,
     paymentCost,
+    ownerUserId,
     dates = [],
   } = group;
+
+  // --------------------------------------
+
+  const requestToJoinGroup = async () => {
+    const res = await request({
+      entity: "request",
+      body: {
+        fromUserId,
+        toUserId: ownerUserId,
+        toGroupId: id,
+      },
+    }).unwrap();
+
+    if (res?.id) {
+      Toast.show({
+        type: "success",
+        text1: "your request has been successfully sent",
+      });
+    }
+  };
 
   // --------------------------------------
 
@@ -157,7 +181,7 @@ function ShowGroupScreen() {
           text="request"
           style={styles.btn}
           icon="account-arrow-left"
-          onPress={() => console.log("req")}
+          onPress={requestToJoinGroup}
         />
       ) : (
         <FabGroup

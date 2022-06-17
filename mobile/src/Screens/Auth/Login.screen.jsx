@@ -36,8 +36,6 @@ export default function LoginScreen() {
 
   // -------------------------------------
 
-  // console.log({ data, error, isLoading });
-
   useEffect(() => {
     (async () => {
       if (data && data?.user && data?.accessToken) {
