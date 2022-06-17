@@ -26,10 +26,12 @@ import {
 import ListAttendance from "../attendance/list.attendance";
 import ListEnrolment from "../enrolment/list.enrolment";
 import ListFlow from "../flow/list.flow";
+// import UploadVideo from "../material/UploadVideo";
 import ListPost from "../post/list.post";
 import ShowUser from "../user/show.user";
 import GroupCard from "./components/GroupCard";
-
+import Video from "../../twitchApi/Video";
+import { getAccessToken } from "../../twitchApi/authorization";
 // =======================================================
 
 const loggedInUserId = 1;
@@ -49,12 +51,20 @@ export default function ShowGroup() {
   });
 
   // ------------------------------------------------
+  const lectureDatesSize = group?.actualLectureDates?.length;
+  const latestLectureDate = group?.actualLectureDates[lectureDatesSize - 1];
+  let currentLectureNumber = group?.currentLectureNumber;
+
+  //4 hours difference
+  if (new Date() - new Date(latestLectureDate) > 12 * 60 * 60 * 1000) {
+    currentLectureNumber += 1;
+  }
 
   const [formData, setFormData] = useState({
     studentId: null,
     homework: null,
     homeworkNotes: "",
-    lectureNumber: 1,
+    currentLectureNumber: currentLectureNumber,
   });
 
   const [amount, setAmount] = useState("");
@@ -63,26 +73,12 @@ export default function ShowGroup() {
 
   // ------------------------------------------------
 
-  const lectureDatesSize = group?.actualLectureDates?.length;
-  console.log({ lectureDatesSize });
   useEffect(() => {
-    if (
-      !formData.lectureNumber &&
-      (lectureDatesSize || lectureDatesSize === 0)
-    ) {
-      setFormData({
-        ...formData,
-        lectureNumber:
-          lectureDatesSize > 0
-            ? new Date() -
-                new Date(group?.actualLectureDates[lectureDatesSize - 1]) <
-              24 * 60 * 60 * 1000
-              ? lectureDatesSize
-              : lectureDatesSize + 1
-            : 1,
-      });
-    }
-  }, [lectureDatesSize]);
+    setFormData({
+      ...formData,
+      currentLectureNumber: currentLectureNumber || 1,
+    });
+  }, [currentLectureNumber]);
 
   // ------------------------------------------------
 
@@ -111,7 +107,7 @@ export default function ShowGroup() {
                 ...formData,
                 groupId: group?.id,
                 studentId: parseInt(formData.studentId),
-                lectureNumber: parseInt(formData.lectureNumber),
+                currentLectureNumber: parseInt(formData.currentLectureNumber),
               },
               flow: {
                 fromUserId: parseInt(formData.studentId),
@@ -127,7 +123,7 @@ export default function ShowGroup() {
                 ...formData,
                 groupId: group?.id,
                 studentId: parseInt(formData.studentId),
-                lectureNumber: parseInt(formData.lectureNumber),
+                currentLectureNumber: parseInt(formData.currentLectureNumber),
               },
             },
     });
@@ -145,7 +141,7 @@ export default function ShowGroup() {
   return (
     <ShowBase /*title={group.courseName}*/ hasEdit={false}>
       <div style={{ display: "flex" }}>
-        <div style={{ width: "75%", minWidth: 850 }}>
+        <div style={{ width: "77%", minWidth: 850 }}>
           <TabbedShowLayout>
             <Tab label="Timeline" icon={<TimelineIcon />}>
               <ListPost groupId={group?.id} />
@@ -157,7 +153,7 @@ export default function ShowGroup() {
               path="attendance/create"
             >
               <div style={{ display: "flex" }}>
-                <div style={{ width: "50%", padding: 10 }}>
+                <div style={{ width: "50%", padding: 5 }}>
                   <Card
                     sx={{
                       padding: 3,
@@ -173,8 +169,8 @@ export default function ShowGroup() {
                       label="Lecture Auto-Numbering"
                       type="number"
                       variant="outlined"
-                      name="lectureNumber"
-                      value={formData.lectureNumber}
+                      name="currentLectureNumber"
+                      value={formData.currentLectureNumber}
                       onChange={handleFormChange}
                     />
                     <Autocomplete
@@ -256,7 +252,7 @@ export default function ShowGroup() {
                   </Card>
                 </div>
                 {formData?.studentId ? (
-                  <div style={{ width: "50%", padding: 10 }}>
+                  <div style={{ width: "50%", padding: 5 }}>
                     <Typography variant="h6" /*sx={{ padding: 2 }}*/>
                       Student Info
                     </Typography>
@@ -266,7 +262,7 @@ export default function ShowGroup() {
               </div>
               {formData?.studentId ? (
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "50%", padding: 10 }}>
+                  <div style={{ width: "50%", padding: 5 }}>
                     <Typography variant="h6" /*sx={{ padding: 2 }}*/>
                       Attendance Record
                     </Typography>
@@ -278,7 +274,7 @@ export default function ShowGroup() {
                     />
                   </div>
 
-                  <div style={{ width: "50%", padding: 10 }}>
+                  <div style={{ width: "50%", padding: 5 }}>
                     <Typography variant="h6" /*sx={{ padding: 2 }}*/>
                       Payment Record
                     </Typography>
@@ -300,7 +296,10 @@ export default function ShowGroup() {
               <ListEnrolment groupId={group?.id} />
             </Tab>
 
-            <Tab label="Materials" icon={<ClassIcon />} path="material"></Tab>
+            <Tab label="Materials" icon={<ClassIcon />} path="material">
+              <Video token={getAccessToken.token} />
+            </Tab>
+
             <Tab label="Settings" icon={<SettingsIcon />} path="settings"></Tab>
           </TabbedShowLayout>
         </div>

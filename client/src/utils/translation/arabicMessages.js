@@ -82,7 +82,7 @@ const arabicMessages = {
       groupType: {
         InPerson: "حضور",
         Online: "اونلاين",
-        Hypred: "هجين",
+        hybrid: "هجين",
       },
       paymentType: {
         Lecture: "حصة",

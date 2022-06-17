@@ -6,10 +6,12 @@ import {
   EditButton,
   List,
   NumberField,
+  NumberInput,
   ReferenceField,
   ResourceContextProvider,
   ShowButton,
   TextField,
+  TextInput,
 } from "react-admin";
 import Actions from "../../reactAdmin/Actions";
 import Typography from "@mui/material/Typography";
@@ -17,15 +19,20 @@ import Typography from "@mui/material/Typography";
 // ------------------------------------------------
 
 const ListAttendance = ({ studentId, groupId }) => {
+  const filters = [
+    <TextInput source="q" label="Search" alwaysOn />,
+    <NumberInput source="lectureNumber" />,
+  ];
   return (
     <ResourceContextProvider value="attendance">
       <List
         // hasCreate={studentId ? false : true}
         // exporter={studentId ? false : true}
-        actions={studentId ? false : true}
-        filter={{ studentId: studentId, groupId: groupId }}
+        actions={false}
+        filter={studentId ? { studentId: studentId, groupId: groupId } : {}}
+        filters={studentId ? null : filters}
       >
-        <Datagrid bulkActionButtons={false}>
+        <Datagrid bulkActionButtons={studentId ? false : true}>
           {/* <NumberField source="studentId" label="Student code" />
           <ReferenceField
             source="studentId"

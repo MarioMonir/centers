@@ -21,8 +21,15 @@ const ListFlow = ({ studentId }) => {
         // hasCreate={studentId ? false : true}
         // exporter={studentId ? false : true}
         actions={studentId ? false : true}
-        filter={{ fromUserId: studentId, toUserId: studentId }}
-        sort={{ field: 'createdAt', order: 'DESC' }}
+        filter={{
+          OR: { OR: [{ fromUserId: studentId }, { toUserId: studentId }] },
+          // OR: [
+          //   { fromUserId: { equals: studentId } },
+          //   { toUserId: { equals: studentId } },
+          // ],
+          // fromUserId: studentId,
+        }}
+        sort={{ field: "createdAt", order: "DESC" }}
       >
         {/* <Typography variant="h5" sx={{ padding: 2 }}>
           Payment Record

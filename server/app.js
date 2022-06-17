@@ -7,6 +7,7 @@ import errors from "./src/Utils/Error/errorHandler.middlerware";
 import swagger from "./src/Utils/SwaggerDocs/swagger.middleware";
 import authRouter from "./src/Utils/Auth/Passport/passport.router.auth";
 import passportAuthenticate from "./src/Utils/Auth/Passport/passport.auth";
+import vimeoRouter from "./src/vimeo/vimeoRouter";
 
 // ------------------------------------------------------
 
@@ -34,6 +35,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// ------------------------------------------------------
+
+app.use(vimeoRouter);
 
 // ------------------------------------------------------
 

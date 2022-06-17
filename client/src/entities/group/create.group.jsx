@@ -80,7 +80,7 @@ export default function CreateGroup() {
           choices={[
             { id: "InPerson", name: "resources.group.groupType.InPerson" },
             { id: "Online", name: "resources.group.groupType.Online" },
-            { id: "Hypred", name: "resources.group.groupType.Hypred" },
+            { id: "hybrid", name: "resources.group.groupType.hybrid" },
           ]}
           variant="outlined"
           source="groupType"
@@ -88,7 +88,7 @@ export default function CreateGroup() {
         <FormDataConsumer>
           {({ formData, ...rest }) =>
             (formData.groupType === "InPerson" ||
-              formData.groupType === "Hypred") &&
+              formData.groupType === "hybrid") &&
             loggedInUser.userType === "Teacher" && (
               <TextInput variant="outlined" source="location" />
             )

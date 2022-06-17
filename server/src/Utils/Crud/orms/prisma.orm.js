@@ -20,6 +20,7 @@ const prismaCrud = (model) => ({
   // --------------------------------------------
 
   getList: async ({ filter, limit, offset, order }) => {
+    console.log({ filter });
     const count = prisma[model].count({
       where: filter,
     });

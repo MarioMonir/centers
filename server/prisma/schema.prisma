@@ -64,24 +64,26 @@ model UserRelation {
 
 model Group {
   //common
-  id               Int         @id @default(autoincrement())
-  courseName       String
-  level            String
-  groupType        GroupType
-  paymentType      PaymentType @default(Lecture)
-  numberOfLectures Int? // if paymentType is Month
-  paymentCost      Float       @default(0)
-  public           Boolean     @default(true)
+  id                       Int         @id @default(autoincrement())
+  courseName               String
+  level                    String
+  groupType                GroupType
+  paymentType              PaymentType @default(Lecture)
+  numberOfLecturesPerMonth Int? // if paymentType is Month, null for others
+  paymentCost              Float       @default(0)
+  public                   Boolean     @default(true)
+  currentLectureNumber     Int         @default(1)
+  actualLectureDates       Json        @default("[]") // list of lecture dates 
+
 
   owner         User @relation("owner", fields: [ownerUserId], references: [id])
   ownerUserId   Int
   teacher       User @relation("teacher", fields: [teacherUserId], references: [id])
   teacherUserId Int
 
-  dates              Json? // [ {"day":"", "from":"", "to":"", date:""(for non-weekly lectures)} ]
-  actualLectureDates Json  @default("[]") // list of lecture dates 
-  lectures           Json?
-  exams              Json?
+  dates    Json? // [ {"day":"", "from":"", "to":"", date:""(for non-weekly lectures)} ]
+  lectures Json?
+  exams    Json?
 
   //if groupOwner is teacher
   location String?
@@ -127,16 +129,20 @@ model Flow {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Attendance {
-  id            Int             @id @default(autoincrement())
-  group         Group           @relation(fields: [groupId], references: [id])
-  student       User            @relation(fields: [studentId], references: [id])
-  groupId       Int
-  studentId     Int
+  id            Int @id @default(autoincrement())
+  lectureNumber Int
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
+  student   User @relation(fields: [studentId], references: [id])
+  studentId Int
+
   homework      HomeworkStatus?
   homeworkNotes String?
-  lectureNumber Int
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @default(now()) @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([groupId, studentId, lectureNumber])
 }
@@ -149,10 +155,10 @@ model Enrolment {
   student              User     @relation(fields: [studentId], references: [id])
   groupId              Int
   studentId            Int
-  paymentCost          Float? // for special students
-  centerCostPerLecture Float? // for special students
+  paymentCost          Float? // for special students, null for others
+  centerCostPerLecture Float? // for special students, null for others
   balance              Float    @default(0)
-  exams                Json?
+  exams                Json? // exams scores for every student 
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now()) @updatedAt
 

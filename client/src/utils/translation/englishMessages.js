@@ -83,7 +83,7 @@ const allEnglishMessages = {
       groupType: {
         InPerson: "In Person",
         Online: "Online",
-        Hypred: "Hypred",
+        hybrid: "hybrid",
       },
       paymentType: {
         Lecture: "Lecture",
