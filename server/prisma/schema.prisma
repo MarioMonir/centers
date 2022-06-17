@@ -98,6 +98,7 @@ model Group {
   enrolment  Enrolment[]
   Post       Post[]
   Flow       Flow[]
+  Request    Request[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -162,18 +163,22 @@ model Enrolment {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Request {
-  id            Int           @id @default(autoincrement())
-  fromUser      User          @relation("requestFromUser", fields: [fromUserId], references: [id])
-  toUser        User          @relation("requestToUser", fields: [toUserId], references: [id])
-  fromUserId    Int
-  toUserId      Int
+  id         Int  @id @default(autoincrement())
+  fromUser   User @relation("requestFromUser", fields: [fromUserId], references: [id])
+  fromUserId Int
+
+  toUser   User? @relation("requestToUser", fields: [toUserId], references: [id])
+  toUserId Int?
+
+  toGroup   Group? @relation(fields: [toGroupId], references: [id])
+  toGroupId Int?
+
   requestType   RequestType   @default(Student_Group)
   requestStatus RequestStatus @default(Pending)
   note          String?
   info          Json?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now()) @updatedAt
-
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

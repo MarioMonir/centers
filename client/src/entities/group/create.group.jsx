@@ -37,7 +37,7 @@ export default function CreateGroup() {
     return {
       ...data,
       ownerUserId: user.id,
-      teacherUserId: user === "Teacher" ? user.userId : data.teacherUserId,
+      teacherUserId: user.userType === "Teacher" ? user.id : data.teacherUserId,
     };
   };
 
@@ -46,7 +46,7 @@ export default function CreateGroup() {
   return (
     <Create redirect="show" transform={transform}>
       <SimpleForm>
-        {user.userType !== "Teacher" && (
+        {user?.userType !== "Teacher" && (
           <ReferenceInput
             source="teacherUserId"
             reference="user"
