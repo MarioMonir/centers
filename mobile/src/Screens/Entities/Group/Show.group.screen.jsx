@@ -109,6 +109,18 @@ function ShowGroupScreen() {
 
         <List.Section title="" style={styles.list}>
           <List.Accordion
+            title={i18n.t("DatesGroupScreen")}
+            left={(props) => <List.Icon {...props} icon="ab-testing" />}
+          >
+            <List.Item title={i18n.t("from") + "  " + i18n.t("to")} />
+            <List.Item title={i18n.t("no") + " " + i18n.t("exams")} />
+
+            {/* <List.Item title="exam 2" /> */}
+          </List.Accordion>
+        </List.Section>
+
+        <List.Section title="" style={styles.list}>
+          <List.Accordion
             title={i18n.t("exams")}
             left={(props) => <List.Icon {...props} icon="ab-testing" />}
           >
