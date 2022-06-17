@@ -13,7 +13,6 @@ const loggedInUserId = 1;
 // ------------------------------------------------
 
 const GroupCard = (record) => {
-  // console.log(record);
   const translate = useTranslate();
   const [theme] = useTheme();
   return (
@@ -57,12 +56,13 @@ const GroupCard = (record) => {
           <Typography color="text.secondary" sx={{ paddingTop: 1 }}>
             {translate("resources.group.labels.weeklyDates")}
           </Typography>
-          {record?.dates?.map((date, index) => (
-            <Typography key={index} variant="body2">
-              {/* {translate("weekDays." + date.day)} {date.from} - {date.to} */}
-              {date.day} {date.from} - {date.to}
-            </Typography>
-          ))}
+          {Array.isArray(record?.dates) &&
+            record?.dates?.map((date, index) => (
+              <Typography key={index} variant="body2">
+                {/* {translate("weekDays." + date.day)} {date.from} - {date.to} */}
+                {date.day} {date.from} - {date.to}
+              </Typography>
+            ))}
         </CardContent>
       </CardActionArea>
     </Card>

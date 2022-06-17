@@ -40,7 +40,6 @@ const loggedInUserId = 1;
 
 export default function ShowGroup() {
   const { record: group } = useShowController();
-  console.log({ group });
 
   // ------------------------------------------------
 
@@ -68,8 +67,6 @@ export default function ShowGroup() {
   });
 
   const [amount, setAmount] = useState("");
-
-  console.log({ formData });
 
   // ------------------------------------------------
 
@@ -146,6 +143,8 @@ export default function ShowGroup() {
             <Tab label="Timeline" icon={<TimelineIcon />}>
               <ListPost groupId={group?.id} />
             </Tab>
+
+            {/* ----------------------------------------------------- */}
 
             <Tab
               label="Take Attendance"
@@ -284,6 +283,8 @@ export default function ShowGroup() {
               ) : null}
             </Tab>
 
+            {/* ----------------------------------------------------- */}
+
             <Tab
               label="Attendance Record"
               icon={<CheckBoxIcon />}
@@ -292,13 +293,17 @@ export default function ShowGroup() {
               <ListAttendance />
             </Tab>
 
+            {/* ----------------------------------------------------- */}
+
             <Tab label="Enrolments" icon={<PeopleIcon />} path="enrolment">
               <ListEnrolment groupId={group?.id} />
             </Tab>
 
-            <Tab label="Materials" icon={<ClassIcon />} path="material">
-              <Video token={getAccessToken.token} />
-            </Tab>
+            {/* ----------------------------------------------------- */}
+
+            <Tab label="Materials" icon={<ClassIcon />} path="material"></Tab>
+
+            {/* ----------------------------------------------------- */}
 
             <Tab label="Settings" icon={<SettingsIcon />} path="settings"></Tab>
           </TabbedShowLayout>

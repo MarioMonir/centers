@@ -2,7 +2,7 @@
 //import { create } from "jss";
 //import rtl from "jss-rtl";
 import React from "react";
-import MyAdmin from "./reactAdmin/MyAdmin";
+import MyAdmin from "./reactAdmin/components/MyAdmin";
 // ------------------------------------------------
 
 // Configure JSS

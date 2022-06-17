@@ -22,7 +22,7 @@ import levels from "../../utils/levels";
 
 // ------------------------------------------------
 
-const loggedInUser = { id: 1, userType: "Center" };
+const user = JSON.parse(localStorage.getItem("user"));
 
 const Levels = JSON.parse(localStorage.getItem("levels")) || levels;
 
@@ -30,23 +30,28 @@ const Levels = JSON.parse(localStorage.getItem("levels")) || levels;
 
 export default function CreateGroup() {
   const translate = useTranslate();
-  // const [dates, setDates] = React.useState({});
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  const transform = (data) => {
+    return {
+      ...data,
+      ownerUserId: user.id,
+      teacherUserId: user === "Teacher" ? user.userId : data.teacherUserId,
+    };
+  };
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   return (
-    <Create
-      redirect="show"
-      transform={(data) =>
-        loggedInUser.userType === "Teacher"
-          ? {
-              ...data,
-              ownerUserId: loggedInUser.id,
-              teacherUserId: loggedInUser.id,
-            }
-          : { ...data, ownerUserId: loggedInUser.id }
-      }
-    >
+    <Create redirect="show" transform={transform}>
       <SimpleForm>
-        {loggedInUser.userType !== "Teacher" && (
-          <ReferenceInput source="teacherUserId" reference="user">
+        {user.userType !== "Teacher" && (
+          <ReferenceInput
+            source="teacherUserId"
+            reference="user"
+            filter={{ userType: "Teacher" }}
+          >
             <AutocompleteInput
               label={translate("resources.group.labels.teacher")}
               sx={{ minWidth: 235 }}
@@ -56,7 +61,6 @@ export default function CreateGroup() {
           </ReferenceInput>
         )}
         <TextInput source="courseName" variant="outlined" />
-
         <AutocompleteInput
           sx={{ minWidth: 235 }}
           variant="outlined"
@@ -88,8 +92,8 @@ export default function CreateGroup() {
         <FormDataConsumer>
           {({ formData, ...rest }) =>
             (formData.groupType === "InPerson" ||
-              formData.groupType === "hybrid") &&
-            loggedInUser.userType === "Teacher" && (
+              formData.groupType === "Hypred") &&
+            user.userType === "Teacher" && (
               <TextInput variant="outlined" source="location" />
             )
           }
@@ -138,7 +142,7 @@ export default function CreateGroup() {
         <FormDataConsumer>
           {({ formData, ...rest }) =>
             formData.paymentType &&
-            loggedInUser.userType === "Center" && (
+            user.userType === "Center" && (
               <NumberInput
                 variant="outlined"
                 source="centerCostPerLecture"

@@ -13,11 +13,12 @@ import {
   TextField,
   TextInput,
 } from "react-admin";
-import Actions from "../../reactAdmin/Actions";
+import Actions from "../../reactAdmin/components/Actions";
 import Typography from "@mui/material/Typography";
 
 // ------------------------------------------------
 
+<<<<<<< HEAD
 const ListAttendance = ({ studentId, groupId }) => {
   const filters = [
     <TextInput source="q" label="Search" alwaysOn />,
@@ -34,6 +35,21 @@ const ListAttendance = ({ studentId, groupId }) => {
       >
         <Datagrid bulkActionButtons={studentId ? false : true}>
           {/* <NumberField source="studentId" label="Student code" />
+=======
+export default function ListAttendance({ studentId, groupId }) {
+  return (
+    <ResourceContextProvider value="attendance">
+      <List
+        hasCreate={studentId ? false : true}
+        exporter={studentId ? false : true}
+        actions={studentId ? false : true}
+        filter={{ studentId: studentId, groupId: groupId }}
+      >
+        {/* <Datagrid>
+        </Datagrid> */}
+        {/* <Datagrid>
+          <NumberField source="studentId" label="Student code" />
+>>>>>>> a8580fc43611045c177bbff3d68bae6c22a66692
           <ReferenceField
             source="studentId"
             label="Student name"
@@ -41,26 +57,48 @@ const ListAttendance = ({ studentId, groupId }) => {
             link="show"
           >
             <TextField source="name" />
-          </ReferenceField> */}
+          </ReferenceField>
+          <NumberField
+            source="balance"
+            options={{ style: "currency", currency: "EGP" }}
+          />
 
+          <TextField source="lectureCost" />
+          <TextField source="centerCost" />
+
+       
+        </Datagrid> */}
+      </List>
+
+      {/* <List
+      // hasCreate={studentId ? false : true}
+      // exporter={studentId ? false : true}
+      // actions={studentId ? false : true}
+      // filter={{ studentId: studentId, groupId: groupId }}
+      >
+        <Datagrid bulkActionButtons={false}>
           <NumberField source="id" />
           <DateField source="createdAt" showTime />
           <NumberField source="lectureNumber" />
 
           <TextField source="homework" />
           <TextField source="homeworkNotes" />
-
-          {/* <Actions>
-            <ShowButton />
-            <EditButton />
-            <DeleteButton />
-          </Actions> */}
         </Datagrid>
-      </List>
+      </List> */}
     </ResourceContextProvider>
   );
-};
+}
 
 // ------------------------------------------------
 
-export default ListAttendance;
+{
+  /* <NumberField source="studentId" label="Student code" />
+          <ReferenceField
+            source="studentId"
+            label="Student name"
+            reference="user"
+            link="show"
+          >
+            <TextField source="name" />
+          </ReferenceField> */
+}

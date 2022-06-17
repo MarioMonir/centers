@@ -9,13 +9,13 @@ import Fab from "../../../Components/Fab";
 
 // ====================================================================
 
-export default function ShowEnrolmentScreen() {
+export default function ShowEnrollmentScreen() {
   const { navigate } = useNavigation();
   const { params } = useRoute();
   const { id, entity } = params;
   const { data } = useGetOneQuery({ entity, id });
   const goToEditEntity = () =>
-    navigate("EditEnrolmentScreen", { id, entity, data });
+    navigate("EditEnrollmentScreen", { id, entity, data });
 
   // --------------------------------------
 

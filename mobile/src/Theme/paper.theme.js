@@ -27,13 +27,17 @@ const fontConfig = {
 
 const theme = {
   ...DefaultTheme,
+  roundness: 15,
   colors: {
     ...DefaultTheme.colors,
     primary: "#0AA1DD",
     accent: "green",
     accent: "#0AA1DD",
+    white: "#FFFFFF",
+    grey: "rgb(180, 180, 184)",
+    lightgrey: "rgb(199, 199, 204)",
   },
-  fonts: configureFonts(fontConfig),
+  // fonts: configureFonts(fontConfig),
 };
 
 // -------------------------------------------------

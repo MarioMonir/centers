@@ -11,15 +11,15 @@ export const apiSlice = createApi({
 
   baseQuery: fetchBaseQuery({
     baseUrl: config.API_URL,
-    prepareHeaders: async (headers, { getState }) => {
-      //   const token = getState()?.user?.access_token;
-
-      //   if (token) {
-      //     headers.set("authorization", `Bearer ${token}`);
-      //   }
-
+    prepareHeaders: async (headers, { getState, endpoint }) => {
       headers.set("Content-Type", "application/json");
       headers.set("Accept", "application/json");
+      console.log("query ", endpoint);
+
+      const accessToken = getState()?.auth?.accessToken;
+      if (accessToken) {
+        headers.set("Authorization", `Bearer ${accessToken}`);
+      }
       return headers;
     },
   }),
@@ -34,4 +34,9 @@ export const {
   useGetOneQuery,
   useUpdateMutation,
   useDeleteOneQuery,
+  useLoginMutation,
+  useRegisterMutation,
+  useFredyQuery,
+  useLazyMeQuery,
+  useSearchQuery,
 } = apiSlice;

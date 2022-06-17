@@ -1,12 +1,10 @@
 import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer } from "@react-navigation/native";
-import HomeScreen from "../Screens/Home/Home.screen";
-import MyAppBar from "../Components/MyAppBar";
-import { capitalize } from "../Utils/string.util";
 import LoginScreen from "../Screens/Auth/Login.screen";
 import RegisterScreen from "../Screens/Auth/Register.screen";
+import MyStatusBar from "../Components/MyStatusBar";
+
+// ==============================================================
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +15,8 @@ const stackrops = {
 };
 
 const screenOptions = {
-  header: (props) => <MyAppBar {...props} />,
+  headerShown: true,
+  header: (props) => <MyStatusBar {...props} />,
 };
 
 // ==============================================================
@@ -25,8 +24,16 @@ const screenOptions = {
 export default function UnAuthorizedNavigator() {
   return (
     <Stack.Navigator {...stackrops}>
-      <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="Regiseter" component={RegisterScreen} />
+      <Stack.Screen
+        name="login"
+        component={LoginScreen}
+        options={screenOptions}
+      />
+      <Stack.Screen
+        name="register"
+        component={RegisterScreen}
+        options={screenOptions}
+      />
     </Stack.Navigator>
   );
 }

@@ -6,7 +6,7 @@ import {
   NumberField,
   ShowButton,
 } from "react-admin";
-import Actions from "../../reactAdmin/Actions";
+import Actions from "../../reactAdmin/components/Actions";
 
 // ------------------------------------------------
 

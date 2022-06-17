@@ -35,8 +35,6 @@ export default function ListUserScreen() {
 
   // --------------------------------------
 
-  console.log({ data });
-
   return (
     <SafeAreaView style={globalStyles.screen}>
       <FlatList

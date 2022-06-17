@@ -9,10 +9,10 @@ import Fab from "../../../Components/Fab";
 
 // ====================================================================
 
-export default function ListEnrolmentScreen() {
-  const entity = "enrolment";
+export default function ListEnrollmentScreen() {
+  const entity = "enrollment";
   const { navigate } = useNavigation();
-  const goToCreateEntity = () => navigate("CreateEnrolmentScreen");
+  const goToCreateEntity = () => navigate("CreateEnrollmentScreen");
 
   // --------------------------------------
 

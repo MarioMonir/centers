@@ -1,4 +1,37 @@
+import { stringify } from "query-string";
+
+// =================================================================
+
 const endpoints = (builder) => ({
+  // ------------------------------------------------
+
+  login: builder.mutation({
+    query: ({ email, password }) => ({
+      url: "/oauth/login",
+      method: "POST",
+      body: { email, password },
+    }),
+  }),
+
+  // ------------------------------------------------
+
+  register: builder.mutation({
+    query: ({ email, password, name, userType }) => ({
+      url: "/oauth/register",
+      method: "POST",
+      body: { email, password, name, userType },
+    }),
+  }),
+
+  // ------------------------------------------------
+
+  me: builder.query({
+    query: () => ({
+      url: "/oauth/me",
+      method: "GET",
+    }),
+  }),
+
   // ------------------------------------------------
 
   create: builder.mutation({
@@ -12,10 +45,17 @@ const endpoints = (builder) => ({
   // ------------------------------------------------
 
   getList: builder.query({
-    query: ({ entity }) => ({
-      url: `/${entity}`,
-      method: "GET",
-    }),
+    query: ({ entity, filter }) => {
+      const query = {
+        // sort: JSON.stringify(["id", sortBy || "ASC"]),
+        // range: JSON.stringify([rangeStart, rangeEnd]),
+        filter: JSON.stringify(filter),
+      };
+      const queryParams = stringify(query);
+      const urlQuery = queryParams ? `?${queryParams}` : "";
+      const url = `/${entity}/${urlQuery}`;
+      return { url, method: "GET" };
+    },
   }),
 
   // ------------------------------------------------
@@ -44,6 +84,20 @@ const endpoints = (builder) => ({
       url: `/${entity}/${id}`,
       method: "DELETE",
     }),
+  }),
+
+  // ------------------------------------------------
+
+  search: builder.query({
+    query: ({ entity, filter }) => {
+      const query = {
+        // sort: JSON.stringify(["id", sortBy || "ASC"]),
+        // range: JSON.stringify([rangeStart, rangeEnd]),
+        filter: JSON.stringify(filter),
+      };
+      const url = `/${entity}/?${stringify(query)}`;
+      return { url, method: "GET" };
+    },
   }),
 
   // ------------------------------------------------

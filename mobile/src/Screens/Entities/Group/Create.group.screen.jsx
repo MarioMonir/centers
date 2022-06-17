@@ -1,99 +1,88 @@
 import React from "react";
-import { SafeAreaView, View } from "react-native";
-import MyText from "../../../Components/MyText";
+import { SafeAreaView } from "react-native";
 import globalStyles from "../../../Theme/global.styles.js";
-import { Wizard, useWizard } from "react-use-wizard";
-import MyButton from "../../../Components/MyButton";
+import Form from "../../../Components/Form/Form";
+import Input from "../../../Components/Form/Input";
+import Select from "../../../Components/Form/Select";
+import {
+  groupTypes,
+  paymentTypes,
+  courses,
+} from "../../../Config/constants.js";
+import { useCreateMutation } from "../../../API/api.js";
+import { useAppSelector } from "../../../Store/redux.hooks";
+import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 // ===========================================================
-
-const styles = {
-  width: 300,
-  height: 300,
-  justifyContent: "center",
-  alignItems: "center",
-};
-
-// ===========================================================
-
-const Step1 = () => {
-  return (
-    <View style={{ backgroundColor: "lightpink", ...styles }}>
-      <MyText text="Step 1" />
-    </View>
-  );
-};
-
-// =======================================================
-
-const Step2 = () => {
-  return (
-    <View style={{ backgroundColor: "lightgreen", ...styles }}>
-      <MyText text="Step 2" />
-    </View>
-  );
-};
-
-// =======================================================
-
-const Step3 = () => {
-  return (
-    <View style={{ backgroundColor: "lightblue", ...styles }}>
-      <MyText text="Step 3" />
-    </View>
-  );
-};
-
-// =======================================================
-
-const Header = () => {
-  const { nextStep, previousStep, isFirstStep, isLastStep } = useWizard();
-  return (
-    <View style={{ flexDirection: "row" }}>
-      {!isFirstStep && (
-        <MyButton onPress={previousStep}>
-          <MyText text="<- Back" />
-        </MyButton>
-      )}
-      {!isLastStep && (
-        <MyButton onPress={nextStep}>
-          <MyText text="Next ->" />
-        </MyButton>
-      )}
-    </View>
-  );
-};
-
-// =======================================================
-
-const Footer = () => {
-  const { nextStep, previousStep, isFirstStep, isLastStep } = useWizard();
-  return (
-    <View style={{ flexDirection: "row" }}>
-      {!isFirstStep && (
-        <MyButton onPress={previousStep}>
-          <MyText text="<- Back" />
-        </MyButton>
-      )}
-      {!isLastStep && (
-        <MyButton onPress={nextStep}>
-          <MyText text="Next ->" />
-        </MyButton>
-      )}
-    </View>
-  );
-};
-
-// =======================================================
 
 export default function CreateGroupScreen() {
+  // -------------------------------------
+
+  const [createGroup] = useCreateMutation();
+  const user = useAppSelector((s) => s?.auth?.user);
+  const { navigate } = useNavigation();
+
+  // -------------------------------------
+
+  const defaultValues = {
+    course: "",
+    cost: "",
+    location: "",
+    groupType: "",
+    paymentType: "",
+    ownerUserId: user?.id,
+    collectorUserId: user?.id,
+    teacherId: user?.id,
+  };
+
+  // -------------------------------------
+
+  const onSubmit = async (values) => {
+    const { data } = await createGroup({
+      entity: "group",
+      body: { ...values, cost: +values.cost },
+    });
+
+    if (data?.id) {
+      Toast.show({ type: "success", text1: "Successfully Created" });
+      return navigate("Tabs");
+    }
+  };
+
+  // -------------------------------------
+
   return (
     <SafeAreaView style={globalStyles.screen}>
-      <Wizard startIndex={0} header={<Header />} footer={<Footer />}>
-        <Step1 />
-        <Step2 />
-        <Step3 />
-      </Wizard>
+      <Form
+        {...{
+          // isLoading
+          defaultValues,
+          onSubmit,
+          title: "",
+          submitText: "addNewGroup",
+          submitIcon: "flask-plus-outline",
+        }}
+      >
+        <Select
+          name="course"
+          placeholder="chooseGroupSubject"
+          choices={courses}
+        />
+        <Select
+          name="groupType"
+          placeholder="chooseGroupType"
+          choices={groupTypes}
+        />
+        <Select
+          name="paymentType"
+          placeholder="choosePaymentType"
+          choices={paymentTypes}
+        />
+        <Input name="level" icon="book-account" />
+        <Input name="cost" icon="currency-usd" keyboardType="number-pad" />
+        <Input name="location" icon="google-maps" />
+      </Form>
     </SafeAreaView>
   );
 }

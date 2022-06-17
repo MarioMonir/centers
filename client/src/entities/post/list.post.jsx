@@ -5,8 +5,9 @@ import React, { useEffect, useState } from "react";
 import { useGetList } from "react-admin";
 import PostCard from "./components/PostCard";
 import CreatePost from "./create.post";
+import NoRecords from "../../reactAdmin/components/NoRecords";
 
-// ------------------------------------------------
+// =================================================================
 
 const ListPost = ({ groupId }) => {
   const [perPage, setPerPage] = useState(10);
@@ -38,9 +39,11 @@ const ListPost = ({ groupId }) => {
     <Box gap={2} display="grid" sx={{ maxWidth: 800 }}>
       <CreatePost {...{ refetch, groupId }} />
 
-      {posts?.map((record, index) => (
-        <PostCard key={record?.id} {...record} />
-      ))}
+      {posts?.length ? (
+        posts?.map((record) => <PostCard key={record?.id} {...record} />)
+      ) : (
+        <NoRecords />
+      )}
 
       <Button
         disabled={isLoading}
