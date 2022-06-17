@@ -94,7 +94,7 @@ export default function ShowGroup() {
   // ------------------------------------------------
 
   const handleAmountChange = (e) => {
-    setAmount(parseInt(e?.target?.value));
+    setAmount(parseFloat(e?.target?.value));
   };
   // ------------------------------------------------
 

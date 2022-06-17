@@ -145,17 +145,23 @@ model Attendance {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Enrolment {
-  id                   Int      @id @default(autoincrement())
-  group                Group    @relation(fields: [groupId], references: [id])
-  student              User     @relation(fields: [studentId], references: [id])
-  groupId              Int
-  studentId            Int
+  id Int @id @default(autoincrement())
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
+  student   User @relation(fields: [studentId], references: [id])
+  studentId Int
+
+  balance Float @default(0)
+
   paymentCost          Float? // for special students
   centerCostPerLecture Float? // for special students
-  balance              Float    @default(0)
-  exams                Json?
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now()) @updatedAt
+
+  exams Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([groupId, studentId])
 }
@@ -163,15 +169,16 @@ model Enrolment {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Request {
-  id         Int  @id @default(autoincrement())
+  id Int @id @default(autoincrement())
+
   fromUser   User @relation("requestFromUser", fields: [fromUserId], references: [id])
   fromUserId Int
 
-  toUser   User? @relation("requestToUser", fields: [toUserId], references: [id])
-  toUserId Int?
+  toUser   User @relation("requestToUser", fields: [toUserId], references: [id])
+  toUserId Int
 
-  toGroup   Group? @relation(fields: [toGroupId], references: [id])
-  toGroupId Int?
+  toGroup   Group @relation(fields: [toGroupId], references: [id])
+  toGroupId Int
 
   requestType   RequestType   @default(Student_Group)
   requestStatus RequestStatus @default(Pending)
@@ -179,6 +186,8 @@ model Request {
   info          Json?
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now()) @updatedAt
+
+  @@unique([fromUserId, toUserId, toGroupId])
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

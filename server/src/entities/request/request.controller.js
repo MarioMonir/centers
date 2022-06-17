@@ -1,106 +1,72 @@
 /**
- * Request Controller
+ * Entity Controller
  * -------------------------------------------------------
  *
- * you can recap the architecture of entity controller and how
- * to overide the controller and the service at _example
- *   ./src/entites/_example/_example.controller.js
- *   ./src/entites/_example/_example.service.js
+ * Entity controller have to be thin and the custom
+ * business logic have to be in service layer ( _example.service.js )
  *
- */
-
-// ---------------------------------------------
-
-/**
- * @swagger
+ * you can simply overide this controller for crud controller
+ * or custom routes controller as following :
+ * ------------------------------------------
  *
- * components:
- *   schemas:
- *     request:
- *       type: object
- *       properties:
- *         note:
- *           type: string
+ * - Crud Controller  :
+ * -------------------------
+ *  => getList , getOne , create , update , destroy
  *
- * tags:
- *   name: request
+ *  Note : promise have to be set in service (_example.service.js)
  *
- * /request:
- *   get:
- *    summary: Get all requests
- *    tags: [request]
- *    responses:
- *      200:
- *       schema:
- *         $ref: '#/components/schemas/request'
+ *  const crudController = {
+ *    ...prismaCrud("entitiy") ,
+ *    getList: ({ filter, limit, offset, order }) => Promise ,
+ *    getOne: id => Promise,
+ *    create: body => Promise,
+ *    update: (id, body) => Promise,
+ *    destroy: id => Promise ,
+ *  }
  *
- *   post:
- *     summary: Create request
- *     tags: [request]
- *     requestBody:
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/components/schemas/request'
- *     responses:
- *       201:
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/request'
+ * -------------------------------------------------------
  *
- * /request/{id}:
- *   get:
- *     summary: Get request by id
- *     tags: [request]
- *     parameters:
- *       - in: path
- *         name: id
- *     responses:
- *       200:
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/request'
+ * - Custom Routes Controller
+ * -----------------------------
  *
- *   put:
- *     summary: Edit request
- *     tags: [request]
- *     parameters:
- *       - in: path
- *         name: id
- *     responses:
- *       202:
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/request'
- *     requestBody:
- *       content:
- *           application/json:
- *             schema:
- *              $ref: '#/components/schemas/request'
+ * const customRoutesController = [
+ *   {
+ *     method: "get",   // http request ( get, post, put, delete, patch , ... )
+ *     path: "/mario",  // independent of eniity path
+ *     controller: (req, res, next) => {
+ *     let customRes = exampleService.mario();
+ *     res.status(202).json({ message: customRes });
+ *   },
+ *  },
+ * ];
  *
- *   delete:
- *     summary: Delete request
- *     tags: [request]
- *     parameters:
- *       - in: path
- *         name: id
- *     responses:
- *       202:
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/request'
+ * // ---------------------------------------------
  *
+ * export default crud("/example", crudController, customRoutesController);
  *
  */
 
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
+import requestService from "./request.service";
 
 // ------------------------------------------------------------------
 
-export default crud("/request", prismaCrud("request"));
+/**
+ *  NOTE :
+ *    for sure for this example the prisma curds will not work because
+ *    no model in database called exmaple
+ */
+
+// ------------------------------------------------------------------
+
+const crudController = {
+  ...prismaCrud("request"),
+
+  update: (id, body) => requestService.update(id, body),
+};
+
+// ------------------------------------------------------------------
+
+export default crud("/request", crudController);

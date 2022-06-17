@@ -1,34 +1,67 @@
+import { Box, Stack } from "@mui/material";
 import {
-  Datagrid,
-  DeleteButton,
-  EditButton,
-  List,
-  NumberField,
-  ShowButton,
-  TextField,
+  CreateButton,
+  ExportButton,
+  FilterButton,
+  FilterForm,
+  ListContextProvider,
+  NumberInput,
+  Pagination,
+  SelectInput,
+  SortButton,
+  useListController,
 } from "react-admin";
-import Actions from "../../reactAdmin/components/Actions";
+import RequestCard from "./components/RequestCard";
+
+// ------------------------------------------------
+
+const requestFilters = [
+  <NumberInput label="Search Student ID" source="fromUserId" alwaysOn />,
+
+  <SelectInput
+    choices={[
+      { id: "Pending", name: "Pending" },
+      { id: "Accpeted", name: "Accpeted" },
+      { id: "Refused", name: "Refused" },
+    ]}
+    source="requestStatus"
+  />,
+  // <TextInput source="level" size="small" />,
+];
+
+// ------------------------------------------------
+
+const ListToolbar = () => (
+  <Stack direction="row" justifyContent="space-between">
+    <FilterForm filters={requestFilters} />
+    <div style={{ paddingTop: 20 }}>
+      <FilterButton filters={requestFilters} />
+      <SortButton fields={["id", "toGroupId", "createdAt"]} />
+      <CreateButton />
+      <ExportButton />
+    </div>
+  </Stack>
+);
 
 // ------------------------------------------------
 
 export default function ListRequest(props) {
+  const listContext = useListController({
+    filter: { requestStatus: "Pending" },
+    sort: { field: "createdAt", order: "ASC" },
+  });
+
   return (
-    <List {...props}>
-      <Datagrid>
-        <NumberField source="id" />
-
-        <NumberField source="fromUserId" />
-
-        <NumberField source="toUserId" />
-
-        <TextField source="note" />
-
-        <Actions>
-          <ShowButton />
-          <EditButton />
-          <DeleteButton />
-        </Actions>
-      </Datagrid>
-    </List>
+    <ListContextProvider value={listContext}>
+      <ListToolbar />
+      <Box gap={2} display="grid">
+        {listContext?.data?.map((record) => (
+          <RequestCard {...record} key={record.id} />
+        ))}
+      </Box>
+      <Pagination />
+    </ListContextProvider>
   );
 }
+
+// ------------------------------------------------
