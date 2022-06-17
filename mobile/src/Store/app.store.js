@@ -15,11 +15,17 @@ import Toast from "react-native-toast-message";
 const rtkQueryErrorLogger = (api) => (next) => (action) => {
   if (isRejectedWithValue(action)) {
     let message = "Something went wrong";
+    let errRes = action?.payload;
 
-    if (action?.payload?.data?.message) {
-      message = action?.payload?.data?.message;
-    } else if (action?.payload?.error) {
-      message = action?.payload?.error;
+    // handle un-auth request
+    if (errRes.status === 401) {
+      return;
+    }
+
+    if (errRes?.data?.message) {
+      message = errRes.data?.message;
+    } else if (errRes?.error) {
+      message = errRes.error;
     }
 
     Toast.show({ type: "error", text1: "😔  " + message });
