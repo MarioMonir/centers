@@ -78,6 +78,7 @@ export default {
     material: "Material",
     attendance: "Attendance",
     exams: "Exams",
+    courseName: "Course Name",
   },
   // =================================================================
   ar: {
@@ -161,5 +162,6 @@ export default {
     material: "المنهج",
     attendance: "حضور",
     exams: "امتحانات",
+    courseName: "إسم المادة",
   },
 };

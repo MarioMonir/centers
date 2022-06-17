@@ -16,7 +16,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useGetOneQuery } from "../../../API/api";
 import globalStyles from "../../../Theme/global.styles";
 import FabGroup from "../../../Components/FabGroup";
-import { Card, List } from "react-native-paper";
+import { List } from "react-native-paper";
 import i18n from "i18n-js";
 import LoadingOrErrorScreen from "../../../Components/LoadingErrorEmpty.screen";
 import theme from "../../../Theme/paper.theme";
@@ -31,6 +31,7 @@ function ShowGroupScreen() {
   const { params } = useRoute();
   const { id, group } = params;
   const { navigate } = useNavigation();
+  console.log({ group });
 
   // --------------------------------------
 
@@ -56,11 +57,11 @@ function ShowGroupScreen() {
   // --------------------------------------
 
   const {
-    course = "as",
     paymentType,
     location,
     level,
     groupType,
+    courseName,
     paymentCost,
     dates = [],
   } = group;
@@ -86,24 +87,27 @@ function ShowGroupScreen() {
     { text1: i18n.t("level"), text2: level },
     { text1: i18n.t("cost"), text2: paymentCost },
     { text1: i18n.t("Teacher"), text2: teacher?.name },
+    { text1: i18n.t("courseName"), text2: courseName },
     ,
   ];
 
   // --------------------------------------
 
+  let name = `${i18n.t("details")} ${i18n.t("group")}  ${id} - ${courseName}`;
+
   return (
     <SafeAreaView style={{ ...globalStyles.screen }}>
       <ScrollView>
-        <View style={styles.body}>
-          <Card style={styles.card}>
-            <Card.Title title={`${id} - ${course}`} />
-            <Card.Content>
-              {dataToRender?.map((props, key) => (
-                <GroupRow key={key} {...props} />
-              ))}
-            </Card.Content>
-          </Card>
-        </View>
+        <List.Section title="" style={styles.list}>
+          <List.Accordion
+            title={name}
+            left={(props) => <List.Icon {...props} icon="calendar-clock" />}
+          >
+            {dataToRender?.map((props, key) => (
+              <GroupRow key={key} {...props} />
+            ))}
+          </List.Accordion>
+        </List.Section>
 
         {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
 
@@ -245,7 +249,7 @@ const styles = StyleSheet.create({
     paddingVertical: wp(4),
   },
   body: {
-    alignItems: "center",
+    // alignItems: "center",
   },
   key: { fontWeight: "500" },
   row: { flexDirection: "row" },
@@ -262,11 +266,11 @@ const styles = StyleSheet.create({
   },
   groupRow: {
     flexDirection: "row",
-    paddingVertical: hp(1.5),
+    paddingVertical: hp(2),
     marginVertical: hp(0.5),
-    paddingHorizontal: wp(1),
-    borderTopWidth: 1,
-    borderTopColor: theme.colors.lightgrey,
+    paddingHorizontal: wp(10),
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.lightgrey,
   },
   text: {
     width: wp(40),
