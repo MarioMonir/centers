@@ -102,7 +102,8 @@ CREATE TABLE `Enrolment` (
 CREATE TABLE `Request` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `fromUserId` INTEGER NOT NULL,
-    `toUserId` INTEGER NOT NULL,
+    `toUserId` INTEGER NULL,
+    `toGroupId` INTEGER NULL,
     `requestType` ENUM('Student_Group', 'Teacher_Center', 'Center_Teacher') NOT NULL DEFAULT 'Student_Group',
     `requestStatus` ENUM('Accpeted', 'Pending', 'Refused') NOT NULL DEFAULT 'Pending',
     `note` VARCHAR(191) NULL,
@@ -164,7 +165,10 @@ ALTER TABLE `Enrolment` ADD CONSTRAINT `Enrolment_groupId_fkey` FOREIGN KEY (`gr
 ALTER TABLE `Request` ADD CONSTRAINT `Request_fromUserId_fkey` FOREIGN KEY (`fromUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `Request` ADD CONSTRAINT `Request_toUserId_fkey` FOREIGN KEY (`toUserId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `Request` ADD CONSTRAINT `Request_toUserId_fkey` FOREIGN KEY (`toUserId`) REFERENCES `User`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Request` ADD CONSTRAINT `Request_toGroupId_fkey` FOREIGN KEY (`toGroupId`) REFERENCES `Group`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Post` ADD CONSTRAINT `Post_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

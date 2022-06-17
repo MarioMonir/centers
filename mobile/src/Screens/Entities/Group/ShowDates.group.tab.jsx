@@ -16,8 +16,9 @@ import globalStyles from "../../../Theme/global.styles";
 import { Card, Divider } from "react-native-paper";
 import theme from "../../../Theme/paper.theme";
 import MyText from "../../../Components/MyText";
-import i18n from "i18n-js";
 import NoRecords from "../../../Components/NoRecords.screen";
+import i18n from "i18n-js";
+// import { useCreateMutation } from "../../../API/api";
 
 // ====================================================================
 
@@ -25,6 +26,9 @@ export default function ShowDatesGroupScreen() {
   const { params } = useRoute();
   const { group } = params;
   const { dates = [] } = group;
+
+  // const [create] = useCreateMutation();
+  // const [requestGroup, { data: requestRes, isLoading, error }] = useCreate();
 
   // --------------------------------------
 
@@ -35,14 +39,18 @@ export default function ShowDatesGroupScreen() {
       Alert.alert("Request Group", "your request has been sent to ", [
         // {
         //   text: "Ask me later",
-        //   onPress: () => console.log("Ask me later pressed"),
         // },
         // {
         //   text: "Cancel",
-        //   onPress: () => console.log("Cancel Pressed"),
         //   style: "cancel",
         // },
-        { text: "OK", onPress: () => console.log("OK Pressed") },
+        {
+          text: i18n.t("yes"),
+          onPress: () => {
+            // requestGroup({});
+          },
+        },
+        // { text: i18n.t("cancel"), onPress: () => null },
       ]);
     };
 
@@ -51,13 +59,13 @@ export default function ShowDatesGroupScreen() {
         <MyText text={day} style={styles.text} />
         <MyText text={from} style={styles.text} />
         <MyText text={to} style={styles.text} />
-        {!!requested ? (
+        {/* {!!requested ? (
           <TouchableOpacity style={styles.btn} onPress={request}>
             <MyText text={requested} style={styles.text2} />
           </TouchableOpacity>
         ) : (
           <View style={styles.btn2}></View>
-        )}
+        )} */}
       </View>
     );
   };

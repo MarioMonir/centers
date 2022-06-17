@@ -42,9 +42,9 @@ export const useAuthMe = () => {
           const { user, accessToken } = data;
           await AsyncStorage.setItem("accessToken", accessToken);
           dispatch(setAuthUser({ accessToken, user }));
-          setLoading(false);
         }
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

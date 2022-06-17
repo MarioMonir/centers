@@ -106,20 +106,13 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient({
-  log: ["info", "query"],
-});
+import userService from "./user.service";
 
 // ------------------------------------------------------------------
+
 const crudController = {
   ...prismaCrud("user"),
-
-  // getList: exampleService.getList,
-  // getOne: id => Promise,
-  // create: body => Promise,
-  // update: (id, body) => Promise,
-  // destroy: id => Promise ,
+  create: userService.create,
 };
 
 // ------------------------------------------------------------------

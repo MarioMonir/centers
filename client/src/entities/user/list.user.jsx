@@ -17,11 +17,8 @@ export default function ListUser(props) {
       <Datagrid>
         <NumberField source="id" />
         <TextField source="name" />
-
         <TextField source="email" />
-        <TextField source="password" />
-        <TextField source="permission" />
-
+        <TextField source="userType" />
         <Actions>
           <ShowButton />
           <EditButton />
