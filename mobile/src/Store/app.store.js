@@ -19,7 +19,7 @@ const rtkQueryErrorLogger = (api) => (next) => (action) => {
 
     // handle un-auth request
     if (errRes.status === 401) {
-      return;
+      return next(action);
     }
 
     if (errRes?.data?.message) {

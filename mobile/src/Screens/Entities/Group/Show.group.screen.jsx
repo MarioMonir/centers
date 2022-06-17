@@ -10,6 +10,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
+import { useAppSelector } from "../../../Store/redux.hooks";
 import { TabView, SceneMap, TabBar } from "react-native-tab-view";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useGetOneQuery } from "../../../API/api";
@@ -19,10 +20,9 @@ import { Card, List } from "react-native-paper";
 import i18n from "i18n-js";
 import LoadingOrErrorScreen from "../../../Components/LoadingErrorEmpty.screen";
 import theme from "../../../Theme/paper.theme";
-import { useAppSelector } from "../../../Store/redux.hooks";
 import MyText from "../../../Components/MyText";
-import ShowDatesGroupScreen from "./ShowDates.group.tab";
 import NoRecords from "../../../Components/NoRecords.screen";
+import Button from "../../../Components/Form/Button";
 
 // ====================================================================
 
@@ -110,39 +110,62 @@ function ShowGroupScreen() {
         <List.Section title="" style={styles.list}>
           <List.Accordion
             title={i18n.t("DatesGroupScreen")}
-            left={(props) => <List.Icon {...props} icon="ab-testing" />}
+            left={(props) => <List.Icon {...props} icon="calendar-clock" />}
           >
-            <List.Item title={i18n.t("from") + "  " + i18n.t("to")} />
-            <List.Item title={i18n.t("no") + " " + i18n.t("exams")} />
-
-            {/* <List.Item title="exam 2" /> */}
+            {!dates?.length ? (
+              <List.Item
+                title={i18n.t("no") + " " + i18n.t("DatesGroupScreen")}
+              />
+            ) : (
+              <>
+                <List.Item
+                  title={() => (
+                    <View style={styles.dateRow}>
+                      <MyText text={i18n.t("day")} style={styles.text2} />
+                      <MyText text={i18n.t("from")} style={styles.text2} />
+                      <MyText text={i18n.t("to")} style={styles.text2} />
+                    </View>
+                  )}
+                />
+                {dates?.length &&
+                  dates?.map(({ from, to, day }, key) => (
+                    <List.Item
+                      key={key}
+                      title={() => (
+                        <View style={styles.dateRow}>
+                          <MyText text={day} style={styles.text2} />
+                          <MyText text={from} style={styles.text2} />
+                          <MyText text={to} style={styles.text2} />
+                        </View>
+                      )}
+                    />
+                  ))}
+              </>
+            )}
           </List.Accordion>
         </List.Section>
-
-        <List.Section title="" style={styles.list}>
-          <List.Accordion
-            title={i18n.t("exams")}
-            left={(props) => <List.Icon {...props} icon="ab-testing" />}
-          >
-            <List.Item title={i18n.t("no") + " " + i18n.t("exams")} />
-            {/* <List.Item title="exam 2" /> */}
-          </List.Accordion>
-        </List.Section>
-
-        {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
-
-        {userType !== "Student" && (
-          <FabGroup
-            actions={[
-              {
-                icon: "calendar-clock",
-                label: "times",
-                onPress: goToDatesGroup,
-              },
-            ]}
-          />
-        )}
       </ScrollView>
+
+      {/* ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ */}
+
+      {userType === "Student" ? (
+        <Button
+          text="request"
+          style={styles.btn}
+          icon="account-arrow-left"
+          onPress={() => console.log("req")}
+        />
+      ) : (
+        <FabGroup
+          actions={[
+            {
+              icon: "calendar-clock",
+              label: "times",
+              onPress: goToDatesGroup,
+            },
+          ]}
+        />
+      )}
     </SafeAreaView>
   );
 }
@@ -177,7 +200,7 @@ const Material = () => {
 
 const renderScene = SceneMap({
   show: ShowGroupScreen,
-  dates: ShowDatesGroupScreen,
+  // dates: ShowDatesGroupScreen,
   material: Material,
   attendance: Attendance,
 });
@@ -190,7 +213,7 @@ export default function TabViewExample() {
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
     { key: "show", title: i18n.t("details") },
-    { key: "dates", title: i18n.t("dates") },
+    // { key: "dates", title: i18n.t("dates") },
     { key: "material", title: i18n.t("material") },
     { key: "attendance", title: i18n.t("attendance") },
   ]);
@@ -247,6 +270,7 @@ const styles = StyleSheet.create({
   },
   text: {
     width: wp(40),
+
     textAlign: "left",
   },
   tabStyle: {
@@ -263,5 +287,18 @@ const styles = StyleSheet.create({
   },
   list: {
     width: wp(95),
+  },
+  text2: {
+    paddingHorizontal: wp(1),
+    width: wp(28),
+    textAlign: "center",
+  },
+  dateRow: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  btn: {
+    alignSelf: "flex-end",
+    marginBottom: hp(5),
   },
 });
