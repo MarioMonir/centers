@@ -55,8 +55,8 @@ export default function ListRequest(props) {
     <ListContextProvider value={listContext}>
       <ListToolbar />
       <Box gap={2} display="grid">
-        {listContext?.data?.map((record) => (
-          <RequestCard {...record} key={record.id} />
+        {listContext?.data?.map((record, key) => (
+          <RequestCard record={record} key={key} />
         ))}
       </Box>
       <Pagination />

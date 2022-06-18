@@ -194,7 +194,7 @@ function ShowGroupScreen() {
               ? groupRequest?.requestStatus
               : "request"
           }
-          disabled={true}
+          disabled={groupRequest?.requestStatus === "Pending" ? true : false}
           style={styles.btn}
           icon="account-arrow-left"
           onPress={requestToJoinGroup}

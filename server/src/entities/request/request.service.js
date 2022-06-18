@@ -43,6 +43,9 @@ const requestService = {
       });
 
       // -------------------------------------------
+
+      if (body.requestStatus !== "Accpeted") return Promise.resolve();
+
       //enroll student in the requested group
       await prisma.enrolment.create({
         data: {

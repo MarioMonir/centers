@@ -8,15 +8,15 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { FunctionField, ReferenceField, useUpdate } from "react-admin";
 import { dateHandling } from "../../../utils/dataHandling";
-
-// ------------------------------------------------
+import { useRefresh } from "react-admin";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-// ------------------------------------------------
+// =================================================================
 
-const RequestCard = (record) => {
+export default function RequestCard({ record }) {
   const [payment, setPayment] = useState();
+  const refresh = useRefresh();
   const [update, { isLoading, error }] = useUpdate();
 
   // ------------------------------------------------
@@ -32,15 +32,19 @@ const RequestCard = (record) => {
       id: record.id,
       data: { requestStatus: "Accpeted", payment, toUserId: user?.id },
     });
+    // shit because of shit
+    window.location.reload();
   };
 
   // ------------------------------------------------
 
-  const submitRefuse = () => {
-    update("request", {
+  const submitRefuse = async () => {
+    await update("request", {
       id: record.id,
       data: { requestStatus: "Refused" },
     });
+    // shit because of shit
+    window.location.reload();
   };
 
   // ------------------------------------------------
@@ -184,6 +188,4 @@ const RequestCard = (record) => {
       {/* </CardActionArea> */}
     </Card>
   );
-};
-
-export default RequestCard;
+}
