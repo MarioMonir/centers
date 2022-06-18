@@ -106,14 +106,7 @@
 // ------------------------------------------------------------------
 
 import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-<<<<<<< HEAD
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient({
-  log: ["info", "query"],
-});
-=======
 import userService from "./user.service";
->>>>>>> 2b0374cbb43893294158ac627ef2a0c6ad27e3f3
 
 // ------------------------------------------------------------------
 

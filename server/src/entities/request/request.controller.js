@@ -61,15 +61,11 @@ import requestService from "./request.service";
 
 // ------------------------------------------------------------------
 
-<<<<<<< HEAD
-import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
-=======
 const crudController = {
   ...prismaCrud("request"),
 
   update: (id, body) => requestService.update(id, body),
 };
->>>>>>> 2b0374cbb43893294158ac627ef2a0c6ad27e3f3
 
 // ------------------------------------------------------------------
 

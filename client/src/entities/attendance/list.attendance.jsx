@@ -18,7 +18,6 @@ import Typography from "@mui/material/Typography";
 
 // ------------------------------------------------
 
-<<<<<<< HEAD
 const ListAttendance = ({ studentId, groupId }) => {
   const filters = [
     <TextInput source="q" label="Search" alwaysOn />,
@@ -35,21 +34,6 @@ const ListAttendance = ({ studentId, groupId }) => {
       >
         <Datagrid bulkActionButtons={studentId ? false : true}>
           {/* <NumberField source="studentId" label="Student code" />
-=======
-export default function ListAttendance({ studentId, groupId }) {
-  return (
-    <ResourceContextProvider value="attendance">
-      <List
-        hasCreate={studentId ? false : true}
-        exporter={studentId ? false : true}
-        actions={studentId ? false : true}
-        filter={{ studentId: studentId, groupId: groupId }}
-      >
-        {/* <Datagrid>
-        </Datagrid> */}
-        {/* <Datagrid>
-          <NumberField source="studentId" label="Student code" />
->>>>>>> a8580fc43611045c177bbff3d68bae6c22a66692
           <ReferenceField
             source="studentId"
             label="Student name"
@@ -64,10 +48,8 @@ export default function ListAttendance({ studentId, groupId }) {
           />
 
           <TextField source="lectureCost" />
-          <TextField source="centerCost" />
-
-       
-        </Datagrid> */}
+          <TextField source="centerCost" /> */}
+        </Datagrid>
       </List>
 
       {/* <List
@@ -87,7 +69,7 @@ export default function ListAttendance({ studentId, groupId }) {
       </List> */}
     </ResourceContextProvider>
   );
-}
+};
 
 // ------------------------------------------------
 

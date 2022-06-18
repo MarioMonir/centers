@@ -151,19 +151,6 @@ model Attendance {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Enrolment {
-<<<<<<< HEAD
-  id                   Int      @id @default(autoincrement())
-  group                Group    @relation(fields: [groupId], references: [id])
-  student              User     @relation(fields: [studentId], references: [id])
-  groupId              Int
-  studentId            Int
-  paymentCost          Float? // for special students, null for others
-  centerCostPerLecture Float? // for special students, null for others
-  balance              Float    @default(0)
-  exams                Json? // exams scores for every student 
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @default(now()) @updatedAt
-=======
   id Int @id @default(autoincrement())
 
   group   Group @relation(fields: [groupId], references: [id])
@@ -181,7 +168,6 @@ model Enrolment {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
->>>>>>> 2b0374cbb43893294158ac627ef2a0c6ad27e3f3
 
   @@unique([groupId, studentId])
 }
