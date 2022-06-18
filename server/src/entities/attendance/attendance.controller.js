@@ -146,7 +146,7 @@ const crudController = {
         });
 
         await prisma.flow.create({
-          data: { ...body.flow, balance: updatedEnrolmentForPayment.balance },
+          data: { ...body.flow, balance: updatedEnrolmentForPayment.balance }, // mi4 4rt ykon hwa hwa al balance
         });
       }
 

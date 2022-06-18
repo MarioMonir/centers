@@ -9,6 +9,7 @@ import { useAppDispatch } from "../../Store/redux.hooks";
 import { setAuthUser } from "../../Store/Slices/auth.slice";
 import Logo from "../../Components/Logo";
 import globalStyles from "../../Theme/global.styles";
+import Toast from "react-native-toast-message";
 
 // =================================================================
 
@@ -26,7 +27,12 @@ export default function LoginScreen() {
 
   // -------------------------------------
 
-  const onSubmit = (values) => login(values);
+  const onSubmit = (values) =>
+    login(values).then(({ error }) => {
+      if (error?.status === 401) {
+        Toast.show({ type: "error", text1: "😔  " + "Un-Authenticated" });
+      }
+    });
 
   // -------------------------------------
 

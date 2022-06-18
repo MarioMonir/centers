@@ -100,6 +100,7 @@ model Group {
   enrolment  Enrolment[]
   Post       Post[]
   Flow       Flow[]
+  Request    Request[]
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -150,6 +151,7 @@ model Attendance {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Enrolment {
+<<<<<<< HEAD
   id                   Int      @id @default(autoincrement())
   group                Group    @relation(fields: [groupId], references: [id])
   student              User     @relation(fields: [studentId], references: [id])
@@ -161,6 +163,25 @@ model Enrolment {
   exams                Json? // exams scores for every student 
   createdAt            DateTime @default(now())
   updatedAt            DateTime @default(now()) @updatedAt
+=======
+  id Int @id @default(autoincrement())
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
+  student   User @relation(fields: [studentId], references: [id])
+  studentId Int
+
+  balance Float @default(0)
+
+  paymentCost          Float? // for special students
+  centerCostPerLecture Float? // for special students
+
+  exams Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+>>>>>>> 2b0374cbb43893294158ac627ef2a0c6ad27e3f3
 
   @@unique([groupId, studentId])
 }
@@ -168,11 +189,17 @@ model Enrolment {
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
 model Request {
-  id            Int           @id @default(autoincrement())
-  fromUser      User          @relation("requestFromUser", fields: [fromUserId], references: [id])
-  toUser        User          @relation("requestToUser", fields: [toUserId], references: [id])
-  fromUserId    Int
-  toUserId      Int
+  id Int @id @default(autoincrement())
+
+  fromUser   User @relation("requestFromUser", fields: [fromUserId], references: [id])
+  fromUserId Int
+
+  toUser   User @relation("requestToUser", fields: [toUserId], references: [id])
+  toUserId Int
+
+  toGroup   Group @relation(fields: [toGroupId], references: [id])
+  toGroupId Int
+
   requestType   RequestType   @default(Student_Group)
   requestStatus RequestStatus @default(Pending)
   note          String?
@@ -180,6 +207,7 @@ model Request {
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now()) @updatedAt
 
+  @@unique([fromUserId, toUserId, toGroupId])
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

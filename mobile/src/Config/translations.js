@@ -78,6 +78,8 @@ export default {
     material: "Material",
     attendance: "Attendance",
     exams: "Exams",
+    courseName: "Course Name",
+    Pending: "Pending",
   },
   // =================================================================
   ar: {
@@ -161,5 +163,7 @@ export default {
     material: "المنهج",
     attendance: "حضور",
     exams: "امتحانات",
+    courseName: "إسم المادة",
+    Pending: "في انتظار الرد على الطلب",
   },
 };

@@ -13,7 +13,6 @@ export default function StudentDrawer({
 
   const { logout } = useAuthMe();
   const profile = useAppSelector((s) => s?.auth?.user);
-  console.log({ profile });
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 

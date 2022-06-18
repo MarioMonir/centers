@@ -50,4 +50,4 @@ export const { setAuthUser, setAccesToken, setUser, resetAuthUser } =
 
 // =====================================================================
 
-export default auhthSlice.reducer;
+export default auhthSlice;

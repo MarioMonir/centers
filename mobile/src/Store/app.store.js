@@ -2,6 +2,8 @@ import { configureStore, isRejectedWithValue } from "@reduxjs/toolkit";
 import { apiSlice } from "../API/api";
 // import logger from "redux-logger";
 import authSlice from "./Slices/auth.slice";
+import requestsSlice from "./Slices/requests.slice";
+import enrolmentsSlice from "./Slices/enrolments.slice";
 import Toast from "react-native-toast-message";
 
 // ========================================================
@@ -15,11 +17,17 @@ import Toast from "react-native-toast-message";
 const rtkQueryErrorLogger = (api) => (next) => (action) => {
   if (isRejectedWithValue(action)) {
     let message = "Something went wrong";
+    let errRes = action?.payload;
 
-    if (action?.payload?.data?.message) {
-      message = action?.payload?.data?.message;
-    } else if (action?.payload?.error) {
-      message = action?.payload?.error;
+    // handle un-auth request
+    if (errRes.status === 401) {
+      return next(action);
+    }
+
+    if (errRes?.data?.message) {
+      message = errRes.data?.message;
+    } else if (errRes?.error) {
+      message = errRes.error;
     }
 
     Toast.show({ type: "error", text1: "😔  " + message });
@@ -31,7 +39,9 @@ const rtkQueryErrorLogger = (api) => (next) => (action) => {
 
 const store = configureStore({
   reducer: {
-    auth: authSlice,
+    auth: authSlice.reducer,
+    requests: requestsSlice.reducer,
+    enrolments: enrolmentsSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
 
