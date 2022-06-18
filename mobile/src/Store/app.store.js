@@ -2,6 +2,8 @@ import { configureStore, isRejectedWithValue } from "@reduxjs/toolkit";
 import { apiSlice } from "../API/api";
 // import logger from "redux-logger";
 import authSlice from "./Slices/auth.slice";
+import requestsSlice from "./Slices/requests.slice";
+import enrolmentsSlice from "./Slices/enrolments.slice";
 import Toast from "react-native-toast-message";
 
 // ========================================================
@@ -37,7 +39,9 @@ const rtkQueryErrorLogger = (api) => (next) => (action) => {
 
 const store = configureStore({
   reducer: {
-    auth: authSlice,
+    auth: authSlice.reducer,
+    requests: requestsSlice.reducer,
+    enrolments: enrolmentsSlice.reducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
 

@@ -79,6 +79,7 @@ export default {
     attendance: "Attendance",
     exams: "Exams",
     courseName: "Course Name",
+    Pending: "Pending",
   },
   // =================================================================
   ar: {
@@ -163,5 +164,6 @@ export default {
     attendance: "حضور",
     exams: "امتحانات",
     courseName: "إسم المادة",
+    Pending: "في انتظار الرد على الطلب",
   },
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -15,6 +15,11 @@ import theme from "../Theme/paper.theme";
 import ExploreScreen from "../Screens/Entities/Student/Explore.screen";
 import ProfileScreen from "../Screens/Generics/Profile.screen";
 import ListGroupScreen from "../Screens/Entities/Group/List.group.screen";
+import { useGetListQuery } from "../API/api";
+import { useAppDispatch } from "../Store/redux.hooks";
+import { setEnrolments } from "../Store/Slices/enrolments.slice";
+import { setRequests } from "../Store/Slices/requests.slice";
+import { useAppSelector } from "../Store/redux.hooks";
 
 // ==============================================================
 
@@ -111,6 +116,43 @@ const StudentScreensNavigators = () => {
 // ==============================================================
 
 export default function StudentDrawerNavigator() {
+  // -------------------------------
+  /**
+   *  Set initial state of requests and enrolments
+   */
+
+  const user = useAppSelector((state) => state?.auth?.user);
+  const dispatch = useAppDispatch();
+
+  const { data: enrolments, error: enrolmentsError } = useGetListQuery({
+    entity: "enrolment",
+    filter: {
+      studentId: user.id,
+    },
+  });
+
+  const { data: requests, error: requestsError } = useGetListQuery({
+    entity: "request",
+    filter: {
+      fromUserId: user?.id,
+    },
+  });
+
+  // -------------------------------
+
+  useEffect(() => {
+    if (enrolments) {
+      dispatch(setEnrolments(enrolments));
+    }
+
+    if (requests) {
+      console.log({ requests });
+      dispatch(setRequests(requests));
+    }
+  }, [enrolments, requests]);
+
+  // -------------------------------
+
   return (
     <Drawer.Navigator
       initialRouteName="exploreGroups"

@@ -31,10 +31,21 @@ import Toast from "react-native-toast-message";
 function ShowGroupScreen() {
   // --------------------------------------
 
-  const { id: fromUserId, userType } = useAppSelector((s) => s?.auth?.user);
   const { params } = useRoute();
   const { id, group } = params;
   const { navigate } = useNavigation();
+
+  // --------------------------------------
+
+  const { id: fromUserId, userType } = useAppSelector((s) => s?.auth?.user);
+  const requests = useAppSelector((state) => state?.requests);
+  const groupRequest = requests?.find(
+    (req) => fromUserId === req.fromUserId && req.id === id
+  );
+
+  // --------------------------------------
+
+  console.log({ groupRequest });
 
   const [request] = useCreateMutation();
 
@@ -178,7 +189,12 @@ function ShowGroupScreen() {
 
       {userType === "Student" ? (
         <Button
-          text="request"
+          text={
+            groupRequest?.requestStatus
+              ? groupRequest?.requestStatus
+              : "request"
+          }
+          disabled={true}
           style={styles.btn}
           icon="account-arrow-left"
           onPress={requestToJoinGroup}
@@ -201,9 +217,9 @@ function ShowGroupScreen() {
 // ====================================================================
 
 const Attendance = () => {
-  const { params } = useRoute();
-  const { group } = params;
-  const { dates = [] } = group;
+  // const { params } = useRoute();
+  // const { group } = params;
+  // const { dates = [] } = group;
   return (
     <SafeAreaView style={{ ...globalStyles.screen }}>
       <NoRecords text="attendance" />
