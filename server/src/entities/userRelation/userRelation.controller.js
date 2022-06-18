@@ -97,7 +97,7 @@
 
 // ------------------------------------------------------------------
 
-import { crud, prismaCrud } from "../../utils/Crud/express-crud-router";
+import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
 
 // ------------------------------------------------------------------
 

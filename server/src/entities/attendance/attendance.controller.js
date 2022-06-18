@@ -99,25 +99,17 @@
 
 // ------------------------------------------------------------------
 
-<<<<<<< HEAD
-import { crud, prismaCrud } from "../../Utils/Crud/express-crud-router";
-import attendanceService from "./attendance.service";
-=======
-import { crud, prismaCrud } from "../../utils/Crud/express-crud-router";
+import { crud, prismaCrud } from "../../utils/crud/express-crud-router";
 // ---------------------------------------------------------
 
 import { PrismaClient } from "@prisma/client";
 import { ceil } from "lodash";
 const prisma = new PrismaClient({ log: ["info" /* "query" */] });
->>>>>>> a8580fc43611045c177bbff3d68bae6c22a66692
 
 // ------------------------------------------------------------------
 
 const crudController = {
   ...prismaCrud("attendance"),
-<<<<<<< HEAD
-  create: (body) => attendanceService.takeAttendance(body),
-=======
 
   create: async (body) => {
     await prisma.$transaction(async (prisma) => {
@@ -352,7 +344,6 @@ const crudController = {
       // ===============================================================
     });
   },
->>>>>>> a8580fc43611045c177bbff3d68bae6c22a66692
 };
 
 // ------------------------------------------------------------------
