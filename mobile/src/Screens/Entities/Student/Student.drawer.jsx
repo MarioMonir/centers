@@ -33,6 +33,14 @@ export default function StudentDrawer({
         navigate("profile", { item: profile });
       },
     },
+    {
+      name: "myGroups",
+      icon: "account",
+      onPress: () => {
+        closeDrawer();
+        navigate("groups", { profile, myGroups: true });
+      },
+    },
     { name: "logout", onPress: () => logout(), icon: "logout" },
   ];
 

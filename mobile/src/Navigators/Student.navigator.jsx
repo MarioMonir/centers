@@ -20,6 +20,7 @@ import { useAppDispatch } from "../Store/redux.hooks";
 import { setEnrolments } from "../Store/Slices/enrolments.slice";
 import { setRequests } from "../Store/Slices/requests.slice";
 import { useAppSelector } from "../Store/redux.hooks";
+import GroupTabNavigator from "../Screens/Entities/Group/Group.tab.navigator";
 
 // ==============================================================
 
@@ -106,7 +107,7 @@ const StudentScreensNavigators = () => {
       />
       <Stack.Screen
         name="ShowGroupScreen"
-        component={ShowGroupScreen}
+        component={GroupTabNavigator}
         options={screenOptions}
       />
     </Stack.Navigator>
@@ -121,35 +122,34 @@ export default function StudentDrawerNavigator() {
    *  Set initial state of requests and enrolments
    */
 
-  const user = useAppSelector((state) => state?.auth?.user);
-  const dispatch = useAppDispatch();
+  // const user = useAppSelector((state) => state?.auth?.user);
+  // const dispatch = useAppDispatch();
 
-  const { data: enrolments, error: enrolmentsError } = useGetListQuery({
-    entity: "enrolment",
-    filter: {
-      studentId: user.id,
-    },
-  });
+  // const { data: enrolments, error: enrolmentsError } = useGetListQuery({
+  //   entity: "enrolment",
+  //   filter: {
+  //     studentId: user.id,
+  //   },
+  // });
 
-  const { data: requests, error: requestsError } = useGetListQuery({
-    entity: "request",
-    filter: {
-      fromUserId: user?.id,
-    },
-  });
+  // const { data: requests, error: requestsError } = useGetListQuery({
+  //   entity: "request",
+  //   filter: {
+  //     fromUserId: user?.id,
+  //   },
+  // });
 
   // -------------------------------
 
-  useEffect(() => {
-    if (enrolments) {
-      dispatch(setEnrolments(enrolments));
-    }
+  // useEffect(() => {
+  //   if (enrolments) {
+  //     dispatch(setEnrolments(enrolments));
+  //   }
 
-    if (requests) {
-      console.log({ requests });
-      dispatch(setRequests(requests));
-    }
-  }, [enrolments, requests]);
+  //   if (requests) {
+  //     dispatch(setRequests(requests));
+  //   }
+  // }, [enrolments, requests]);
 
   // -------------------------------
 

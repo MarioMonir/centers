@@ -14,12 +14,12 @@ export const apiSlice = createApi({
     prepareHeaders: async (headers, { getState, endpoint }) => {
       headers.set("Content-Type", "application/json");
       headers.set("Accept", "application/json");
-      console.log("query ", endpoint);
 
       const accessToken = getState()?.auth?.accessToken;
       if (accessToken) {
         headers.set("Authorization", `Bearer ${accessToken}`);
       }
+
       return headers;
     },
   }),
@@ -39,4 +39,5 @@ export const {
   useFredyQuery,
   useLazyMeQuery,
   useSearchQuery,
+  useGetMyGroupsQuery,
 } = apiSlice;

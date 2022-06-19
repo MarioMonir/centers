@@ -80,6 +80,8 @@ export default {
     exams: "Exams",
     courseName: "Course Name",
     Pending: "Pending",
+    Refused: "Refused",
+    myGroups: "My Groups",
   },
   // =================================================================
   ar: {
@@ -165,5 +167,7 @@ export default {
     exams: "امتحانات",
     courseName: "إسم المادة",
     Pending: "في انتظار الرد على الطلب",
+    Refused: "تم رفض طلبك",
+    myGroups: "مجموعاتي",
   },
 };

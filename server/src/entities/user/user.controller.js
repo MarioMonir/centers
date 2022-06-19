@@ -117,4 +117,19 @@ const crudController = {
 
 // ------------------------------------------------------------------
 
-export default crud("/user", crudController);
+const customRoutesController = [
+  {
+    method: "get",
+    path: "/get-my-groups/:id",
+    controller: async (req, res, next) => {
+      let myGroups = await userService.getMyGroups({
+        studentId: parseInt(req.params.id),
+      });
+      res.status(202).json(myGroups);
+    },
+  },
+];
+
+// ------------------------------------------------------------------
+
+export default crud("/user", crudController, customRoutesController);

@@ -64,13 +64,6 @@ export default function ExploreScreen({ type }) {
             onChangeText={onChangeSearch}
             value={searchQuery}
           />
-          {/** Filter courses / levels  */}
-          {/* <Searchbar
-            style={styles.search}
-            placeholder={i18n.t("search")}
-            onChangeText={onChangeSearch}
-            value={searchQuery}
-          /> */}
         </View>
       ) : null}
       <ExploreList {...{ userType: type, q: searchQuery }} />

@@ -24,6 +24,8 @@ const prisma = new PrismaClient();
 // ------------------------------------------------------------
 
 const userService = {
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
   create: async ({ password, ...body }) =>
     prisma.user.create({
       data: {
@@ -31,6 +33,21 @@ const userService = {
         password: await bcryptHash(password),
       },
     }),
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  getMyGroups: async ({ studentId }) => {
+    return prisma.enrolment.findMany({
+      where: {
+        studentId,
+      },
+      select: {
+        group: true,
+      },
+    });
+  },
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 };
 
 // ------------------------------------------------------------------

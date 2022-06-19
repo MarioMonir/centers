@@ -7,31 +7,23 @@ import LoadingErrorEmpty from "../../../Components/LoadingErrorEmpty.screen";
 import CardGroup from "./Card.group";
 import Fab from "../../../Components/Fab";
 import { useAppSelector } from "../../../Store/redux.hooks";
+import { useGetMyGroupsQuery } from "../../../API/api";
 
 // ====================================================================
 
-export default function ListGroupScreen({}) {
-  const entity = "group";
+export default function MyGroupScreen({}) {
   const { navigate } = useNavigation();
-  const {
-    params: {
-      profile: { id, userType: profileUserType },
-    },
-  } = useRoute();
-  const userType = useAppSelector((s) => s?.auth?.user?.userType);
+  //   const {
+  //     params: {
+  //       profile: { id, userType: profileUserType },
+  //     },
+  //   } = useRoute();
 
   // --------------------------------------
 
-  let filter = {};
-  if (profileUserType === "Center" && id) {
-    filter.ownerUserId = id;
-  } else if (profileUserType === "Teacher" && id) {
-    filter.teacherUserId = id;
-  }
+  const { id: studentId } = useAppSelector((s) => s?.auth?.user);
 
-  // --------------------------------------
-
-  const { data, isLoading, error } = useGetListQuery({ entity, filter });
+  const { data, isLoading, error } = useGetMyGroupsQuery({ studentId });
 
   // --------------------------------------
 

@@ -30,8 +30,8 @@ import ListFlow from "../flow/list.flow";
 import ListPost from "../post/list.post";
 import ShowUser from "../user/show.user";
 import GroupCard from "./components/GroupCard";
-import Video from "../../twitchApi/Video";
-import { getAccessToken } from "../../twitchApi/authorization";
+import GroupAttendance from "./components/GroupAttendance";
+
 // =======================================================
 
 const loggedInUserId = 1;
@@ -151,6 +151,25 @@ export default function ShowGroup() {
               icon={<AddTaskIcon />}
               path="attendance/create"
             >
+              <GroupAttendance
+                {...{
+                  formData,
+                  handleFormChange,
+                  handleAutocompleteChange,
+                  handleAmountChange,
+                  submitCreateAttendance,
+                  EnrolledStudents,
+                  amount,
+                }}
+              />
+            </Tab>
+
+            {/* ----------------------------------------------------- */}
+            {/* <Tab
+              label="Take Attendance"
+              icon={<AddTaskIcon />}
+              path="attendance/create"
+            >
               <div style={{ display: "flex" }}>
                 <div style={{ width: "50%", padding: 5 }}>
                   <Card
@@ -210,7 +229,6 @@ export default function ShowGroup() {
                           row
                           value={formData.homework}
                           onChange={handleFormChange}
-                          // aria-labelledby="demo-row-radio-buttons-group-label"
                           name="homework"
                         >
                           <FormControlLabel
@@ -251,20 +269,16 @@ export default function ShowGroup() {
                   </Card>
                 </div>
                 {formData?.studentId ? (
-                  <div style={{ width: "50%", padding: 5 }}>
-                    <Typography variant="h6" /*sx={{ padding: 2 }}*/>
-                      Student Info
-                    </Typography>
+                  <div style={{ width: "50%", padding: 10 }}>
+                    <Typography variant="h6">Student Info</Typography>
                     <ShowUser id={formData.studentId} />
                   </div>
                 ) : null}
               </div>
               {formData?.studentId ? (
                 <div style={{ display: "flex" }}>
-                  <div style={{ width: "50%", padding: 5 }}>
-                    <Typography variant="h6" /*sx={{ padding: 2 }}*/>
-                      Attendance Record
-                    </Typography>
+                  <div style={{ width: "50%", padding: 10 }}>
+                    <Typography variant="h6">Attendance Record</Typography>
                     <ListAttendance
                       {...{
                         studentId: parseInt(formData?.studentId),
@@ -273,15 +287,13 @@ export default function ShowGroup() {
                     />
                   </div>
 
-                  <div style={{ width: "50%", padding: 5 }}>
-                    <Typography variant="h6" /*sx={{ padding: 2 }}*/>
-                      Payment Record
-                    </Typography>
+                  <div style={{ width: "50%", padding: 10 }}>
+                    <Typography variant="h6">Payment Record</Typography>
                     <ListFlow studentId={parseInt(formData?.studentId)} />
                   </div>
                 </div>
               ) : null}
-            </Tab>
+            </Tab> */}
 
             {/* ----------------------------------------------------- */}
 
