@@ -1,0 +1,337 @@
+// Data source
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Generator
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
+}
+
+// Data Model
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String
+  userType   UserType @default(Student)
+  email      String   @unique
+  password   String
+  permission Json?
+  info       Json?
+
+  videoTotalStorage Decimal @default(80)
+  videoUsedStorage  Decimal @default(0)
+
+  followedBy UserRelation[] @relation("follower")
+  following  UserRelation[] @relation("following")
+
+  flowsFrom Flow[] @relation("flowFromUser")
+  flowsTo   Flow[] @relation("flowToUser")
+
+  requestsFrom Request[] @relation("requestFromUser")
+  requestsTo   Request[] @relation("requestToUser")
+
+  groups        Group[] @relation("owner")
+  groupsTeacher Group[] @relation("teacher")
+  posts         Post[]
+
+  attendances Attendance[]
+  enrolments  Enrolment[]
+
+  Videos     Video[]
+  VideoViews VideoViews[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model UserRelation {
+  follower         User             @relation("follower", fields: [followerId], references: [id])
+  following        User             @relation("following", fields: [followingId], references: [id])
+  followingId      Int
+  followerId       Int
+  userRelationType UserRelationType @default(Student_Center)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@id([followerId, followingId])
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Group {
+  //common
+  id               Int         @id @default(autoincrement())
+  courseName       String
+  level            String
+  groupType        GroupType
+  paymentType      PaymentType @default(Lecture)
+  numberOfLectures Int? // if paymentType is Month
+  paymentCost      Float       @default(0)
+  public           Boolean     @default(true)
+
+  owner       User @relation("owner", fields: [ownerUserId], references: [id])
+  ownerUserId Int
+
+  teacher       User @relation("teacher", fields: [teacherUserId], references: [id])
+  teacherUserId Int
+
+  dates              Json? // [ {"day":"", "from":"", "to":"", date:""(for non-weekly lectures)} ]
+  actualLectureDates Json  @default("[]") // list of lecture dates 
+  lectures           Json?
+  exams              Json?
+
+  //if groupOwner is teacher
+  location String?
+
+  //if groupOwner is center
+  centerCollectsFees   Boolean @default(false)
+  centerCostPerLecture Float   @default(0)
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  attendance Attendance[]
+  enrolment  Enrolment[]
+  Post       Post[]
+  Flow       Flow[]
+  Request    Request[]
+  Video      Video[]
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Flow {
+  id          Int     @id @default(autoincrement())
+  credit      Float?
+  debit       Float?
+  balance     Float
+  description String? // payOnEntry, lectureCost, centerCost, balanceRecharge, refund
+  notes       String?
+
+  fromUser   User @relation("flowFromUser", fields: [fromUserId], references: [id])
+  fromUserId Int
+
+  toUser   User @relation("flowToUser", fields: [toUserId], references: [id])
+  toUserId Int
+
+  group   Group? @relation(fields: [groupId], references: [id])
+  groupId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Attendance {
+  id Int @id @default(autoincrement())
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
+  student   User @relation(fields: [studentId], references: [id])
+  studentId Int
+
+  homework      HomeworkStatus?
+  homeworkNotes String?
+  lectureNumber Int
+
+  //add flag for attendance in other groups
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([groupId, studentId, lectureNumber])
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Enrolment {
+  id Int @id @default(autoincrement())
+
+  group   Group @relation(fields: [groupId], references: [id])
+  groupId Int
+
+  student   User @relation(fields: [studentId], references: [id])
+  studentId Int
+
+  balance Float @default(0)
+
+  paymentCost          Float? // for special students
+  centerCostPerLecture Float? // for special students
+
+  exams Json?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([groupId, studentId])
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Request {
+  id Int @id @default(autoincrement())
+
+  fromUser   User @relation("requestFromUser", fields: [fromUserId], references: [id])
+  fromUserId Int
+
+  toUser   User @relation("requestToUser", fields: [toUserId], references: [id])
+  toUserId Int
+
+  toGroup   Group @relation(fields: [toGroupId], references: [id])
+  toGroupId Int
+
+  requestType   RequestType   @default(Student_Group)
+  requestStatus RequestStatus @default(Pending)
+  note          String?
+  info          Json?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now()) @updatedAt
+
+  @@unique([fromUserId, toUserId, toGroupId])
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Post {
+  id       Int    @id @default(autoincrement())
+  content  String //what is the max length ?!
+  likes    Json?  @default("{\"userIds\":[]}")
+  //comments.list [{"userId":123 ,"content":"comment content" ,"createdAt": date, "likes":{"userIds":[5,2,4,6]}}]
+  comments Json?  @default("{\"list\":[]}")
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  group   Group? @relation(fields: [groupId], references: [id])
+  groupId Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model Video {
+  id            Int       @id @default(autoincrement())
+  lectureNumber Int
+  title         String
+  link          String
+  type          VideoType @default(Recorded)
+  videoSize     Decimal
+
+  // optional for future features
+  numberOfViews Int?
+  viewsCost     Decimal?
+
+  ownerUserId Int
+  user        User @relation(fields: [ownerUserId], references: [id])
+
+  groups     Group[]
+  VideoViews VideoViews[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+model VideoViews {
+  id            Int @id @default(autoincrement())
+  numberOfViews Int @default(1)
+
+  videoId Int
+  video   Video @relation(fields: [videoId], references: [id])
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum UserType {
+  Developer
+
+  Student
+
+  Teacher
+  TeacherAssistant
+
+  Center
+  CenterEmployee
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum UserRelationType {
+  Teacher_Center
+  Student_Center
+  Employee_Center
+  Student_Teacher
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum PaymentType {
+  Lecture
+  Month
+  Installment
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum HomeworkStatus {
+  done
+  partial
+  none
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum RequestType {
+  Student_Group
+  Teacher_Center
+  Center_Teacher
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum RequestStatus {
+  Accpeted
+  Pending
+  Refused
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum GroupType {
+  InPerson
+  Online
+  Hybrid
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+enum VideoType {
+  Recorded
+  Live
+}
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
